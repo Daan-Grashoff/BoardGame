@@ -9,7 +9,7 @@ function love.load()
 
 	love.window.setMode(width, height)
 
-	love.graphics.getBackgroundColor(255, 255, 255)
+	love.graphics.setBackgroundColor(45, 127, 180)
 
 	-- loading classes
 	board.load()
@@ -19,7 +19,6 @@ function love.load()
 end
 
 function love.update(dt)
-	-- UPDATE PLAYER
 	if love.keyboard.isDown('escape') then
 		love.event.quit()
 	end
@@ -50,7 +49,6 @@ end
 
 
 function love.draw()
-
 	-- draw player
 	board.draw()
 	objects.draw()
