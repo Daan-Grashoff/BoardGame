@@ -1,10 +1,18 @@
+Menu = require 'Assets.Themes.Menu'
+UI = require 'Libraries.thranduil.UI'
+
 menu = {}
 
 function menu:load()
-	menu.options = {'Start game', 'Help', 'Credits', 'Quit'}
-
 	--menu.bgImage = love.graphics.newImage('assets/images/background.png')
+	menu.options = {'Start game', 'Help', 'Credits', 'Quit'}
 	menu.selectedOption = 1
+	UI.registerEvents()
+
+	startButton = UI.Button(200, 100, 100, 50, {extensions = {Menu.StartButton}, draggable = false})
+	creditsButton = UI.Button(400, 100, 100, 50, {extensions = {Menu.CreditsButton}, draggable = false})
+	helpButton = UI.Button(200, 200, 100, 50, {extensions = {Menu.HelpButton}, draggable = false})
+	quitButton = UI.Button(400, 200, 100, 50, {extensions = {Menu.QuitButton}, draggable = false})
 end
 
 function menu:navigateTo(gameState)
@@ -27,30 +35,9 @@ function menu:keypressed(key, gameState)
   	menu:next()
   elseif key == 'return' then
   	menu:navigateTo(gameState)
+  elseif key == 'escape' then
+  	love.event.quit()
   end
-end
-
-
-function menu:draw()
-
-	love.graphics.setColor(255, 255, 255)
-	--love.graphics.draw(menu.bgImage, 0, 0)
-
-	--love.graphics.setFont(fonts.bigFont)
-	--love.graphics.setColor(255, 0, 0)
-
-	--love.graphics.setFont(fonts.smallFont)
-
-	for i, option in ipairs(menu.options) do
-
-		if i == menu.selectedOption then
-			love.graphics.setColor(255, 255, 0)
-		else
-			love.graphics.setColor(0, 255, 0)
-		end
-
-		love.graphics.print(option, 50, 50 + i * 100)
-	end
 end
 
 function menu:next()
@@ -67,5 +54,43 @@ function menu:previous()
 	end
 end
 
+function menu:draw()
+	startButton:draw()
+	creditsButton:draw()
+	helpButton:draw()
+	quitButton:draw()
+	love.graphics.setColor(255, 255, 255)
+	--love.graphics.draw(menu.bgImage, 0, 0)
+
+	--love.graphics.setFont(fonts.bigFont)
+	--love.graphics.setColor(255, 0, 0)
+
+	--love.graphics.setFont(fonts.smallFont)
+	--Will be removed because it will not be used
+	for i, option in ipairs(menu.options) do
+
+		if i == menu.selectedOption then
+			love.graphics.setColor(255, 255, 0)
+		else
+			love.graphics.setColor(0, 255, 0)
+		end
+
+		--love.graphics.print(option, 50, 50 + i * 100)
+	end
+end
+
 function menu:update(dt)
+	startButton:update(dt)
+	creditsButton:update(dt)
+	helpButton:update(dt)
+	quitButton:update(dt)
+	if startButton.pressed then
+	    currentScreen = "game"
+	elseif creditsButton.pressed then
+		currentScreen = "credits"
+	elseif helpButton.pressed then
+		currentScreen = "help"
+	elseif quitButton.pressed then
+		love.event.quit()
+	end
 end
