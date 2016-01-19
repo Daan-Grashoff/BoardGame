@@ -25,21 +25,24 @@ function love:keypressed(key)
 end
 
 function love.mousepressed(x, y, button)
-  for _,t in pairs(board.tiles) do
-    if x > t.x and x < t.x + t.width
-    and y > t.y and y < t.y + t.height
-    and t.atributes.tank
-    then
-      print('menu')
+  if (screens:on("game")) then
+    for _,t in pairs(board.tiles) do
+      if x > t.x
+      and x < t.x + t.width
+      and y > t.y 
+      and y < t.y + t.height then
+        if t.atributes.tank then
+          board.walkToggle(x, y, t)
+        end
+        if t.atributes.walk and not t.atributes.tank then
+          board.walk(x, y, t, lastTile)
+        end
+      end
     end
-  end
-  for _,object in pairs(objects.items) do
-    if x > object.x and x < object.x + object.width
-    and y > object.y and y < object.y + object.height
-    then
-      object.dragging.active = true
-      object.dragging.diffX = x - object.x
-      object.dragging.diffY = y - object.y
+
+    -- Moving objects (soldiers)
+    for _,object in pairs(objects.items) do
+      objects.move(x, y, object)
     end
   end
 end

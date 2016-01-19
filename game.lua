@@ -23,6 +23,6 @@ end
 
 function game:draw()
 	love.graphics.print("GAME", 200, 100)
-  board.draw()
+	board.draw()
 	objects.draw()
 end
