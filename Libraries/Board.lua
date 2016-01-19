@@ -94,13 +94,13 @@ function board.walkToggle(x, y, t, object)
 end
 
 function board.walk(x, y, t, lastTile)
-	print('ayy')
+	--print('ayy')
 	if t.atributes.walk then
 		for _,walk in pairs(board.tiles) do 
 			if walk.atributes.walk then
 				if walk.atributes.tank and walk.atributes.walking then
 					walk.atributes.tank = false
-					print('test')
+					--print('test')
 					t.atributes.object = walk.atributes.object
 					walk.atributes.object = {}
 				end
@@ -108,7 +108,7 @@ function board.walk(x, y, t, lastTile)
 			end
 		end
 		t.atributes.tank = true
-		print(t.atributes.object.type)
+		--print(t.atributes.object.type)
 	end
 
 end

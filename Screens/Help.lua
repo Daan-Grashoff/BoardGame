@@ -15,5 +15,6 @@ function help:keypressed(key, gameState)
 end
 
 function help:draw()
-	love.graphics.print("MEEPE", 200, 100)
+	--love.graphics.print("MEEPE", 200, 100)
+	love.graphics.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10, 0, 5)
 end

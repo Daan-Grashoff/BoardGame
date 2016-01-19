@@ -1,15 +1,15 @@
 Menu = require 'Assets.Themes.Menu'
-UI = require 'Extensions.thranduil.UI'
+UI = require 'Extensions.thranduil'
 
 menu = {}
 
 function menu:load()
 	UI.registerEvents()
 
-	startButton = UI.Button(200, 100, 100, 50, {extensions = {Menu.StartButton}, draggable = false})
-	creditsButton = UI.Button(400, 100, 100, 50, {extensions = {Menu.CreditsButton}, draggable = false})
-	helpButton = UI.Button(200, 200, 100, 50, {extensions = {Menu.HelpButton}, draggable = false})
-	quitButton = UI.Button(400, 200, 100, 50, {extensions = {Menu.QuitButton}, draggable = false})
+	startButton = UI.Button(25, 25, 500, 50, {extensions = {Menu.StartButton}, draggable = false})
+	creditsButton = UI.Button(25, 100, 500, 50, {extensions = {Menu.CreditsButton}, draggable = false})
+	helpButton = UI.Button(25, 175, 500, 50, {extensions = {Menu.HelpButton}, draggable = false})
+	quitButton = UI.Button(25, 250, 500, 50, {extensions = {Menu.QuitButton}, draggable = false})
 end
 
 function menu:draw()
