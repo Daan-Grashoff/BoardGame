@@ -1,11 +1,13 @@
 require "board"
 require "objects"
+require "cards"
 
 game = {}
 
 function game:load()
-  -- loading classes
 	board.load()
+
+	card.load()
 
 	objects.load()
 end
@@ -15,14 +17,14 @@ function game:update(dt)
 end
 
 function game:keypressed(key, gameState)
-  if key == 'escape' then
-  	gameState:set("menu")
-  end
+  	if key == 'escape' then
+		gameState:set("menu")
+  	end
 end
 
 
 function game:draw()
 	love.graphics.print("GAME", 200, 100)
-	board.draw()
+  	board.draw()
 	objects.draw()
 end

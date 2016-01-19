@@ -6,7 +6,7 @@ local about = {
       {"Damien", " \"Programmer\" "},
       {"Daan", " \"Programmer\" "},
       {"Steefnerd", " \"Programmer\" "},
-      {"Aanrickert", " \"Stofzuiger\" "},
+      {"Rickert", " \"Programmer\" "},
       {"Bob", " \"Brogrammer\" "}
     }
 
