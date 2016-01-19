@@ -3,13 +3,17 @@ UI = require 'lib.thranduil'
 
 menu = {}
 
+--scale = love.window.getPixelScale( )
+
+scale = 3
+
 function menu:load()
 	UI.registerEvents()
 
-	startButton = UI.Button(25, 25, 500, 50, {extensions = {Menu.StartButton}, draggable = false})
-	creditsButton = UI.Button(25, 100, 500, 50, {extensions = {Menu.CreditsButton}, draggable = false})
-	helpButton = UI.Button(25, 175, 500, 50, {extensions = {Menu.HelpButton}, draggable = false})
-	quitButton = UI.Button(25, 250, 500, 50, {extensions = {Menu.QuitButton}, draggable = false})
+	startButton = UI.Button(25, 25 * scale, 500 * scale, 50 * scale, {extensions = {Menu.StartButton}, draggable = false})
+	creditsButton = UI.Button(25, 100 * scale, 500 * scale, 50 * scale, {extensions = {Menu.CreditsButton}, draggable = false})
+	helpButton = UI.Button(25, 175 * scale, 500 * scale, 50 * scale, {extensions = {Menu.HelpButton}, draggable = false})
+	quitButton = UI.Button(25, 250 * scale, 500 * scale, 50 * scale, {extensions = {Menu.QuitButton}, draggable = false})
 end
 
 function menu:draw()
