@@ -1,4 +1,4 @@
-require 'screens'
+require 'Libraries.Screens'
 
 function love.load()
 

@@ -1,5 +1,5 @@
-require "board"
-require "objects"
+require "Libraries.Board"
+require "Libraries.Objects"
 
 game = {}
 
