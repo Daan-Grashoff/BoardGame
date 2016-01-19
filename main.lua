@@ -1,4 +1,4 @@
-require 'Libraries.Screens'
+require 'screens.screensManager'
 
 function love.load()
 
@@ -27,7 +27,7 @@ function love.mousepressed(x, y, button)
     for _,t in pairs(board.tiles) do
       if x > t.x
       and x < t.x + t.width
-      and y > t.y 
+      and y > t.y
       and y < t.y + t.height then
         if t.atributes.tank then
           board.walkToggle(x, y, t)

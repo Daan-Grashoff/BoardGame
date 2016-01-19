@@ -1,7 +1,7 @@
-require 'Screens.Menu'
-require 'Screens.Help'
-require 'Screens.Game'
-require 'Screens.Credits'
+require 'screens.menu'
+require 'screens.help'
+require 'screens.game'
+require 'screens.credits'
 
 screens = {}
 

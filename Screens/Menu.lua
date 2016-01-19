@@ -1,5 +1,5 @@
-Menu = require 'Assets.Themes.Menu'
-UI = require 'Extensions.thranduil'
+Menu = require 'assets.themes.menuTheme'
+UI = require 'lib.thranduil'
 
 menu = {}
 
