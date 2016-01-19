@@ -1,7 +1,7 @@
-require 'menu'
-require 'help'
-require 'game'
-require 'credits'
+require 'Screens.Menu'
+require 'Screens.Help'
+require 'Screens.Game'
+require 'Screens.Credits'
 
 screens = {}
 
@@ -34,7 +34,6 @@ function screens:on(screen)
   return currentScreen == screen
 end
 
-
 function screens:draw()
   if currentScreen == 'menu' then
 		menu.draw()
@@ -46,7 +45,6 @@ function screens:draw()
 		help.draw()
   end
 end
-
 
 function UPDATE_SCREENS(dt)
   screens:update(dt)

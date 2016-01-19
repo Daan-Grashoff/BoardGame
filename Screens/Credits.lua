@@ -1,6 +1,5 @@
 credits = {}
 
-
 local about = {
       {"CREATED BY", ""},
       {"Damien", " \"Programmer\" "},
@@ -35,5 +34,4 @@ function credits:draw()
 		love.graphics.setColor(0, 255, 0)
 		love.graphics.print(option, 50, 50 + i * 100 + scrollerIndex)
 	end
-
 end

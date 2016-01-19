@@ -20,7 +20,6 @@ function game:keypressed(key, gameState)
   end
 end
 
-
 function game:draw()
 	love.graphics.print("GAME", 200, 100)
 	board.draw()
