@@ -19,6 +19,8 @@ function love:keypressed(key)
     help:keypressed(key, screens)
   elseif (screens:on("credits")) then
     credits:keypressed(key, screens)
+  elseif (screens:on("selection")) then
+    selection:keypressed(key, screens)
   end
 end
 
