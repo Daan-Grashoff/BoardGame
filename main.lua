@@ -26,16 +26,44 @@ end
 
 function love.mousepressed(x, y, button)
   if (screens:on("game")) then
+
     for _,t in pairs(board.tiles) do
       if x > t.x
-      and x < t.x + t.width
-      and y > t.y
-      and y < t.y + t.height then
-        if t.atributes.tank then
+      and x < t.x + t.size
+      and y > t.y 
+      and y < t.y + t.size then
+
+
+        -- check click on unit and not spawntoggle
+        if t.occupied then
           board.walkToggle(x, y, t)
         end
-        if t.atributes.walk and not t.atributes.tank then
+
+        -- check click on walkspot and not spawntoggle
+        if t.walkable and not t.occupied and not t.base then
+          -- walk function
           board.walk(x, y, t, lastTile)
+        end
+
+        -- check click on base
+        if (t.base or t.barak) and not t.occupied then
+            unitspawn.show(t)
+        end
+      end
+    end
+    for i,unit in pairs(unitspawn.units) do       
+      if unitspawn.active then
+        if x > unit.x
+        and x < unit.x + unit.width
+        and y > unit.y 
+        and y < unit.y + unit.height then
+          for _,t in pairs(board.tiles) do
+            if t.spawning == true and not t.occupied then
+              unitspawn.spawn(t, objects.items[unit.n + 1])
+              board.walkFromBaseToggle(t, unit)
+              board.baseWalk(t, unit)
+            end
+          end
         end
       end
     end
@@ -46,6 +74,7 @@ function love.mousepressed(x, y, button)
     end
   end
 end
+
 
 function love:update(dt)
   dt = math.min(1/60, love.timer.getDelta())

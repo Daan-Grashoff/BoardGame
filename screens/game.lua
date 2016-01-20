@@ -2,6 +2,7 @@ require "objects.board"
 require "objects.objects"
 require "objects.cards"
 require "objects.player"
+require "objects.unitspawn"
 require "lib.TEsound"
 
 math.randomseed(os.time())
@@ -17,15 +18,15 @@ function game:load()
 		'Stefan'
 	}
 
+	-- generate player
 	players:generate(names)
-
 	players:update({freq = 500, energy = 2})
-
 	players:getActivePlayer()
 	
 	board.load()
-
 	objects.load()
+	unitspawn.load()
+
 end
 
 function game:update(dt)
@@ -42,4 +43,5 @@ function game:draw()
 	love.graphics.print("GAME", 200, 100)
   	board.draw()
 	objects.draw()
+	unitspawn.draw()
 end
