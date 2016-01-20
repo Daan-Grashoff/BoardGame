@@ -10,12 +10,17 @@ function Selection:new(x, y, w, h)
     self.twoPersons = UI.Button(200, 200, 128, 128, {extensions = {Theme.twoPersons}})
     self.main_frame:addElement(self.twoPersons)
 
+    self.fourPersons = UI.Button(400, 200, 128, 128, {extensions = {Theme.fourPersons}})
+    self.main_frame:addElement(self.fourPersons)
+
 end
 
 function Selection:update(dt)
 	text = self.textinput.text.str_text
-	if self.twoPersons.pressed then
+	if self.twoPersons.released then
 	    currentScreen = "game"
+	elseif self.fourPersons.released then
+		currentScreen = "game"
 	end
     self.main_frame:update(dt)
 end
