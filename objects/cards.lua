@@ -1,20 +1,24 @@
 card = {}
 cards = {
-	'Woestijn',
+	'Ijs',
 	'Moeras',
-	'Ijsvlakte',
+	'Woestijn',
 	'Bos'
 }
 
-function card.load()
-	return card.randomCard()
-end
+function card.shuffleCards()
+	-- shuffledCards = {}
+	-- for i=1, #cards do
+	-- 	rand = math.random(1,#cards)
+	-- 	print(#cards)
+	-- 	table.remove(cards, rand)
+	-- 	table.insert(shuffledCards, cards[rand])
+	-- end
 
-function card.randomCard()
-	math.randomseed(os.time())
-	rand = math.random(1,table.getn(cards))
-	card = cards[rand]
-	table.remove(cards, rand)
+	for i = #cards, 2, -1 do
+		local rand = math.random(i)
+		cards[i], cards[rand] = cards[rand], cards[i]
+	end
 
-	return card
+	return cards
 end

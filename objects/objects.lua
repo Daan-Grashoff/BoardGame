@@ -5,19 +5,18 @@ function objects.load()
 	for j = 0, 10 do 
 		item = {}
 		item.x = 10 
-		item.y = 25 * j * 2
+		item.size = 50
+		item.y = item.size * j * 2
 		item.prefx = item.x
-		item.prefy = 25 * j * 2
- 		item.height = 25
-		item.width = 25
-		item.centerx = item.x + item.width/2
-		item.centery = item.y + item.height/2
+		item.prefy = item.size * j * 2
+		item.centerx = item.x + item.size/2
+		item.centery = item.y + item.size/2
 		item.dragging = { active = false, diffX = 0, diffY = 0 }
 		if j == 0 then
 			item.type = 'worker'
 			item.range = 1
 		elseif j == 1 then
-			item.type = 'boot'
+			item.type = 'soldaat'
 			item.range = 1
 		elseif j == 2 then
 			item.type = 'robot'
@@ -26,11 +25,9 @@ function objects.load()
 			item.type = 'tank'
 			item.range = 1
 		else
-			item.type = 'soldaat'
+			item.type = 'boot'
 			item.range = 1
 		end
-
-
 
 		-- item.type = 'soldaat'
 		-- item.type = 'robot'
@@ -47,8 +44,8 @@ end -- life
 
 function love.mousepressed(x, y, button)
 	for _,object in pairs(objects.items) do
-		if x > object.x and x < object.x + object.width
-		and y > object.y and y < object.y + object.height
+		if x > object.x and x < object.x + object.size
+		and y > object.y and y < object.y + object.size
 		then
 			object.dragging.active = true
 			object.dragging.diffX = x - object.x
@@ -61,7 +58,7 @@ function love.mousereleased(x, y, button)
 	for i,object in pairs(objects.items) do
 		if object.dragging.active then
 			object.dragging.active = false
-			if not objects.collision(object.x + object.width/2, object.y + object.height/2, i) then
+			if not objects.collision(object.x + object.size/2, object.y + object.size/2, i) then
 				object.x = object.prefx
 				object.y = object.prefy
 			end
@@ -80,12 +77,11 @@ end
 
 function objects.collision(x, y, i)
 	for _,b in pairs(board.tiles) do 
-		if x >= b.x and x <= b.x + b.width
-		and y >= b.y and y <= b.y + b.height then
-			if b.type ~= 'water' then
-				b.atributes.object = objects.items[i]
-				b.atributes.tank = true
-				-- table.remove(objects.items, i)
+		if x >= b.x and x <= b.x + b.size
+		and y >= b.y and y <= b.y + b.size then
+			if  b.type ~= 'water' or (objects.items[i].type == 'boot' and b.type == 'water') then
+				b.unit = objects.items[i]
+				b.occupied = true
 				return false
 			else
 				return false
@@ -95,8 +91,8 @@ function objects.collision(x, y, i)
 end
 
 function objects.move(x, y, object)
-	if x > object.x and x < object.x + object.width
-	and y > object.y and y < object.y + object.height then
+	if x > object.x and x < object.x + object.size
+	and y > object.y and y < object.y + object.size then
 		object.dragging.active = true
 		object.dragging.diffX = x - object.x
 		object.dragging.diffY = y - object.y
@@ -107,7 +103,7 @@ end
 function objects.draw(self)
 	for _,i in pairs(objects.items) do
 		love.graphics.setColor(255, 0, 0)
-		love.graphics.rectangle('fill', i.x, i.y, i.width, i.height)
+		love.graphics.rectangle('fill', i.x, i.y, i.size, i.size)
 		love.graphics.setColor(0,0,0)
 		love.graphics.print(i.type, i.x+5, i.y + 20)
 	end

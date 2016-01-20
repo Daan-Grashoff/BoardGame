@@ -15,7 +15,7 @@ end
 function Selection:update(dt)
 	text = self.textinput.text.str_text
 	if self.twoPersons.pressed then
-	    print('hio')
+	    currentScreen = "game"
 	end
     self.main_frame:update(dt)
 end
