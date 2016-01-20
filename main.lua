@@ -61,7 +61,8 @@ function love.mousepressed(x, y, button)
             if t.spawning == true and not t.occupied then
               unitspawn.spawn(t, objects.items[unit.n + 1])
               board.walkFromBaseToggle(t, unit)
-              board.baseWalk(t, unit)
+              board.baseWalk(t, unit)        
+              players.buyItem(prices[t.type][unit.name])
             end
           end
         end
