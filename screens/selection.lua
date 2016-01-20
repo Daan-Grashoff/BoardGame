@@ -27,6 +27,7 @@ function selection:draw()
 	twoPersons:draw()
 	fourPersons:draw()
 	if twoPersons.pressed then
+		currentScreen = "game"
 	    print("2 spelers")
 	elseif fourPersons.pressed then
 		print("4 spelers")

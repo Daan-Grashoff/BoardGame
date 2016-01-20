@@ -1,16 +1,13 @@
 board = {}
-
-scale = love.window.getPixelScale( )
-
 function board.load()
 	board.height = 18
 	board.width = 18
 	board.tiles = {}
-	for i = 0 , board.width do
+	for i = 0 , board.width do 
 		for j = 0, board.height do
 			tile = {}
-			tile.height = 40 * scale
-			tile.width = 40 * scale
+			tile.height = 40
+			tile.width = 40
 			tile.x = tile.height * i + 150
 			tile.y = tile.width * j + 2
 			tile.atributes = {}
@@ -31,7 +28,7 @@ function board.load()
 			end
 			table.insert(board.tiles, tile)
 		end
-	end
+	end 
 end
 
 function love.mousepressed(x, y, button)
@@ -53,17 +50,17 @@ function board.walkToggle(x, y, t, object)
 		end
 
 		for i,walk in pairs(board.tiles) do
-			if  walk.x <= t.x + t.width*t.atributes.object.range
-			and walk.x >= t.x - t.width*t.atributes.object.range
-			and walk.y <= t.y + t.height*t.atributes.object.range
-			and walk.y >= t.y - t.height*t.atributes.object.range then
+			if  walk.x <= t.x + 40*t.atributes.object.range
+			and walk.x >= t.x - 40*t.atributes.object.range
+			and walk.y <= t.y + 40*t.atributes.object.range
+			and walk.y >= t.y - 40*t.atributes.object.range then
 				if (walk.type ~= 'water' and t.atributes.object.type ~= 'boot') or (t.atributes.object.type == 'boot' and walk.type == 'water') then
 					walk.atributes.walk = true
 				end
 			end
 
-			if  walk.x <= t.x
-			and walk.x >= t.x
+			if  walk.x <= t.x 
+			and walk.x >= t.x  
 			and walk.y <= t.y
 			and walk.y >= t.y then
 				walk.atributes.walking = true
@@ -71,9 +68,9 @@ function board.walkToggle(x, y, t, object)
 		end
 	else
 		if t.atributes.object then
-			for _,walk in pairs(board.tiles) do
-				-- if  walk.x <= t.x + 40*1
-				-- and walk.x >= t.x - 40*1
+			for _,walk in pairs(board.tiles) do 
+				-- if  walk.x <= t.x + 40*1 
+				-- and walk.x >= t.x - 40*1  
 				-- and walk.y <= t.y + 40*1
 				-- and walk.y >= t.y - 40*1 then
 				-- 	walk.atributes.walk = false
@@ -85,8 +82,8 @@ function board.walkToggle(x, y, t, object)
 				walk.atributes.walk = false
 
 
-				-- if  walk.x <= t.x
-				-- and walk.x >= t.x
+				-- if  walk.x <= t.x 
+				-- and walk.x >= t.x  
 				-- and walk.y <= t.y
 				-- and walk.y >= t.y then
 				-- 	walk.atributes.walking = false
@@ -97,13 +94,13 @@ function board.walkToggle(x, y, t, object)
 end
 
 function board.walk(x, y, t, lastTile)
-	--print('ayy')
+	print('ayy')
 	if t.atributes.walk then
-		for _,walk in pairs(board.tiles) do
+		for _,walk in pairs(board.tiles) do 
 			if walk.atributes.walk then
 				if walk.atributes.tank and walk.atributes.walking then
 					walk.atributes.tank = false
-					--print('test')
+					print('test')
 					t.atributes.object = walk.atributes.object
 					walk.atributes.object = {}
 				end
@@ -111,29 +108,26 @@ function board.walk(x, y, t, lastTile)
 			end
 		end
 		t.atributes.tank = true
-		--print(t.atributes.object.type)
+		print(t.atributes.object.type)
 	end
 
 end
 
 function board.draw()
-
-	tileSize = 40 * scale
-
 	love.graphics.setColor(52,82,40)
-	love.graphics.rectangle("fill", 150, 0+1, 7*tileSize, 7*tileSize)
+	love.graphics.rectangle("fill", 150, 0+1, 7*40, 7*40)
 
 	love.graphics.setColor(175,175,175)
-	love.graphics.rectangle("fill", 150 + 12*40, 0+1, 7*tileSize, 7*tileSize)
+	love.graphics.rectangle("fill", 150 + 12*40, 0+1, 7*40, 7*40)
 
 	love.graphics.setColor(197,179,153)
-	love.graphics.rectangle("fill", 150, height - 7*tileSize, 7*tileSize, 7*tileSize)
+	love.graphics.rectangle("fill", 150, height - 7*40, 7*40, 7*40)
 
 	love.graphics.setColor(21,34,20)
-	love.graphics.rectangle("fill", 150 + 12*tileSize, height - 7*tileSize, 7*tileSize, 7*tileSize)
+	love.graphics.rectangle("fill", 150 + 12*40, height - 7*40, 7*40, 7*40)
 
 	love.graphics.setColor(207,181,59)
-	love.graphics.rectangle("fill", 150 + 8*tileSize, height - 11*tileSize, 3*tileSize, 3*tileSize)
+	love.graphics.rectangle("fill", 150 + 8*40, height - 11*40, 3*40, 3*40)
 
 
 

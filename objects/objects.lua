@@ -16,18 +16,23 @@ function objects.load()
 		if j == 0 then
 			item.type = 'worker'
 			item.range = 1
+			item.cost = 100
 		elseif j == 1 then
 			item.type = 'boot'
 			item.range = 1
+			item.cost = 200
 		elseif j == 2 then
 			item.type = 'robot'
-			item.range = 3
+			item.range = 1
+			item.cost = 500
 		elseif j == 3 then
 			item.type = 'tank'
 			item.range = 1
+			item.cost = 1000
 		else
 			item.type = 'soldaat'
 			item.range = 1
+			item.cost = 150
 		end
 
 

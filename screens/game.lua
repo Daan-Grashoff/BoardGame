@@ -1,13 +1,29 @@
 require "objects.board"
 require "objects.objects"
 require "objects.cards"
+require "objects.player"
+require "lib.TEsound"
 
+math.randomseed(os.time())
 game = {}
 
 function game:load()
-	board.load()
+	TEsound.playLooping("assets/music/track1.mp3", 'Background', 999)
 
-	card.load()
+	names = {
+		'Rick',
+		'Demian',
+		'Bob',
+		'Stefan'
+	}
+
+	players:generate(names)
+
+	players:update({freq = 500, energy = 2})
+
+	players:getActivePlayer()
+	
+	board.load()
 
 	objects.load()
 end
@@ -18,7 +34,7 @@ end
 
 function game:keypressed(key, gameState)
   	if key == 'escape' then
-		gameState:set("menu")
+  		gameState:set("menu")
   	end
 end
 
