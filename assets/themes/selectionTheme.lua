@@ -2,32 +2,22 @@ require 'constructor'
 
 local Theme = {}
 
+Theme.fourPersons = {}
+Theme.fourPersons.draw = function(self)
+    if self.hot then love.graphics.setColor(96, 96, 96) end
+    if self.down then love.graphics.setColor(32, 32, 32) end
+    love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
+    if self.selected then end
+    love.graphics.draw(FOUR_PERSON, self.x, self.y)
+end
+
 Theme.twoPersons = {}
 Theme.twoPersons.draw = function(self)
-    --love.graphics.setColor(64, 64, 64)
     if self.hot then love.graphics.setColor(96, 96, 96) end
     if self.down then love.graphics.setColor(32, 32, 32) end
     love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
     if self.selected then end
 	love.graphics.draw(TWO_PERSON, self.x, self.y)
-end
-
-Theme.Checkbox = {}
-Theme.Checkbox.draw = function(self)
-    love.graphics.setColor(64, 64, 64)
-    love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
-    if self.hot then 
-        love.graphics.setColor(96, 96, 96) 
-        love.graphics.rectangle('fill', self.x + self.w/6, self.y + self.h/6, 4*self.w/6, 4*self.h/6)
-    end
-    if self.checked then
-        love.graphics.setColor(128, 128, 128) 
-        love.graphics.rectangle('fill', self.x + self.w/6, self.y + self.h/6, 4*self.w/6, 4*self.h/6)
-    end
-    if self.selected then 
-        love.graphics.setColor(128, 32, 32) 
-        love.graphics.rectangle('line', self.x, self.y, self.w, self.h)
-    end
 end
 
 local major, minor, rev = love.getVersion()
