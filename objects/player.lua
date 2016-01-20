@@ -46,6 +46,19 @@ function players:update(activePlayer)
 	return players
 end
 
+function players:getPlayerByID(id)
+	return players[id]
+end
+
+function players:getPlayerByBase(base)
+	for i,player in ipairs(players) do
+		print(player.base)
+			-- if player['base'] == base then
+			-- return player	
+		-- end
+	end
+end
+
 function players:getActivePlayer()
 	activePlayer = {}
 	for k,player in ipairs(players) do

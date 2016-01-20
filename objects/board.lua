@@ -12,7 +12,7 @@ function board.load()
 	for i = 0 , board.size do 
 		for j = 0, board.size do
 			tile = {}
-			tile.size = board.newTileSize
+			tile.size = math.floor(board.newTileSize)
 			if board.newTileX > board.newTileY then
 				tile.x = tile.size * i + 150
 				tile.y = tile.size * j + 2 
@@ -39,6 +39,7 @@ function board.load()
 			end
 
 			if i < (board.size / 3) and j < (board.size / 3) then
+				players:getPlayerByBase('bos')
 				tile.type = 'bos'
 				tile.color = {52, 82, 40}
 			elseif i > (math.ceil(board.size / 3) + math.floor(board.size / 18)) and j > (math.ceil(board.size / 3) + math.floor(board.size / 18)) and i < (math.floor(board.size / 3 * 2) - math.floor(board.size / 18)) and j < (math.floor(board.size / 3 * 2) - math.floor(board.size / 18)) then
@@ -88,6 +89,7 @@ function board.walkFromBaseToggle(t, unit)
 			if (walk.type ~= 'water' and t.unit.type ~= 'boot') or 
 			   (t.unit.type == 'boot' and walk.type == 'water') then
 					walk.walkable = true
+					print(t.x)
 			end
 		end
 		if  walk.x <= t.x 
