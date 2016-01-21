@@ -12,7 +12,7 @@ function board.load()
 	for i = 0 , board.size do 
 		for j = 0, board.size do
 			tile = {}
-			tile.size = board.newTileSize
+			tile.size = math.floor(board.newTileSize)
 			if board.newTileX > board.newTileY then
 				tile.x = tile.size * i + 150
 				tile.y = tile.size * j + 2 
@@ -25,8 +25,10 @@ function board.load()
 			tile.f = false
 			tile.walking = false
 			tile.spawning = false
-
+			tile.originalOwner = 0
 			tile.owner = 0
+			tile.attackable = false
+			tile.attacking = false
 			tile.barak = false
 
 			if (i == 0 and j == 0) or 
@@ -39,18 +41,34 @@ function board.load()
 			end
 
 			if i < (board.size / 3) and j < (board.size / 3) then
+				tile.originalOwner = players:getPlayerByBase('bos')
+				if tile.base == true then 
+					tile.owner = players:getPlayerByBase('bos')
+				end
 				tile.type = 'bos'
 				tile.color = {52, 82, 40}
 			elseif i > (math.ceil(board.size / 3) + math.floor(board.size / 18)) and j > (math.ceil(board.size / 3) + math.floor(board.size / 18)) and i < (math.floor(board.size / 3 * 2) - math.floor(board.size / 18)) and j < (math.floor(board.size / 3 * 2) - math.floor(board.size / 18)) then
 				tile.type = 'goldmine'
 				tile.color = {207, 181, 59}
 			elseif  i > (board.size / 3 * 2) and j < (board.size / 3) then
+				tile.originalOwner = players:getPlayerByBase('moeras')
+				if tile.base == true then 
+					tile.owner = players:getPlayerByBase('moeras')
+				end
 				tile.type = 'moeras'
 				tile.color = {197, 179, 153}
 			elseif i < (board.size / 3) and j > (board.size / 3 * 2) then
+				tile.originalOwner = players:getPlayerByBase('ijs')
+				if tile.base == true then 
+					tile.owner = players:getPlayerByBase('ijs')
+				end
 				tile.type = 'ijs'
 				tile.color = {175, 175, 175}
 			elseif i > (board.size / 3 * 2) and j > (board.size / 3 * 2) then
+				tile.originalOwner = players:getPlayerByBase('woestijn')
+				if tile.base == true then 
+					tile.owner = players:getPlayerByBase('woestijn')
+				end
 				tile.type = 'woestijn'
 				tile.color = {21, 34, 20}
 			else
@@ -77,8 +95,9 @@ function board.walkFromBaseToggle(t, unit)
 	for i,walking in pairs(board.tiles) do
 		if not walking.base then
 			walking.walkable = false
-			walking.walking = false
 		end
+		walking.walking = false
+
 	end
 	for i,walk in pairs(board.tiles) do
 		if  walk.x <= t.x + t.size*t.unit.range
@@ -97,6 +116,29 @@ function board.walkFromBaseToggle(t, unit)
 			walk.walking = true
 		end
 	end
+end
+
+function board.attackToggle(x, y, t, unit)
+	if not t.attacking then
+		for i,tile in pairs(board.tiles) do
+			if  tile.x <= t.x + t.size*t.unit.range
+			and tile.x >= t.x - t.size*t.unit.range
+			and tile.y <= t.y + t.size*t.unit.range
+			and tile.y >= t.y - t.size*t.unit.range 
+			and tile.occupied == true
+			and tile.owner ~= t.owner then
+				tile.attackable = true
+				t.attacking = true
+			end
+		end
+	else
+		for i,tile in pairs(board.tiles) do
+			tile.attackable = false
+			tile.attacking = false
+		end
+	end
+
+
 end
 
 function board.walkToggle(x, y, t, unit)
@@ -136,20 +178,52 @@ function board.walkToggle(x, y, t, unit)
 	end
 end
 
-function board.walk(x, y, t, lastTile)
+function board.walk(x, y, t, lastTile, playerid)
 	if t.walkable then
-		for _,walk in pairs(board.tiles) do 
-			if walk.walkable then
-				if walk.occupied and walk.walking then
-					walk.occupied = false
-					t.unit = walk.unit
-					walk.unit = {}
+		for _,tile in pairs(board.tiles) do 
+			if tile.walkable then
+				if tile.occupied and tile.walking then
+					tile.occupied = false
+					if not tile.base then
+						tile.owner = 0
+					end
+					t.owner = playerid
+					t.unit = tile.unit
+					tile.unit = {}
 				end
-				walk.walkable = false
+				tile.walkable = false
+				tile.attackable = false
 			end
 		end
 		t.occupied = true
 	end
+end
+
+function board.attack(x, y, t)
+	t.occupied = false
+	t.unit = {}
+	for i,tile in pairs(board.tiles) do
+		tile.attackable = false
+		tile.attacking = false
+		tile.walkable = false
+		tile.walking = false
+	end
+
+
+	-- if t.walkable then
+	-- 	for _,walk in pairs(board.tiles) do 
+	-- 		if walk.walkable then
+	-- 			if walk.occupied and walk.walking then
+	-- 				walk.occupied = false
+	-- 				t.owner = playerid
+	-- 				t.unit = walk.unit
+	-- 				walk.unit = {}
+	-- 			end
+	-- 			walk.walkable = false
+	-- 		end
+	-- 	end
+	-- 	t.occupied = true
+	-- end
 end
 
 function board.baseWalk(t, unit)
@@ -168,27 +242,15 @@ function board.baseWalk(t, unit)
 	end
 end
 
+function board.getBases()
+	-- print(board.tiles[1].base)
+	-- print(board.tiles[board.size+1].base)
+	-- print(board.tiles[(board.size+1)*(board.size+1)].base)
+	-- print(board.tiles[(board.size+1)*(board.size+1)-board.size].base)
+	-- print(board.tiles[1].base)
+end
+
 function board.draw()
-
-
-
-	-- love.graphics.setColor(52,82,40)
-	-- love.graphics.rectangle("fill", 150, 0+1, 7*40, 7*40)
-
-	-- love.graphics.setColor(175,175,175)
-	-- love.graphics.rectangle("fill", 150 + 12*40, 0+1, 7*40, 7*40)
-
-	-- love.graphics.setColor(197,179,153)
-	-- love.graphics.rectangle("fill", 150, height - 7*40, 7*40, 7*40)
-
-	-- love.graphics.setColor(21,34,20)
-	-- love.graphics.rectangle("fill", 150 + 12*40, height - 7*40, 7*40, 7*40)
-
-	-- love.graphics.setColor(207,181,59)
-	-- love.graphics.rectangle("fill", 150 + 8*40, height - 11*40, 3*40, 3*40)
-
-
-
 	for _,t in pairs(board.tiles) do
 
 		love.graphics.setColor(t.color)
@@ -202,7 +264,7 @@ function board.draw()
 		end
 
 		if t.occupied then
-			love.graphics.setColor(255, 0,0)
+			love.graphics.setColor(240,230,140)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 			love.graphics.setColor(0, 0,0)
 		elseif t.walkable then
@@ -214,10 +276,28 @@ function board.draw()
 		love.graphics.setColor(0, 0,0)
 
 		if t.base then
-			love.graphics.print('BASE', t.x + 5, t.y)
+			love.graphics.setColor(181, 90,60)
+			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 		else
-			love.graphics.print(t.type, t.x + 5, t.y)
+			-- love.graphics.print(t.type, t.x + 5, t.y)
 		end
+
+		if t.owner then
+			love.graphics.print(t.owner, t.x + 5, t.y + 30)
+		end
+		
+		if t.originalOwner then
+			love.graphics.print(t.originalOwner, t.x + 5, t.y + 20)
+		end
+
+		if t.walking then
+			love.graphics.print('walking!!!!', t.x+5, t.y + 20)
+		elseif t.attackable then 
+			love.graphics.setColor(255, 0, 0, 100)
+			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
+		end
+
+
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("line", t.x, t.y, t.size, t.size)
 	end

@@ -1,9 +1,9 @@
 card = {}
 cards = {
-	'Ijs',
-	'Moeras',
-	'Woestijn',
-	'Bos'
+	'ijs',
+	'moeras',
+	'woestijn',
+	'bos'
 }
 
 function card.shuffleCards()

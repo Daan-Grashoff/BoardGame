@@ -9,6 +9,7 @@ math.randomseed(os.time())
 game = {}
 
 function game:load()
+
 	--TEsound.playLooping("assets/music/track1.mp3", 'Background', 999)
 
 	names = {
@@ -20,7 +21,7 @@ function game:load()
 
 	-- generate player
 	players:generate(names)
-
+	-- players:update({freq = 500, energy = 2})
 	board.load()
 	objects.load()
 	unitspawn.load()
