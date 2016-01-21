@@ -97,12 +97,11 @@ function love.mousepressed(x, y, button)
           for _,t in pairs(board.tiles) do
             -- check if tile is spawning
             -- check if tile is not occupied
-            if t.spawning == true and not t.occupied then
+            if t.spawning == true and not t.occupied and players:buyItem(prices[t.type][unit.name]) then
               -- spawn unit on tile
               unitspawn.spawn(t, objects.items[unit.n + 1])
               board.walkFromBaseToggle(t, unit)
-              board.baseWalk(t, unit)        
-              players.buyItem(prices[t.type][unit.name])
+              board.baseWalk(t, unit)
             end
           end
         end

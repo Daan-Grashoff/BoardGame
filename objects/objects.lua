@@ -14,19 +14,24 @@ function objects.load()
 		item.dragging = { active = false, diffX = 0, diffY = 0 }
 		if j == 0 then
 			item.type = 'worker'
-			item.range = 1
+			item.walkRange = 1
+			item.attackRange = 0
 		elseif j == 1 then
 			item.type = 'soldaat'
-			item.range = 1
+			item.walkRange = 1
+			item.attackRange = 1
 		elseif j == 2 then
-			item.type = 'robot'
-			item.range = 3
-		elseif j == 3 then
 			item.type = 'tank'
-			item.range = 1
+			item.walkRange = 1
+			item.attackRange = 2
+		elseif j == 3 then
+			item.type = 'robot'
+			item.walkRange = 1
+			item.attackRange = 1
 		else
 			item.type = 'boot'
-			item.range = 1
+			item.walkRange = 1
+			item.attackRange = 0
 		end
 
 		-- item.type = 'soldaat'

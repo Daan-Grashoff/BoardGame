@@ -100,10 +100,10 @@ function board.walkFromBaseToggle(t, unit)
 
 	end
 	for i,walk in pairs(board.tiles) do
-		if  walk.x <= t.x + t.size*t.unit.range
-		and walk.x >= t.x - t.size*t.unit.range
-		and walk.y <= t.y + t.size*t.unit.range
-		and walk.y >= t.y - t.size*t.unit.range then
+		if  walk.x <= t.x + t.size*t.unit.walkRange
+		and walk.x >= t.x - t.size*t.unit.walkRange
+		and walk.y <= t.y + t.size*t.unit.walkRange
+		and walk.y >= t.y - t.size*t.unit.walkRange then
 			if (walk.type ~= 'water' and t.unit.type ~= 'boot') or 
 			   (t.unit.type == 'boot' and walk.type == 'water') then
 					walk.walkable = true
@@ -121,10 +121,10 @@ end
 function board.attackToggle(x, y, t, unit)
 	if not t.attacking then
 		for i,tile in pairs(board.tiles) do
-			if  tile.x <= t.x + t.size*t.unit.range
-			and tile.x >= t.x - t.size*t.unit.range
-			and tile.y <= t.y + t.size*t.unit.range
-			and tile.y >= t.y - t.size*t.unit.range 
+			if  tile.x <= t.x + t.size*t.unit.attackRange
+			and tile.x >= t.x - t.size*t.unit.attackRange
+			and tile.y <= t.y + t.size*t.unit.attackRange
+			and tile.y >= t.y - t.size*t.unit.attackRange 
 			and tile.occupied == true
 			and tile.owner ~= t.owner then
 				tile.attackable = true
@@ -149,10 +149,10 @@ function board.walkToggle(x, y, t, unit)
 		end
 
 		for i,walk in pairs(board.tiles) do
-			if  walk.x <= t.x + t.size*t.unit.range
-			and walk.x >= t.x - t.size*t.unit.range
-			and walk.y <= t.y + t.size*t.unit.range
-			and walk.y >= t.y - t.size*t.unit.range then
+			if  walk.x <= t.x + t.size*t.unit.walkRange
+			and walk.x >= t.x - t.size*t.unit.walkRange
+			and walk.y <= t.y + t.size*t.unit.walkRange
+			and walk.y >= t.y - t.size*t.unit.walkRange then
 				if (walk.type ~= 'water' and t.unit.type ~= 'boot') or 
 				   (t.unit.type == 'boot' and walk.type == 'water') then
 						walk.walkable = true

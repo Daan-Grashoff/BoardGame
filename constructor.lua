@@ -4,7 +4,7 @@ FOUR_PERSON = love.graphics.newImage('assets/images/four-people.png')
 prices = {
 	ijs = {
 		worker = 100,
-		soldaat = 150,
+		soldier = 150,
 		robot = 500,
 		tank = 1000,
 		boot = 200,
@@ -12,7 +12,7 @@ prices = {
 	},
 	moeras = {
 		worker = 100,
-		soldaat = 150,
+		soldier = 150,
 		robot = 500,
 		tank = 1000,
 		boot = 200,
@@ -20,7 +20,7 @@ prices = {
 	},
 	woestijn = {
 		worker = 100,
-		soldaat = 150,
+		soldier = 150,
 		robot = 500,
 		tank = 1000,
 		boot = 200,
@@ -28,7 +28,7 @@ prices = {
 	},
 	bos = {
 		worker = 100,
-		soldaat = 150,
+		soldier = 150,
 		robot = 500,
 		tank = 1000,
 		boot = 200,

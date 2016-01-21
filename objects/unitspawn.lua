@@ -4,7 +4,7 @@ unitspawn = {}
 function unitspawn.load()
 	unitspawn.active = false
 	unitspawn.units = {}
-	for i = 0, 1 do 
+	for i = 0, 2 do 
 		unit = {}
 		unit.n = i
 		unit.x = 0
@@ -26,6 +26,7 @@ function unitspawn.load()
 		elseif i == 2 then
 			unit.name = 'tank'
 			unit.spawnpoint = {
+				'base',
 				'barak'
 			}
 		else

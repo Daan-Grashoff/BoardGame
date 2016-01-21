@@ -1,4 +1,5 @@
 require 'lib.functions'
+
 players = {}
 startAmoundFreq = 1000
 startAmoundEnergy = 1
@@ -31,11 +32,19 @@ function players:generate(names)
 	return players
 end
 
+function players:textDraw()
+	for k,player in ipairs(players) do
+		love.graphics.print(player.freq, k*200, k*50)
+		love.graphics.print(player.energy, k*200, k*55)
+	end
+	return true
+end
+
 function players:update(activePlayer)
 	for k,player in ipairs(players) do
 		if player['active'] == true then
 			player['freq'] = activePlayer['freq']
-			player['energy'] = activePlayer['energy']
+			player['energy'] = player['energy'] + 1
 			player['active'] = false
 			if k == #players then
 				k = 0
@@ -69,7 +78,16 @@ function players:getPlayerByBase(base)
 end
 
 function players:buyItem(itemPrice)
-	-- print(itemPrice)
+	freq = players:getActivePlayer().freq
+	if not itemPrice then
+		print('No price found!')
+		return false
+	end
+	if itemPrice > freq then
+		print('Your frequency is to damn low!')
+		return false
+	end
+	players:getActivePlayer().freq = freq - itemPrice
 	-- activePlayer = players.getActivePlayer()
 	-- if activePlayer.freq > itemPrice then
 	-- 	activePlayer.freq = activePlayer.freq - itemPrice
