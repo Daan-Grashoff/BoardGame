@@ -9,7 +9,7 @@ math.randomseed(os.time())
 game = {}
 
 function game:load()
-	TEsound.playLooping("assets/music/track1.mp3", 'Background', 999)
+	--TEsound.playLooping("assets/music/track1.mp3", 'Background', 999)
 
 	names = {
 		'Rick',
