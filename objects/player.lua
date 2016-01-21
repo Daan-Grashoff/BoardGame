@@ -32,20 +32,21 @@ function players:generate(names)
 end
 
 function players:update(activePlayer)
-	-- for k,player in ipairs(players) do
-	-- 	if player['active'] == true then
-	-- 		player['freq'] = activePlayer['freq']
-	-- 		player['energy'] = activePlayer['energy']
-	-- 		player['active'] = false
-	-- 		if k == #players then
-	-- 			k = 0
-	-- 		end
-	-- 		players[k+1]['active'] = true
-	-- 		break
-	-- 	end
-	-- end
+	for k,player in ipairs(players) do
+		if player['active'] == true then
+			player['freq'] = activePlayer['freq']
+			player['energy'] = activePlayer['energy']
+			player['active'] = false
+			if k == #players then
+				k = 0
+			end
+			players[k+1]['active'] = true
+			break
+		end
+	end
 	return players
 end
+
 
 function players:getActivePlayerId()
 	for k,player in ipairs(players) do
@@ -68,7 +69,7 @@ function players:getPlayerByBase(base)
 end
 
 function players:buyItem(itemPrice)
-	print(itemPrice)
+	-- print(itemPrice)
 	-- activePlayer = players.getActivePlayer()
 	-- if activePlayer.freq > itemPrice then
 	-- 	activePlayer.freq = activePlayer.freq - itemPrice

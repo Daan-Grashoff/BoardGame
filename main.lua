@@ -54,7 +54,6 @@ function love.mousepressed(x, y, button)
 
         -- check if tile is attackable
         if t.attackable then
-          print('keke?')
           board.attack(x, y, t)
         end
 
@@ -84,7 +83,6 @@ function love.mousepressed(x, y, button)
         and not t.occupied 
         and t.owner == players:getActivePlayerId()
         and players:getActivePlayerEnergy() ~= 0 then
-          print('keke')
           unitspawn.show(t)
         end
       end
