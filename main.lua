@@ -103,7 +103,8 @@ function love.mousepressed(x, y, button)
               -- spawn unit on tile
               unitspawn.spawn(t, objects.items[unit.n + 1])
               board.walkFromBaseToggle(t, unit)
-              board.baseWalk(t, unit)
+              board.baseWalk(t, unit)        
+              players.buyItem(prices[t.type][unit.name])
             end
           end
         end

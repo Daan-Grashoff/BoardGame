@@ -21,7 +21,6 @@ function game:load()
 	-- generate player
 	players:generate(names)
 	-- players:update({freq = 500, energy = 2})
-	
 	board.load()
 	objects.load()
 	unitspawn.load()
@@ -29,6 +28,11 @@ function game:load()
 end
 
 function game:update(dt)
+	-- if love.window.isVisible() == false then
+	-- 	TEsound.pause(1)
+	-- else 
+	-- 	TEsound.resume(1)
+	-- end
 	objects.update()
 end
 

@@ -29,13 +29,13 @@ function menu:update(dt)
 	creditsButton:update(dt)
 	helpButton:update(dt)
 	quitButton:update(dt)
-	if startButton.pressed then
+	if startButton.released then
 	    currentScreen = "selection"
-	elseif creditsButton.pressed then
+	elseif creditsButton.released then
 		currentScreen = "credits"
-	elseif helpButton.pressed then
+	elseif helpButton.released then
 		currentScreen = "help"
-	elseif quitButton.pressed then
+	elseif quitButton.released then
 		love.event.quit()
 	end
 end
