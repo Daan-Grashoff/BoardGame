@@ -51,6 +51,12 @@ end
 
 
 function unitspawn.show(tile)
+
+	board.getBases()
+	for i,tile in pairs(board.tiles) do
+		tile.spawning = false
+	end
+
 	if not unitspawn.active then
 		unitspawn.active = true
 		tile.spawning = true

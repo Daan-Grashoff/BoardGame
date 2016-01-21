@@ -2,13 +2,14 @@ require 'lib.functions'
 players = {}
 startAmoundFreq = 1000
 startAmoundEnergy = 1
-startingCard = "Bos"
+startingCard = "bos"
 playerCount = 4
 
 function players:generate(names)
 	cards = card.shuffleCards()
 	for i=1,playerCount do
 		players[i] = {
+			id = i,
 			name = names[i],
 			base = cards[i],
 			freq = startAmoundFreq,
@@ -46,26 +47,38 @@ function players:update(activePlayer)
 	return players
 end
 
+function players:getActivePlayerId()
+	for k,player in ipairs(players) do
+		if player['active'] == true then
+			return player.id
+		end
+	end
+end
+
 function players:getPlayerByID(id)
 	return players[id]
 end
 
 function players:getPlayerByBase(base)
 	for i,player in ipairs(players) do
-		print(player.base)
-			-- if player['base'] == base then
-			-- return player	
-		-- end
+		if player.base == base then
+			return player.id
+		end
 	end
 end
 
 function players:getActivePlayer()
-	activePlayer = {}
 	for k,player in ipairs(players) do
 		if player['active'] == true then
-			activePlayer = player
-			break
+			return player
 		end
 	end
-	return activePlayer
+end
+
+function players:getActivePlayerEnergy()
+	for k,player in ipairs(players) do
+		if player['active'] == true then
+			return player.energy
+		end
+	end
 end
