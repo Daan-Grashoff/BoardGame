@@ -23,26 +23,50 @@ function love:keypressed(key)
     selection:keypressed(key, screens)
   end
 
+  -- update player
   if key == 'space' then
-    players:update(players:getActivePlayer())
+    -- players:update(players:getActivePlayer())
+  end  
+
+  -- quit game
+  if key == 'escape' then
+    love.event.quit()
   end
 end
 
 function love.mousepressed(x, y, button)
   if (screens:on("game")) then
+
+    if x > board.endTurn.x
+      and x < board.endTurn.x + board.endTurn.width
+      and y > board.endTurn.y
+      and y < board.endTurn.y + board.endTurn.height then
+        players:update(players:getActivePlayer())
+        for _,tiles in pairs(board.tiles) do
+          tiles.walkable = false
+          tiles.walking = false
+          tiles.spawning = false
+          tiles.attackable = false
+        end
+
+    end
+
     for _,t in pairs(board.tiles) do
       -- select tile 
       if x > t.x
       and x < t.x + t.size
       and y > t.y 
       and y < t.y + t.size then
-      
 
         if t.originalOwner ~= 0 then 
           -- printTable(players:getPlayerByID(t.originalOwner))
           -- printTable(players:getPlayerByID(t.originalOwner).tiles)
         end
 
+
+        if t.owner > 0 then
+          print(t.owner)
+        end
         -- check if tile is occupied
         -- check if owner of tile is active player
         if t.occupied and t.owner == players:getActivePlayerId() then
@@ -81,9 +105,11 @@ function love.mousepressed(x, y, button)
         and t.owner == players:getActivePlayerId()
         and players:getActivePlayerEnergy() ~= 0 then
           unitspawn.show(t)
+          break
         end
       end
     end
+
 
     for i,unit in pairs(unitspawn.units) do       
       if unitspawn.active then

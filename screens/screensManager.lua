@@ -7,7 +7,7 @@ require 'screens.selection'
 screens = {}
 
 function screens:load()
-  currentScreen = "menu"
+  currentScreen = "game"
 
   help:load()
   game:load()

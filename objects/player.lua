@@ -15,6 +15,7 @@ function players:generate(names)
 			base = cards[i],
 			freq = startAmoundFreq,
 			energy = startAmoundEnergy,
+			currentEnergy = 0,
 			tiles = {
 				Ijs = 0,
 				Moeras = 0,
@@ -43,18 +44,33 @@ end
 function players:update(activePlayer)
 	for k,player in ipairs(players) do
 		if player['active'] == true then
-			player['freq'] = activePlayer['freq']
-			player['energy'] = player['energy'] + 1
-			player['active'] = false
+		    for _,tile in pairs(board.tiles) do
+		    	if tile.owner == player.id
+	    		and tile.unit.type ~= 'worker'
+		    	and not tile.base then
+		    		if tile.originalOwner == player.id then
+						player['freq'] = player['freq'] + 50
+					elseif tile.type == 'goldmine' then
+						player['freq'] = player['freq'] + 150
+					else
+						player['freq'] = player['freq'] + 100
+					end
+		    	end
+		    end
+		    if player.energy < 10 then
+				player.energy = player.energy + 1
+			end
+			player.active = false
 			if k == #players then
 				k = 0
 			end
-			players[k+1]['active'] = true
+			players[k+1].active = true
 			break
 		end
 	end
 	return players
 end
+
 
 
 function players:getActivePlayerId()

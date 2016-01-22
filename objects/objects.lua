@@ -14,11 +14,11 @@ function objects.load()
 		item.dragging = { active = false, diffX = 0, diffY = 0 }
 		if j == 0 then
 			item.type = 'worker'
-			item.walkRange = 1
+			item.walkRange = 100
 			item.attackRange = 0
 		elseif j == 1 then
 			item.type = 'soldaat'
-			item.walkRange = 1
+			item.walkRange = 100
 			item.attackRange = 1
 		elseif j == 2 then
 			item.type = 'tank'

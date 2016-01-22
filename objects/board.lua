@@ -1,5 +1,13 @@
 board = {}
 function board.load()
+
+	-- endturn button
+	board.endTurn = {}
+	board.endTurn.width = 100
+	board.endTurn.height = 50
+	board.endTurn.x = width - board.endTurn.width
+	board.endTurn.y = height/2 - board.endTurn.height
+
 	board.size = 16 -- 8 mobile / 16 tablet / 24 computer
 	board.newTileX = love.graphics.getWidth( ) / (board.size + 1)
   	board.newTileY = love.graphics.getHeight( ) / (board.size + 1)
@@ -29,7 +37,7 @@ function board.load()
 			tile.owner = 0
 			tile.attackable = false
 			tile.attacking = false
-			tile.barak = false
+			tile.barak = true
 
 			if (i == 0 and j == 0) or 
 			   (i == board.size and j ==  0) or 
@@ -39,8 +47,6 @@ function board.load()
 			else
 				tile.base = false
 			end
-
-			-- print (math.random(0, math.floor(board.size / 3)))
 
 			if i < (board.size / 3) and j < (board.size / 3) then
 				tile.originalOwner = players:getPlayerByBase('bos')
@@ -93,6 +99,8 @@ end
 -- 	end
 -- end
 
+
+-- when u spawned a unit, this toggle to walk
 function board.walkFromBaseToggle(t, unit)
 	for i,walking in pairs(board.tiles) do
 		if not walking.base then
@@ -196,6 +204,7 @@ function board.walk(x, y, t, lastTile, playerid)
 				tile.walkable = false
 				tile.attackable = false
 			end
+			tile.walking = false
 		end
 		t.occupied = true
 	end
@@ -207,25 +216,10 @@ function board.attack(x, y, t)
 	for i,tile in pairs(board.tiles) do
 		tile.attackable = false
 		tile.attacking = false
+		t.owner = 0
 		tile.walkable = false
 		tile.walking = false
 	end
-
-
-	-- if t.walkable then
-	-- 	for _,walk in pairs(board.tiles) do 
-	-- 		if walk.walkable then
-	-- 			if walk.occupied and walk.walking then
-	-- 				walk.occupied = false
-	-- 				t.owner = playerid
-	-- 				t.unit = walk.unit
-	-- 				walk.unit = {}
-	-- 			end
-	-- 			walk.walkable = false
-	-- 		end
-	-- 	end
-	-- 	t.occupied = true
-	-- end
 end
 
 function board.baseWalk(t, unit)
@@ -304,6 +298,10 @@ function board.draw()
 			love.graphics.setColor(0, 255, 0, 100)
 			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
 		end
+
+		love.graphics.setColor(0, 0, 0)
+		love.graphics.rectangle('fill', board.endTurn.x, board.endTurn.y, board.endTurn.width, board.endTurn.height)
+
 
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("line", t.x, t.y, t.size, t.size)
