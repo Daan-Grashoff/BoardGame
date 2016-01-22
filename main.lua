@@ -1,4 +1,7 @@
 require 'screens.screensManager'
+require 'settings'
+require 'lib.functions'
+
 
 function love.load()
 
@@ -8,8 +11,8 @@ function love.load()
 	love.window.setMode(width, height)
 
 	love.graphics.setBackgroundColor(45, 127, 180)
-
-	screens.load()
+  settings:load()
+  screens.load()
 end
 
 function love:keypressed(key)
