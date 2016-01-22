@@ -40,6 +40,8 @@ function board.load()
 				tile.base = false
 			end
 
+			-- print (math.random(0, math.floor(board.size / 3)))
+
 			if i < (board.size / 3) and j < (board.size / 3) then
 				tile.originalOwner = players:getPlayerByBase('bos')
 				if tile.base == true then 
@@ -243,11 +245,12 @@ function board.baseWalk(t, unit)
 end
 
 function board.getBases()
-	-- print(board.tiles[1].base)
-	-- print(board.tiles[board.size+1].base)
-	-- print(board.tiles[(board.size+1)*(board.size+1)].base)
-	-- print(board.tiles[(board.size+1)*(board.size+1)-board.size].base)
-	-- print(board.tiles[1].base)
+	bases = {}
+	bases[0] = board.tiles[1]
+	bases[1] = board.tiles[board.size+1]
+	bases[2] = board.tiles[(board.size+1)*(board.size+1)]
+	bases[3] = board.tiles[(board.size+1)*(board.size+1)-board.size]
+	return bases
 end
 
 function board.draw()
@@ -297,6 +300,10 @@ function board.draw()
 			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
 		end
 
+		if t.owner == players:getActivePlayerId() then
+			love.graphics.setColor(0, 255, 0, 100)
+			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
+		end
 
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("line", t.x, t.y, t.size, t.size)

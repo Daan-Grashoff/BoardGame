@@ -36,14 +36,12 @@ function love.mousepressed(x, y, button)
       and x < t.x + t.size
       and y > t.y 
       and y < t.y + t.size then
-
-
+      
 
         if t.originalOwner ~= 0 then 
           -- printTable(players:getPlayerByID(t.originalOwner))
           -- printTable(players:getPlayerByID(t.originalOwner).tiles)
         end
-
 
         -- check if tile is occupied
         -- check if owner of tile is active player
@@ -57,11 +55,10 @@ function love.mousepressed(x, y, button)
           board.attack(x, y, t)
         end
 
-
-
         -- check if tile is occupied
         -- check if owner of tile is active player
-        if t.occupied and t.owner == players:getActivePlayerId() then
+        if t.occupied 
+        and t.owner == players:getActivePlayerId() then
           board.walkToggle(x, y, t)
         end
 
@@ -95,9 +92,13 @@ function love.mousepressed(x, y, button)
         and y > unit.y 
         and y < unit.y + unit.height then
           for _,t in pairs(board.tiles) do
+
             -- check if tile is spawning
             -- check if tile is not occupied
-            if t.spawning == true and not t.occupied and players:buyItem(prices[t.type][unit.name]) then
+            -- check if enough money and buy's item
+            if t.spawning == true 
+            and not t.occupied 
+            and players:buyItem(prices[t.type][unit.name]) then
               -- spawn unit on tile
               unitspawn.spawn(t, objects.items[unit.n + 1])
               board.walkFromBaseToggle(t, unit)

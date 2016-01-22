@@ -88,10 +88,7 @@ function players:buyItem(itemPrice)
 		return false
 	end
 	players:getActivePlayer().freq = freq - itemPrice
-	-- activePlayer = players.getActivePlayer()
-	-- if activePlayer.freq > itemPrice then
-	-- 	activePlayer.freq = activePlayer.freq - itemPrice
-	-- end
+
 	return true
 end
 
@@ -99,6 +96,14 @@ function players:getActivePlayer()
 	for k,player in ipairs(players) do
 		if player['active'] == true then
 			return player
+		end
+	end
+end
+
+function players:getActivePlayerEnoughEnergy()
+	for k,player in ipairs(players) do
+		if player['active'] == true then
+			return True
 		end
 	end
 end
