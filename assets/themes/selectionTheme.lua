@@ -4,8 +4,8 @@ local Theme = {}
 
 Theme.fourPersons = {}
 Theme.fourPersons.draw = function(self)
-    if self.hot then love.graphics.setColor(96, 96, 96) end
-    if self.down then love.graphics.setColor(32, 32, 32) end
+    if self.hot then end
+    if self.down then end
     love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
     if self.selected then end
     love.graphics.draw(FOUR_PERSON, self.x, self.y)
@@ -13,8 +13,8 @@ end
 
 Theme.twoPersons = {}
 Theme.twoPersons.draw = function(self)
-    if self.hot then love.graphics.setColor(96, 96, 96) end
-    if self.down then love.graphics.setColor(32, 32, 32) end
+    if self.hot then end
+    if self.down then end
     love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
     if self.selected then end
 	love.graphics.draw(TWO_PERSON, self.x, self.y)
@@ -31,57 +31,19 @@ Theme.Textarea.draw = function(self)
     love.graphics.setColor(24, 24, 24)
     love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
 
-    -- Draw selected text with inverted color and blue selection background
-    if self.selection_index and self.index ~= self.selection_index then
+    -- Draw selected text with inverted color and blue selection backgrou
+    love.graphics.setColor(128, 128, 128)
+    self.text:draw()
+
+    if self.selected and self.cursor_visible then 
         love.graphics.setColor(128, 128, 128)
-        self.text:draw()
-
-        if self.selected then
-            love.graphics.setColor(51, 153, 255)
-            for i, _ in ipairs(self.selection_positions) do
-                love.graphics.rectangle('fill', self.selection_positions[i].x, self.selection_positions[i].y, self.selection_sizes[i].w, self.selection_sizes[i].h)
-            end
-
-            love.graphics.setColor(222, 222, 222)
-            if love_version == '0.9.1' or love_version == '0.9.2' then
-                for i, _ in ipairs(self.selection_positions) do
-                    -- love.graphics.setStencil(function() 
-                    --     love.graphics.rectangle('fill', self.selection_positions[i].x, self.selection_positions[i].y, self.selection_sizes[i].w, self.selection_sizes[i].h)
-                    -- end)
-                    self.text:draw()
-                    --love.graphics.setStencil()
-                end
-            else
-                for i, _ in ipairs(self.selection_positions) do
-                    -- love.graphics.stencil(function() 
-                    --     love.graphics.rectangle('fill', self.selection_positions[i].x, self.selection_positions[i].y, self.selection_sizes[i].w, self.selection_sizes[i].h)
-                    -- end)
-                    -- love.graphics.setStencilTest(true)
-                    self.text:draw()
-                    -- love.graphics.setStencilTest(false)
-                end
-            end
-        end
-
-    -- Draw text normally + cursor
-    else
-        love.graphics.setColor(128, 128, 128)
-        self.text:draw()
-
-        if self.selected and self.cursor_visible then 
-            love.graphics.setColor(128, 128, 128)
-            for i, _ in ipairs(self.selection_positions) do
-                love.graphics.line(self.selection_positions[i].x, self.selection_positions[i].y, 
-                self.selection_positions[i].x, self.selection_positions[i].y + self.selection_sizes[i].h)
-            end
+        for i, _ in ipairs(self.selection_positions) do
+            love.graphics.line(self.selection_positions[i].x, self.selection_positions[i].y, 
+            self.selection_positions[i].x, self.selection_positions[i].y + self.selection_sizes[i].h)
         end
     end
 
-    love.graphics.setLineStyle('smooth')
-    if self.selected then 
-        love.graphics.setColor(128, 32, 32) 
-        love.graphics.rectangle('line', self.x, self.y, self.w, self.h)
-    end
+    if self.selected then end
     love.graphics.setColor(255, 255, 255, 255)
 end
 

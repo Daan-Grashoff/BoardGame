@@ -1,13 +1,13 @@
 Theme = require('assets.themes.selectionTheme')
 UI = require('lib.thranduil')
-Selection = require("objects.selection")
+Chatbox = require("objects.selection")
 
 selection = {}
 
 function selection.load()
 	UI.registerEvents()
 
-	selectionFrame = Selection(0, 0, 1080, 763)
+	selectionFrame = Chatbox(0, 0, 1080, 763)
 
 end
 
