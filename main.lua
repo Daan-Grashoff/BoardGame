@@ -1,5 +1,4 @@
 require 'screens.screensManager'
-require 'settings'
 require 'lib.functions'
 
 
@@ -11,7 +10,6 @@ function love.load()
 	love.window.setMode(width, height)
 
 	love.graphics.setBackgroundColor(45, 127, 180)
-  settings:load()
   screens.load()
 end
 
@@ -30,11 +28,6 @@ function love:keypressed(key)
   if key == 'space' then
     -- players:update(players:getActivePlayer())
   end  
-
-  -- quit game
-  if key == 'escape' then
-    love.event.quit()
-  end
 end
 
 function love.mousepressed(x, y, button)

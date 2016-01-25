@@ -8,7 +8,7 @@ require 'screens.settings'
 screens = {}
 
 function screens:load()
-  currentScreen = "game"
+  currentScreen = "menu"
 
   help:load()
   game:load()
