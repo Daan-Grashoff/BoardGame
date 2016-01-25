@@ -37,7 +37,10 @@ function board.load()
 			tile.owner = 0
 			tile.attackable = false
 			tile.attacking = false
+			tile.loading = false
+			tile.loadable = false
 			tile.barak = true
+			tile.income = 0
 
 			if (i == 0 and j == 0) or 
 			   (i == board.size and j ==  0) or 
@@ -88,17 +91,6 @@ function board.load()
 	end 
 end
 
--- not legit code
--- function love.mousepressed(x, y, button)
--- 	for _,t in pairs(board.tiles) do
--- 		if x > t.x and x < t.x + t.width
--- 		and y > t.y and y < t.y + t.height
--- 		then
--- 			t.atributes.occupied = true
--- 		end
--- 	end
--- end
-
 
 -- when u spawned a unit, this toggle to walk
 function board.walkFromBaseToggle(t, unit)
@@ -115,7 +107,8 @@ function board.walkFromBaseToggle(t, unit)
 		and walk.y <= t.y + t.size*t.unit.walkRange
 		and walk.y >= t.y - t.size*t.unit.walkRange then
 			if (walk.type ~= 'water' and t.unit.type ~= 'boot') or 
-			   (t.unit.type == 'boot' and walk.type == 'water') then
+				-- base must be walkable!
+			   (t.unit.type == 'boot' and walk.type == 'water' or walk.base) then
 					walk.walkable = true
 			end
 		end
@@ -147,25 +140,47 @@ function board.attackToggle(x, y, t, unit)
 			tile.attacking = false
 		end
 	end
+end
 
-
+function board.reset(tile)
+	tile.attackable = false
+	tile.attacking = false
+	tile.walkable = false
+	tile.walking = false
+	tile.loading = false
+	tile.loadable = false
 end
 
 function board.walkToggle(x, y, t, unit)
 	if not t.walking then
 		for i,walking in pairs(board.tiles) do
+			-- clear board
 			walking.walkable = false
 			walking.walking = false
 		end
 
 		for i,walk in pairs(board.tiles) do
+			-- get all walkable spots around unit
 			if  walk.x <= t.x + t.size*t.unit.walkRange
 			and walk.x >= t.x - t.size*t.unit.walkRange
 			and walk.y <= t.y + t.size*t.unit.walkRange
 			and walk.y >= t.y - t.size*t.unit.walkRange then
+
+				-- make sure type is not water if ground unit
+				-- make sure type is water if water unit
 				if (walk.type ~= 'water' and t.unit.type ~= 'boot') or 
 				   (t.unit.type == 'boot' and walk.type == 'water') then
 						walk.walkable = true
+				end
+
+				-- make sure ground soldiers can access boat
+				-- check if unit type isnt of boat
+				-- check if boat is of urs
+				if t.unit.type ~= 'boot' 
+				and walk.unit.type == 'boot'
+        		and walk.owner == players:getActivePlayerId() then
+					walk.loadable = true
+					t.loading = true
 				end
 			end
 
@@ -173,10 +188,14 @@ function board.walkToggle(x, y, t, unit)
 			and walk.x >= t.x  
 			and walk.y <= t.y
 			and walk.y >= t.y then
+				-- make current tile walking
 				walk.walking = true
 			end
 		end
 	else
+		-- set walktoggle false
+		-- set all walking false
+		-- set all walkables false
 		if t.unit then
 			for _,walk in pairs(board.tiles) do 
 				if walk.walking then
@@ -188,39 +207,125 @@ function board.walkToggle(x, y, t, unit)
 	end
 end
 
+
 function board.walk(x, y, t, lastTile, playerid)
 	if t.walkable then
 		for _,tile in pairs(board.tiles) do 
 			if tile.walkable then
+				-- check if tile is occupied
+				-- check if tile is walking
 				if tile.occupied and tile.walking then
 					tile.occupied = false
+					-- not removing owner of a base
 					if not tile.base then
 						tile.owner = 0
 					end
+					-- set tile owner to current player ID
 					t.owner = playerid
+					-- transfer unit to selected tiles
 					t.unit = tile.unit
+					-- remove prev tile unit
 					tile.unit = {}
-				end
-				tile.walkable = false
-				tile.attackable = false
+				end 
 			end
-			tile.walking = false
+			board.reset(tile)
 		end
+		-- set selecterd tile to occupied
 		t.occupied = true
 	end
 end
 
-function board.attack(x, y, t)
-	t.occupied = false
-	t.unit = {}
-	for i,tile in pairs(board.tiles) do
-		tile.attackable = false
-		tile.attacking = false
-		t.owner = 0
-		tile.walkable = false
-		tile.walking = false
+function board.loadBoat(x,y,t)
+	for _,tile in pairs(board.tiles) do 
+		if tile.occupied and tile.loading then
+			tile.occupied = false
+			if not tile.base then
+				tile.owner = 0 
+			end
+			table.insert(t.unit.passengers, t.unit)
+			tile.unit = {}
+		end
+		board.reset(tile)		
+	end
+	t.occupied = true
+end
+
+
+function board.unloadToggle(x,y,t)
+	for i,walk in pairs(board.tiles) do
+		-- get all walkable spots around unit
+		if  walk.x <= t.x + t.size*t.unit.walkRange
+		and walk.x >= t.x - t.size*t.unit.walkRange
+		and walk.y <= t.y + t.size*t.unit.walkRange
+		and walk.y >= t.y - t.size*t.unit.walkRange then
+
+			-- make sure type is not water if ground unit
+			-- make sure type is water if water unit
+			if (walk.type ~= 'water' and t.unit.type ~= 'boot') or 
+			   (t.unit.type == 'boot' and walk.type == 'water') then
+					walk.walkable = true
+			end
+
+			-- make sure ground soldiers can access boat
+			-- check if unit type isnt of boat
+			-- check if boat is of urs
+			if t.unit.type ~= 'boot' 
+			and walk.unit.type == 'boot'
+			and walk.owner == players:getActivePlayerId() then
+				walk.loadable = true
+				t.loading = true
+			end
+		end
+
+		if  walk.x <= t.x 
+		and walk.x >= t.x  
+		and walk.y <= t.y
+		and walk.y >= t.y then
+			-- make current tile walking
+			walk.walking = true
+		end
 	end
 end
+
+function board.unload(x,y,t)
+
+end
+
+function board.attack(x, y, t)
+	for i,tile in pairs(board.tiles) do
+		if tile.attacking then
+			-- do damage to unit 
+			t.unit.health = t.unit.health - tile.unit.health
+			-- do damage to unit 
+			tile.unit.health = tile.unit.health - t.unit.damage
+			-- if unit's health is below 1
+			if t.unit.health <= 0 then
+				-- clear tile 
+				board.clear(t)
+			end
+			-- if unit's health is below 1
+			if tile.unit.health <= 0 then
+				-- clear tile 
+				board.clear(tile)
+			end
+		end
+		board.reset(tile)		
+	end
+end
+
+function board.clear(t)
+	t.occupied = false
+	t.unit = {}
+	t.owner = 0
+	t.attackable = false
+	t.attacking = false
+	t.walkable = false
+	t.walking = false
+	t.loading = false
+	t.loadable = false
+end
+
+
 
 function board.baseWalk(t, unit)
 	if t.walk then
@@ -253,45 +358,73 @@ function board.draw()
 		love.graphics.setColor(t.color)
 		love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 
-		if t.unit.type then
-			love.graphics.setColor(255,255,255)
-			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
-			love.graphics.setColor(0,0,0)
-			love.graphics.print(t.unit.type, t.x+5, t.y + 20)
-		end
-
+		-- color the tiles with unit on it
 		if t.occupied then
 			love.graphics.setColor(240,230,140)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 			love.graphics.setColor(0, 0,0)
-		elseif t.walkable then
+		end
+
+		-- show tile is walkable (able to walk on this tile colored)
+		if t.walkable then
 			love.graphics.setColor(0, 255,0, 100)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 			love.graphics.setColor(0,0,0)
 		end
 
+		-- set print color black
 		love.graphics.setColor(0, 0,0)
 
+		-- Base tile other color
 		if t.base then
 			love.graphics.setColor(181, 90,60)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
-		else
-			-- love.graphics.print(t.type, t.x + 5, t.y)
 		end
 
+		-- Owner ID on tile
 		if t.owner then
-			love.graphics.print(t.owner, t.x + 5, t.y + 30)
+			love.graphics.print(t.owner, t.x + 1, t.y + 30)
 		end
-		
+
+		-- original owner ID on tile
 		if t.originalOwner then
-			love.graphics.print(t.originalOwner, t.x + 5, t.y + 20)
+			love.graphics.print(t.originalOwner, t.x + 1, t.y + 20)
 		end
+
+		-- Unit damage on tile
+		if t.unit.damage then
+			love.graphics.print('D ' .. t.unit.damage, t.x + 20, t.y + 30)
+		end
+
+		-- Unit health on tile
+		if t.unit.health then
+			love.graphics.print('H ' .. t.unit.health, t.x + 20, t.y + 20)
+		end
+
+		-- Unit type on tile
+		if t.unit.type then
+			love.graphics.setColor(0,0,0)
+			love.graphics.print(t.unit.type, t.x, t.y+2)
+		end
+
+		-- Print tile income worth
+		if t.income ~= 0 then
+			love.graphics.setColor(0,0,0)
+			love.graphics.print(t.income, t.x, t.y+2)
+		end
+
+
 
 		if t.walking then
 			love.graphics.print('walking!!!!', t.x+5, t.y + 20)
 		elseif t.attackable then 
 			love.graphics.setColor(255, 0, 0, 100)
 			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
+		-- show tile is loadable (able to load a unit in boat)
+		elseif t.loadable then
+			love.graphics.setColor(0, 0,255)
+			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+			love.graphics.setColor(0,0,0)
 		end
 
 		if t.owner == players:getActivePlayerId() then
@@ -299,11 +432,36 @@ function board.draw()
 			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
 		end
 
-		love.graphics.setColor(0, 0, 0)
+
+		if players:getPlayerEnergy() then
+			love.graphics.setColor(0,0,0)
+		else
+			love.graphics.setColor(0,255, 0)
+		end
 		love.graphics.rectangle('fill', board.endTurn.x, board.endTurn.y, board.endTurn.width, board.endTurn.height)
 
 
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("line", t.x, t.y, t.size, t.size)
+
+		if t.base then
+			playerStats = players:getPlayerByID(t.owner)
+			if t.x < width/2 then
+				xpos = t.x - 75
+			else
+				xpos = t.x + 75
+			end
+
+			love.graphics.print('Energy ' .. playerStats.currentEnergy .. '/' .. playerStats.energy, xpos, t.y)
+			love.graphics.print('Freq ' .. playerStats.freq, xpos, t.y + 15)
+			love.graphics.print('Income ' .. playerStats.income, xpos, t.y + 30)
+		end
+
+		-- if t.walking then
+		-- 	love.graphics.setColor(240,230,140)
+		-- 	love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+		-- 	love.graphics.setColor(0, 0,0)
+		-- end
+
 	end
 end

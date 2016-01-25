@@ -4,7 +4,7 @@ unitspawn = {}
 function unitspawn.load()
 	unitspawn.active = false
 	unitspawn.units = {}
-	for i = 0, 2 do 
+	for i = 0, 4 do 
 		unit = {}
 		unit.n = i
 		unit.x = 0
@@ -29,8 +29,13 @@ function unitspawn.load()
 				'base',
 				'barak'
 			}
-		else
+		elseif i == 3 then
 			unit.name = 'robot'
+			unit.spawnpoint = {
+				'barak'
+			}
+		else
+			unit.name = 'boot'
 			unit.spawnpoint = {
 				'barak'
 			}
@@ -80,6 +85,12 @@ function unitspawn.show(tile)
 		tile.spawning = false
 	end
 
+end
+
+function unitspawn.disable()
+	if unitspawn.active then
+		unitspawn.active = false
+	end
 end
 
 function unitspawn.draw()

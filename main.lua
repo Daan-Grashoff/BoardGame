@@ -47,6 +47,9 @@ function love.mousepressed(x, y, button)
           tiles.walking = false
           tiles.spawning = false
           tiles.attackable = false
+          tiles.loadable = false
+          tiles.loading = false
+          unitspawn.disable()
         end
 
     end
@@ -65,36 +68,60 @@ function love.mousepressed(x, y, button)
 
 
         if t.owner > 0 then
-          print(t.owner)
+          -- print(t.owner)
         end
+
+        if t.unit.type == 'boot'
+        and #t.unit.passengers ~= 0 then
+          print(#t.unit.passengers)
+        end
+
         -- check if tile is occupied
         -- check if owner of tile is active player
-        if t.occupied and t.owner == players:getActivePlayerId() then
+        if t.occupied 
+        and t.owner == players:getActivePlayerId() 
+        and players:getActivePlayerEnergy() ~= 0 then
           board.attackToggle(x, y, t)
         end
 
 
         -- check if tile is attackable
-        if t.attackable then
+        if t.attackable and players:attack() then
           board.attack(x, y, t)
         end
 
         -- check if tile is occupied
         -- check if owner of tile is active player
         if t.occupied 
-        and t.owner == players:getActivePlayerId() then
+        and t.owner == players:getActivePlayerId()
+        and players:getActivePlayerEnergy() ~= 0 then
           board.walkToggle(x, y, t)
+        end
+
+
+        -- check if tile is walkable
+        -- check if tile contains boat
+        -- check if boat is not full
+        -- check if boat is urs
+        if t.loadable
+        and t.owner == players:getActivePlayerId() 
+        and t.unit.type == 'boot' then 
+          board.loadBoat(x, y, t)
         end
 
         -- check if tile is walkable
         -- check if tile is not occupied
         -- check if its no base tile
         if t.walkable 
-        and not t.occupied 
-        and not t.base then
+        and not t.occupied
+        and not t.base 
+        and players:walk() then
           -- walk function
           board.walk(x, y, t, lastTile, players:getActivePlayerId())
         end
+
+ 
+
 
         -- check click on base or barak
         -- check if no units on tile
@@ -105,7 +132,6 @@ function love.mousepressed(x, y, button)
         and t.owner == players:getActivePlayerId()
         and players:getActivePlayerEnergy() ~= 0 then
           unitspawn.show(t)
-          break
         end
       end
     end
@@ -127,8 +153,10 @@ function love.mousepressed(x, y, button)
             and players:buyItem(prices[t.type][unit.name]) then
               -- spawn unit on tile
               unitspawn.spawn(t, objects.items[unit.n + 1])
+              -- toggle all walkables on board
               board.walkFromBaseToggle(t, unit)
-              board.baseWalk(t, unit)
+              -- set basewalk
+              -- board.baseWalk(t, unit)
             end
           end
         end
