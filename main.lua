@@ -22,6 +22,8 @@ function love:keypressed(key)
     credits:keypressed(key, screens)
   elseif (screens:on("selection")) then
     selection:keypressed(key, screens)
+  elseif (screens:on("settings")) then
+    settingsScreen:keypressed(key, screens)
   end
 
   -- update player
