@@ -10,6 +10,7 @@ function selection.load()
 	selectionFrame = Chatbox(0, 0, 1080, 763)
 
 end
+selection.load()
 
 function selection.keypressed(key, gameState)
 	if key == 'escape' then
