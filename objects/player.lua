@@ -1,8 +1,8 @@
 require 'lib.functions'
 
 players = {}
-startAmoundFreq = 1000
-startAmoundEnergy = 1
+startAmoundFreq = 10000
+startAmoundEnergy = 100
 startingCard = "bos"
 playerCount = 4
 
@@ -15,6 +15,8 @@ function players:generate(names)
 			base = cards[i],
 			freq = startAmoundFreq,
 			energy = startAmoundEnergy,
+			currentEnergy = startAmoundEnergy,
+			income = 0,
 			tiles = {
 				Ijs = 0,
 				Moeras = 0,
@@ -27,34 +29,54 @@ function players:generate(names)
 		players[i]['tiles'][players[i]['base']] = 1
 		if players[i]['base'] == startingCard then
 			players[i]['active'] = true
+  			currentPlayer = players[i]
 		end
 	end
 	return players
-end
-
-function players:textDraw()
-	for k,player in ipairs(players) do
-		love.graphics.print(player.freq, k*200, k*50)
-		love.graphics.print(player.energy, k*200, k*55)
-	end
-	return true
 end
 
 function players:update(activePlayer)
 	for k,player in ipairs(players) do
 		if player['active'] == true then
-			player['freq'] = activePlayer['freq']
-			player['energy'] = player['energy'] + 1
-			player['active'] = false
+			player.income = 0
+		    for _,tile in pairs(board.tiles) do
+		    	if tile.owner == player.id
+	    		and tile.unit.type ~= 'worker'
+		    	and not tile.base then
+		    		if tile.originalOwner == player.id then
+						player['freq'] = player['freq'] + 50
+						player.income = player.income + 50
+						tile.income = 50
+					elseif tile.type == 'goldmine' then
+						player['freq'] = player['freq'] + 150
+						player.income = player.income + 150
+						tile.income = 150
+					else
+						player['freq'] = player['freq'] + 100
+						player.income = player.income + 100
+						tile.income = 100
+					end
+				else
+					tile.income = 0
+		    	end
+
+		    end
+		    if player.energy < 10 then
+				player.energy = player.energy + 1
+			end
+			player.currentEnergy = player.energy
+			player.active = false
 			if k == #players then
 				k = 0
 			end
-			players[k+1]['active'] = true
+			players[k+1].active = true
+			currentPlayer = players[k+1]
 			break
 		end
 	end
 	return players
 end
+
 
 
 function players:getActivePlayerId()
@@ -77,6 +99,39 @@ function players:getPlayerByBase(base)
 	end
 end
 
+function players:walk()
+	energy = players:getActivePlayer().currentEnergy
+	if energy > 0 then
+		players:getActivePlayer().currentEnergy = energy - 1
+		return true
+	else
+		print('not enough energy to walk')
+		return false
+	end
+end
+
+function players:attack()
+	energy = players:getActivePlayer().currentEnergy
+	if energy > 0 then
+		players:getActivePlayer().currentEnergy = energy - 1
+		return true
+	else
+		print('not enough energy to attack')
+		return false
+	end
+end
+
+function players:getPlayerEnergy()
+	if currentPlayer.currentEnergy > 0 then
+		return true
+	else
+		return false
+	end
+	print(currentPlayer.currentEnergy)
+end
+
+
+
 function players:buyItem(itemPrice)
 	freq = players:getActivePlayer().freq
 	if not itemPrice then
@@ -88,10 +143,7 @@ function players:buyItem(itemPrice)
 		return false
 	end
 	players:getActivePlayer().freq = freq - itemPrice
-	-- activePlayer = players.getActivePlayer()
-	-- if activePlayer.freq > itemPrice then
-	-- 	activePlayer.freq = activePlayer.freq - itemPrice
-	-- end
+
 	return true
 end
 
@@ -103,10 +155,11 @@ function players:getActivePlayer()
 	end
 end
 
+
 function players:getActivePlayerEnergy()
 	for k,player in ipairs(players) do
 		if player['active'] == true then
-			return player.energy
+			return player.currentEnergy
 		end
 	end
 end

@@ -10,6 +10,8 @@ game = {}
 
 function game:load()
 
+	currentPlayer = 0
+
 	--TEsound.playLooping("assets/music/track1.mp3", 'Background', 999)
 
 	names = {
@@ -47,6 +49,5 @@ function game:draw()
 	love.graphics.print("GAME", 200, 100)
   	board.draw()
 	objects.draw()
-	players.textDraw()
 	unitspawn.draw()
 end
