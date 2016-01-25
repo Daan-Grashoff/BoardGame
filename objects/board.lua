@@ -446,15 +446,17 @@ function board.draw()
 
 		if t.base then
 			playerStats = players:getPlayerByID(t.owner)
-			if t.x < width/2 then
-				xpos = t.x - 75
-			else
-				xpos = t.x + 75
-			end
+			if playerStats then
+				if t.x < width/2 then
+					xpos = t.x - 75
+				else
+					xpos = t.x + 75
+				end
 
-			love.graphics.print('Energy ' .. playerStats.currentEnergy .. '/' .. playerStats.energy, xpos, t.y)
-			love.graphics.print('Freq ' .. playerStats.freq, xpos, t.y + 15)
-			love.graphics.print('Income ' .. playerStats.income, xpos, t.y + 30)
+				love.graphics.print('Energy ' .. playerStats.currentEnergy .. '/' .. playerStats.energy, xpos, t.y)
+				love.graphics.print('Freq ' .. playerStats.freq, xpos, t.y + 15)
+				love.graphics.print('Income ' .. playerStats.income, xpos, t.y + 30)
+			end
 		end
 
 		-- if t.walking then
