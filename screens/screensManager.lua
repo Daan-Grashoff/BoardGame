@@ -3,6 +3,7 @@ require 'screens.help'
 require 'screens.game'
 require 'screens.credits'
 require 'screens.selection'
+require 'screens.settings'
 
 screens = {}
 
@@ -12,8 +13,8 @@ function screens:load()
   help:load()
   -- game:load()
   menu:load()
-  selection:load()
   credits:load()
+  settingsScreen:load()
 end
 
 function screens:set(screen)
@@ -35,6 +36,8 @@ function screens:update(dt)
     credits.update(dt)
   elseif currentScreen == 'help' then
     help.update(dt)
+  elseif currentScreen == 'settings'then
+    settingsScreen.update(dt)
   end
 end
 
@@ -49,6 +52,8 @@ function screens:draw()
     selection.draw()
   elseif currentScreen == 'help' then
 		help.draw()
+  elseif currentScreen == 'settings' then
+    settingsScreen.draw()
   end
 end
 

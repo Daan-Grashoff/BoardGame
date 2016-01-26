@@ -1,3 +1,5 @@
+require 'constructor'
+
 local Menu = {}
 
 scale = love.window.getPixelScale( )
@@ -60,6 +62,12 @@ Menu.QuitButton.draw = function(self)
         love.graphics.rectangle('line', self.x, self.y, self.w, self.h)
     end
     love.graphics.setColor(64, 64, 64)
+end
+
+Menu.SettingsButton = {}
+Menu.SettingsButton.draw = function(self)
+    love.graphics.setColor(64, 64, 64)
+    love.graphics.draw(GEAR)
 end
 
 return Menu

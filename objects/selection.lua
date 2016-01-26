@@ -1,6 +1,10 @@
+settings = require 'objects.settings'
+
 local Selection = UI.Object:extend('Chatbox')
 
 function Selection:new(x, y, w, h)
+	settings.load()
+
 	UI.DefaultTheme = Theme
     self.main_frame = UI.Frame(x, y, w, h, {draggable = false, drag_margin = 20, disable_directional_selection = true, disable_tab_selection = true})
 

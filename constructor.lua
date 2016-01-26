@@ -1,5 +1,8 @@
 TWO_PERSON = love.graphics.newImage('assets/images/people-1-128.png')
 FOUR_PERSON = love.graphics.newImage('assets/images/four-people.png')
+GEAR = love.graphics.newImage('assets/images/gear.png')
+ON = love.graphics.newImage('assets/images/on.PNG')
+OFF = love.graphics.newImage('assets/images/off.PNG')
 
 prices = {
 	ijs = {
