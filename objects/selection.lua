@@ -22,10 +22,10 @@ end
 function Selection:update(dt)
 	--text = self.textinput.text.str_text
 	if self.twoPersons.released then
-		settings:setConfig("amount_players", 2)
+		amountPlayers = 2
 	    currentScreen = "game"
 	elseif self.fourPersons.released then
-		settings:setConfig("amount_players", 4)
+		amountPlayers = 4
 		currentScreen = "game"
 	end
     self.main_frame:update(dt)

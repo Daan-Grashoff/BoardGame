@@ -5,7 +5,7 @@ menu = {}
 
 --scale = love.window.getPixelScale( )
 
-scale = 3
+scale = 1
 
 function menu:load()
 	UI.registerEvents()
