@@ -11,7 +11,7 @@ function menu:load()
 	UI.registerEvents()
 
 	startButton = UI.Button(25, 25 * scale, 500 * scale, 50 * scale, {extensions = {Menu.StartButton}, draggable = false})
-	settingsButton = UI.Button(0, 0, 128, 128 * scale, {extensions = {Menu.SettingsButton}, draggable = false})
+	settingsButton = UI.Button(900, 600, 128, 128 * scale, {extensions = {Menu.SettingsButton}, draggable = false})
 	creditsButton = UI.Button(25, 100 * scale, 500 * scale, 50 * scale, {extensions = {Menu.CreditsButton}, draggable = false})
 	helpButton = UI.Button(25, 175 * scale, 500 * scale, 50 * scale, {extensions = {Menu.HelpButton}, draggable = false})
 	quitButton = UI.Button(25, 250 * scale, 500 * scale, 50 * scale, {extensions = {Menu.QuitButton}, draggable = false})
