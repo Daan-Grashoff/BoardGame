@@ -18,8 +18,12 @@ end
 function Selection:update(dt)
 	--text = self.textinput.text.str_text
 	if self.twoPersons.released then
+		amountPlayers = 2
+		game:load()
 	    currentScreen = "game"
 	elseif self.fourPersons.released then
+		amountPlayers = 4
+		game:load()
 		currentScreen = "game"
 	end
     self.main_frame:update(dt)

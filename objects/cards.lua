@@ -1,10 +1,17 @@
 card = {}
 cards = {
-	'ijs',
-	'moeras',
-	'woestijn',
-	'bos'
+	[4] = {
+		'ijs',
+		'moeras',
+		'woestijn',
+		'bos'
+	},
+	[2] = {
+		'bos',
+		'woestijn'
+	}
 }
+
 
 function card.shuffleCards()
 	-- shuffledCards = {}
@@ -14,7 +21,8 @@ function card.shuffleCards()
 	-- 	table.remove(cards, rand)
 	-- 	table.insert(shuffledCards, cards[rand])
 	-- end
-
+	
+	cards = cards[amountPlayers]
 	for i = #cards, 2, -1 do
 		local rand = math.random(i)
 		cards[i], cards[rand] = cards[rand], cards[i]

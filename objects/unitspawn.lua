@@ -103,6 +103,4 @@ function unitspawn.draw()
 			love.graphics.print(unit.name, unit.x + 5, unit.y)
 		end
 	end
-
-
 end

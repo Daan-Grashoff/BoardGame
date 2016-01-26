@@ -9,7 +9,6 @@ math.randomseed(os.time())
 game = {}
 
 function game:load()
-
 	currentPlayer = 0
 
 	--TEsound.playLooping("assets/music/track1.mp3", 'Background', 999)
@@ -27,7 +26,6 @@ function game:load()
 	board.load()
 	objects.load()
 	unitspawn.load()
-
 end
 
 function game:update(dt)

@@ -5,6 +5,8 @@ function love.load()
 	width = 1080
 	height = 763
 
+  amountPlayers = 0
+
 	love.window.setMode(width, height)
 
 	love.graphics.setBackgroundColor(45, 127, 180)
@@ -34,9 +36,22 @@ function love:keypressed(key)
   end
 end
 
+function love.mousereleased(x, y, button)
+  if (screens:on("game")) then
+    for i,object in pairs(objects.items) do
+      if object.dragging.active then
+        object.dragging.active = false
+        if not objects.collision(object.x + object.size/2, object.y + object.size/2, i) then
+          object.x = object.prefx
+          object.y = object.prefy
+        end
+      end
+    end
+  end
+end
+
 function love.mousepressed(x, y, button)
   if (screens:on("game")) then
-
     if x > board.endTurn.x
       and x < board.endTurn.x + board.endTurn.width
       and y > board.endTurn.y
@@ -73,7 +88,7 @@ function love.mousepressed(x, y, button)
 
         if t.unit.type == 'boot'
         and #t.unit.passengers ~= 0 then
-          print(#t.unit.passengers)
+
         end
 
         -- check if tile is occupied
@@ -90,6 +105,12 @@ function love.mousepressed(x, y, button)
           board.attack(x, y, t)
         end
 
+        -- check if tile is attackable
+        if t.unloadable then
+          print('drop units')
+        end
+
+
         -- check if tile is occupied
         -- check if owner of tile is active player
         if t.occupied 
@@ -99,13 +120,25 @@ function love.mousepressed(x, y, button)
         end
 
 
+        -- check if tile is occupied
+        -- check if owner of tile is active player
+        if t.occupied 
+        and t.owner == players:getActivePlayerId()
+        and players:getActivePlayerEnergy() ~= 0
+        and t.unit.type == 'boot'
+        and #t.unit.passengers ~= 0 then
+          board.unloadToggle(x, y, t)
+        end
+
+
         -- check if tile is walkable
         -- check if tile contains boat
         -- check if boat is not full
         -- check if boat is urs
         if t.loadable
         and t.owner == players:getActivePlayerId() 
-        and t.unit.type == 'boot' then 
+        and t.unit.type == 'boot'
+        and #t.unit.passengers < 3 then 
           board.loadBoat(x, y, t)
         end
 
@@ -120,9 +153,7 @@ function love.mousepressed(x, y, button)
           board.walk(x, y, t, lastTile, players:getActivePlayerId())
         end
 
- 
-
-
+        
         -- check click on base or barak
         -- check if no units on tile
         -- check if owner of tile is active player

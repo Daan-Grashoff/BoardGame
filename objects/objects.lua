@@ -70,18 +70,6 @@ function love.mousepressed(x, y, button)
 	end
 end
 
-function love.mousereleased(x, y, button)
-	for i,object in pairs(objects.items) do
-		if object.dragging.active then
-			object.dragging.active = false
-			if not objects.collision(object.x + object.size/2, object.y + object.size/2, i) then
-				object.x = object.prefx
-				object.y = object.prefy
-			end
-		end
-  	end
-end
-
 function objects.update(dt)
 	for _,object in pairs(objects.items) do
 		if object.dragging.active then

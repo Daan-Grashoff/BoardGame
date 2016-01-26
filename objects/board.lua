@@ -39,6 +39,8 @@ function board.load()
 			tile.attacking = false
 			tile.loading = false
 			tile.loadable = false
+			tile.unloadable = false
+			tile.unloading = false
 			tile.barak = true
 			tile.income = 0
 
@@ -252,50 +254,66 @@ end
 
 
 function board.unloadToggle(x,y,t)
-	for i,walk in pairs(board.tiles) do
-		-- get all walkable spots around unit
-		if  walk.x <= t.x + t.size*t.unit.walkRange
-		and walk.x >= t.x - t.size*t.unit.walkRange
-		and walk.y <= t.y + t.size*t.unit.walkRange
-		and walk.y >= t.y - t.size*t.unit.walkRange then
-
-			-- make sure type is not water if ground unit
-			-- make sure type is water if water unit
-			if (walk.type ~= 'water' and t.unit.type ~= 'boot') or 
-			   (t.unit.type == 'boot' and walk.type == 'water') then
-					walk.walkable = true
-			end
-
-			-- make sure ground soldiers can access boat
-			-- check if unit type isnt of boat
-			-- check if boat is of urs
-			if t.unit.type ~= 'boot' 
-			and walk.unit.type == 'boot'
-			and walk.owner == players:getActivePlayerId() then
-				walk.loadable = true
-				t.loading = true
+	if not t.unloading then
+		for i,walk in pairs(board.tiles) do
+			-- get all walkable spots around unit
+			if  walk.x <= t.x + t.size*1
+			and walk.x >= t.x - t.size*1
+			and walk.y <= t.y + t.size*1
+			and walk.y >= t.y - t.size*1 then
+				if t.unit.type == 'boot'
+				and walk.type ~= 'water' then
+					walk.unloadable = true
+					t.unloading = true
+					print('unloading  = true')
+				end
 			end
 		end
-
-		if  walk.x <= t.x 
-		and walk.x >= t.x  
-		and walk.y <= t.y
-		and walk.y >= t.y then
-			-- make current tile walking
-			walk.walking = true
+	else
+		for i,tile in pairs(board.tiles) do
+			tile.unloadable = false
+			tile.unloading = false
 		end
 	end
 end
 
-function board.unload(x,y,t)
 
+function board.loadBoat(x,y,t)
+	for _,tile in pairs(board.tiles) do 
+		if tile.occupied and tile.loading then
+			tile.occupied = false
+			if not tile.base then
+				tile.owner = 0 
+			end
+			table.insert(t.unit.passengers, t.unit)
+			tile.unit = {}
+		end
+		board.reset(tile)		
+	end
+	t.occupied = true
 end
+
+function board.unload(t)
+	for _,tile in pairs(board.tiles) do
+		if tile.unloadable then
+			if tile.occupied and tile.tileing then
+				tile.occupied = false
+				t.unit = tile.unit
+				tile.unit = {}
+			end
+			tile.walkable = false
+		end
+	end
+	t.occupied = true
+end
+
+
 
 function board.attack(x, y, t)
 	for i,tile in pairs(board.tiles) do
 		if tile.attacking then
 			-- do damage to unit 
-			t.unit.health = t.unit.health - tile.unit.health
+			t.unit.health = t.unit.health - tile.unit.damage
 			-- do damage to unit 
 			tile.unit.health = tile.unit.health - t.unit.damage
 			-- if unit's health is below 1
@@ -351,6 +369,7 @@ function board.getBases()
 	bases[3] = board.tiles[(board.size+1)*(board.size+1)-board.size]
 	return bases
 end
+
 
 function board.draw()
 	for _,t in pairs(board.tiles) do
@@ -414,6 +433,18 @@ function board.draw()
 		end
 
 
+		-- if 
+		if t.unloading then
+			for i,unit in pairs(t.unit.passengers) do 
+				love.graphics.setColor(255,255,255)
+				love.graphics.rectangle("fill", 100 + (80 * i), 0, 80, 80)
+				love.graphics.setColor(0,0,0)
+				love.graphics.rectangle("line", 100 + (80 * i), 0, 80,80)
+				love.graphics.print(unit.type, 100 + (80 * i) + 5, unit.y)
+			end
+		end
+
+
 
 		if t.walking then
 			love.graphics.print('walking!!!!', t.x+5, t.y + 20)
@@ -425,6 +456,10 @@ function board.draw()
 			love.graphics.setColor(0, 0,255)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 			love.graphics.setColor(0,0,0)
+		elseif t.unloadable then
+			love.graphics.setColor(255,255,0)
+			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+			love.graphics.setColor(0,0,0)
 		end
 
 		if t.owner == players:getActivePlayerId() then
@@ -433,11 +468,12 @@ function board.draw()
 		end
 
 
-		if players:getPlayerEnergy() then
-			love.graphics.setColor(0,0,0)
-		else
-			love.graphics.setColor(0,255, 0)
-		end
+		-- if players:getPlayerEnergy() then
+		-- 	love.graphics.setColor(0,0,0)
+		-- else
+		-- 	love.graphics.setColor(0,255, 0)
+		-- end
+		
 		love.graphics.rectangle('fill', board.endTurn.x, board.endTurn.y, board.endTurn.width, board.endTurn.height)
 
 
@@ -446,15 +482,17 @@ function board.draw()
 
 		if t.base then
 			playerStats = players:getPlayerByID(t.owner)
-			if t.x < width/2 then
-				xpos = t.x - 75
-			else
-				xpos = t.x + 75
-			end
+			if playerStats then
+				if t.x < width/2 then
+					xpos = t.x - 75
+				else
+					xpos = t.x + 75
+				end
 
-			love.graphics.print('Energy ' .. playerStats.currentEnergy .. '/' .. playerStats.energy, xpos, t.y)
-			love.graphics.print('Freq ' .. playerStats.freq, xpos, t.y + 15)
-			love.graphics.print('Income ' .. playerStats.income, xpos, t.y + 30)
+				love.graphics.print('Energy ' .. playerStats.currentEnergy .. '/' .. playerStats.energy, xpos, t.y)
+				love.graphics.print('Freq ' .. playerStats.freq, xpos, t.y + 15)
+				love.graphics.print('Income ' .. playerStats.income, xpos, t.y + 30)
+			end
 		end
 
 		-- if t.walking then

@@ -4,9 +4,9 @@ players = {}
 startAmoundFreq = 10000
 startAmoundEnergy = 100
 startingCard = "bos"
-playerCount = 4
 
 function players:generate(names)
+	playerCount = amountPlayers
 	cards = card.shuffleCards()
 	for i=1,playerCount do
 		players[i] = {
@@ -97,6 +97,7 @@ function players:getPlayerByBase(base)
 			return player.id
 		end
 	end
+	return 0
 end
 
 function players:walk()
