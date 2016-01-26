@@ -1,5 +1,9 @@
+require 'objects.settings'
+
 board = {}
 function board.load()
+	settings:load()
+	boardConfig = settings.getConfig()
 
 	-- endturn button
 	board.endTurn = {}
@@ -8,7 +12,7 @@ function board.load()
 	board.endTurn.x = width - board.endTurn.width
 	board.endTurn.y = height/2 - board.endTurn.height
 
-	board.size = 16 -- 8 mobile / 16 tablet / 24 computer
+	board.size = boardConfig['boardsize'] -- 8 mobile / 16 tablet / 24 computer
 	board.newTileX = love.graphics.getWidth( ) / (board.size + 1)
   	board.newTileY = love.graphics.getHeight( ) / (board.size + 1)
 	board.tilePadding = 0
