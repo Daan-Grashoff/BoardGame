@@ -3,7 +3,7 @@ FOUR_PERSON = love.graphics.newImage('assets/images/four-people.png')
 GEAR = love.graphics.newImage('assets/images/gear.png')
 ON = love.graphics.newImage('assets/images/on.PNG')
 OFF = love.graphics.newImage('assets/images/off.PNG')
-GAME_LAUNCED = false
+GAME_LAUNCHED = false
 
 prices = {
 	ijs = {
