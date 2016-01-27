@@ -1,13 +1,13 @@
+require 'lib.tserial.tserial'
 require 'lib.functions'
 require 'lib.save-tables'
 settings = {}
 
 function settings:load()
-	settings.config = {}
-	config = table.load("settings.conf")
-	for k,setting in pairs(config) do
-		settings.config[k] = setting
+	if not love.filesystem.exists("settings.conf") then
+	    settings:defaultConfig()
 	end
+	settings.config = Tserial.unpack(love.filesystem.read("settings.conf"), true)
 end
 
 function settings:getConfig()
@@ -24,7 +24,17 @@ function settings:setConfig(key, value)
 end
 
 function settings:save()
-	table.save(settings.config, "settings.conf")
+	love.filesystem.write("settings.conf", Tserial.pack(settings.config))
+end
+
+function settings:defaultConfig()
+	configTable = {
+		boardsize = 16,
+		credits_sound = true,
+		amount_players = 4,
+		game_sound = true,
+	}
+	love.filesystem.write("settings.conf", Tserial.pack(configTable))
 end
 
 return settings
