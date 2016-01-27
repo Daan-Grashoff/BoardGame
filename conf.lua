@@ -3,7 +3,7 @@ function love.conf(t)
 	t.title             = "Frequency"
 	t.author            = "Damien, Daan, Rick, Stefan en Bob"
 	t.version           = "0.10.0"
-	t.identity          = "Frequency-demo"
+	t.identity          = "boardgame-settings"
 
 	t.console           = true
   t.modules.audio     = true
