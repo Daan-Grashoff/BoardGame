@@ -43,6 +43,9 @@ function objects.load()
 			item.damage = 0
 			item.health = 2
 			item.passengers = {}
+			-- table.insert(item.passengers, item)
+			-- table.insert(item.passengers, item)
+			-- table.insert(item.passengers, item)
 		end
 
 		-- item.type = 'soldaat'

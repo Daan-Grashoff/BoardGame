@@ -8,10 +8,14 @@ require 'screens.settings'
 screens = {}
 
 function screens:load()
-  currentScreen = "menu"
+  -- currentScreen = "menu" 
+  currentScreen = "game"
 
   help:load()
-  -- game:load()
+  -- if current screen == game
+  -- load game directly 
+  game:load()
+  -- 
   menu:load()
   credits:load()
   settingsScreen:load()

@@ -7,7 +7,7 @@ function love.load()
 	width = 1080
 	height = 763
 
-  amountPlayers = 0
+  amountPlayers = 4
 
 	love.window.setMode(width, height)
 
@@ -28,9 +28,9 @@ function love:keypressed(key)
     settingsScreen:keypressed(key, screens)
   end
 
-  -- update player
-  if key == 'space' then
-    -- players:update(players:getActivePlayer())
+  -- exit game
+  if key == 'escape' then
+    love.event.quit()
   end  
 end
 
@@ -56,18 +56,24 @@ function love.mousepressed(x, y, button)
       and y < board.endTurn.y + board.endTurn.height then
         players:update(players:getActivePlayer())
         for _,tiles in pairs(board.tiles) do
-          tiles.walkable = false
-          tiles.walking = false
-          tiles.spawning = false
-          tiles.attackable = false
-          tiles.loadable = false
-          tiles.loading = false
+          board.reset(tiles)
           unitspawn.disable()
         end
-
     end
 
     for _,t in pairs(board.tiles) do
+      if t.unloadboatspawning then
+        for i,unit in pairs(t.unit.passengers) do       
+          if x > t.x + (80 * (i-1))
+          and x < t.x + (80 * (i-1)) + 80
+          and y > t.y + tile.size
+          and y < t.y + tile.size + 80 then
+              board.spawn(t, unit, i, t.owner)
+              return
+          end
+        end
+      end
+
       -- select tile 
       if x > t.x
       and x < t.x + t.size
@@ -105,7 +111,7 @@ function love.mousepressed(x, y, button)
 
         -- check if tile is attackable
         if t.unloadable then
-          print('drop units')
+          board.unloadBoatSpawn(t)
         end
 
 
@@ -124,6 +130,7 @@ function love.mousepressed(x, y, button)
         and t.owner == players:getActivePlayerId()
         and players:getActivePlayerEnergy() ~= 0
         and t.unit.type == 'boot'
+        and not t.base
         and #t.unit.passengers ~= 0 then
           board.unloadToggle(x, y, t)
         end
@@ -136,6 +143,7 @@ function love.mousepressed(x, y, button)
         if t.loadable
         and t.owner == players:getActivePlayerId() 
         and t.unit.type == 'boot'
+        and not t.base
         and #t.unit.passengers < 3 then 
           board.loadBoat(x, y, t)
         end
