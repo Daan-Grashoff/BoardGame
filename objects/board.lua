@@ -33,19 +33,36 @@ function board.load()
 				tile.y = tile.size * j + 150
 			end
 
+
 			tile.unit = {}
+			-- Tile is occupied if there is a unit on tile
 			tile.occupied = false
+			-- ???
 			tile.f = false
+			-- tile is walking if there is a unit on it and is walking
 			tile.walking = false
+			-- tile is spawning if base is spawning a unit
 			tile.spawning = false
+			-- tile original owner, each player gets a continent and this belongs to him
 			tile.originalOwner = 0
+			-- tile owner is set if there is a unit on it
 			tile.owner = 0
+			-- tile is attackable if there is a unit in range of your unit
 			tile.attackable = false
+			-- tile is attacking if there is a unit in range
 			tile.attacking = false
+			-- tile is loading if there is a boat in range
 			tile.loading = false
+			-- tile is loadable if there is a boat in range
 			tile.loadable = false
+			-- tile is unloadable if the boat is next to ground
 			tile.unloadable = false
+			-- tile is unloading if the boat is unloading
 			tile.unloading = false
+			-- 
+			tile.unloadboatspawn = false
+			tile.unloadboatspawning = false
+
 			tile.barak = true
 			tile.income = 0
 
@@ -155,6 +172,40 @@ function board.reset(tile)
 	tile.walking = false
 	tile.loading = false
 	tile.loadable = false
+	tile.unloading = false
+	tile.unloadable = false
+	tile.unloadboatspawning = false
+	tile.unloadboatspawn = false
+end
+
+
+function board.unloadBoatSpawn(t)
+	if not t.unloadboatspawn then
+		for i,tile in pairs(board.tiles) do
+			if tile.unloading then
+				tile.unloadboatspawning = true
+			end
+		end
+		t.unloadboatspawn = true
+	else
+		t.unloadboatspawn = false
+		for i,tile in pairs(board.tiles) do
+			tile.unloadboatspawning = false
+		end
+
+	end
+end
+
+function board.spawn(t, unit, count, owner)
+	for i,tile in pairs(board.tiles) do
+		if tile.unloadable then
+			tile.unit = unit
+			tile.occupied = true
+			tile.owner = owner
+		end
+		board.reset(tile)
+	end
+	table.remove(t.unit.passengers, count)
 end
 
 function board.walkToggle(x, y, t, unit)
@@ -248,7 +299,7 @@ function board.loadBoat(x,y,t)
 			if not tile.base then
 				tile.owner = 0 
 			end
-			table.insert(t.unit.passengers, t.unit)
+			table.insert(t.unit.passengers, tile.unit)
 			tile.unit = {}
 		end
 		board.reset(tile)		
@@ -261,40 +312,37 @@ function board.unloadToggle(x,y,t)
 	if not t.unloading then
 		for i,walk in pairs(board.tiles) do
 			-- get all walkable spots around unit
+			-- check if tile is left or right
 			if  walk.x <= t.x + t.size*1
 			and walk.x >= t.x - t.size*1
-			and walk.y <= t.y + t.size*1
-			and walk.y >= t.y - t.size*1 then
+			and walk.y <= t.y
+			and walk.y >= t.y 
+			then
 				if t.unit.type == 'boot'
-				and walk.type ~= 'water' then
+				and walk.type ~= 'water'
+				and not walk.occupied then
 					walk.unloadable = true
 					t.unloading = true
-					print('unloading  = true')
+				end
+			-- check if tile is top or bottom=
+			elseif walk.x <= t.x
+			and walk.x >= t.x
+			and walk.y <= t.y + t.size*1
+			and walk.y >= t.y - t.size*1
+			then
+				if t.unit.type == 'boot'
+				and walk.type ~= 'water'
+				and not walk.occupied then
+					walk.unloadable = true
+					t.unloading = true
 				end
 			end
 		end
 	else
 		for i,tile in pairs(board.tiles) do
-			tile.unloadable = false
-			tile.unloading = false
+			board.reset(tile)
 		end
 	end
-end
-
-
-function board.loadBoat(x,y,t)
-	for _,tile in pairs(board.tiles) do 
-		if tile.occupied and tile.loading then
-			tile.occupied = false
-			if not tile.base then
-				tile.owner = 0 
-			end
-			table.insert(t.unit.passengers, t.unit)
-			tile.unit = {}
-		end
-		board.reset(tile)		
-	end
-	t.occupied = true
 end
 
 function board.unload(t)
@@ -344,7 +392,12 @@ function board.clear(t)
 	t.walking = false
 	t.loading = false
 	t.loadable = false
+	t.unloading = false
+	t.unloadable = false
+	t.unloadboatspawning = false
+	t.unloadboatspawn = false
 end
+
 
 function board.baseWalk(t, unit)
 	if t.walk then
@@ -375,6 +428,7 @@ end
 function board.draw()
 	for _,t in pairs(board.tiles) do
 
+		-- draw diffrent continents colors
 		love.graphics.setColor(t.color)
 		love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 
@@ -458,16 +512,19 @@ function board.draw()
 		end
 
 		if t.walking then
+			-- debug show tile is walking
 			love.graphics.print('walking!!!!', t.x+5, t.y + 20)
 		elseif t.attackable then 
+			-- show tile is attackable (able to attack a other unit)
 			love.graphics.setColor(255, 0, 0, 100)
 			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
-		-- show tile is loadable (able to load a unit in boat)
 		elseif t.loadable then
+			-- show tile is loadable (able to load units in boat)
 			love.graphics.setColor(0, 0,255)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 			love.graphics.setColor(0,0,0)
 		elseif t.unloadable then
+			-- show tile is unloadable (able to unload units on the ground)
 			love.graphics.setColor(255,255,0)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 			love.graphics.setColor(0,0,0)
@@ -480,23 +537,36 @@ function board.draw()
 		end
 
 
-		-- if players:getPlayerEnergy() then
-		-- 	love.graphics.setColor(0,0,0)
-		-- else
-		-- 	love.graphics.setColor(0,255, 0)
-		-- end
+		-- ??
+		if players:getPlayerEnergy() then
+			love.graphics.setColor(0,0,0)
+		else
+			love.graphics.setColor(0,255, 0)
+		end
 		
+
+		-- end turn button
 		love.graphics.rectangle('fill', board.endTurn.x, board.endTurn.y, board.endTurn.width, board.endTurn.height)
+
+		-- around tiles black border
 
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("line", t.x, t.y, t.size, t.size)
 
+
+		-- print player stats
+		-- print Amount of energy of each player
+		-- print Amount of frequeny of each player
+		-- print Amount of Income of each player
 		if t.base then
 			playerStats = players:getPlayerByID(t.owner)
 			if playerStats then
+				-- position left or right
 				if t.x < width/2 then
+					-- position left
 					xpos = t.x - 75
 				else
+					-- position right
 					xpos = t.x + 75
 				end
 
@@ -505,6 +575,7 @@ function board.draw()
 				love.graphics.print('Income ' .. playerStats.income, xpos, t.y + 30)
 			end
 		end
+
 
 		-- if t.walking then
 		-- 	love.graphics.setColor(240,230,140)
