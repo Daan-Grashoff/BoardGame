@@ -22,10 +22,12 @@ end
 function Selection:update(dt)
 	--text = self.textinput.text.str_text
 	if self.twoPersons.released then
+		GAME_LAUNCHED = true
 		amountPlayers = 2
 		game:load()
 	    currentScreen = "game"
 	elseif self.fourPersons.released then
+		GAME_LAUNCHED = true
 		amountPlayers = 4
 		game:load()
 		currentScreen = "game"

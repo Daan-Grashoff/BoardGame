@@ -33,7 +33,11 @@ function menu:update(dt)
 	helpButton:update(dt)
 	quitButton:update(dt)
 	if startButton.released then
-	    currentScreen = "selection"
+		if GAME_LAUNCHED == false then
+	    	currentScreen = "selection"
+	    else
+	        currentScreen = "game"
+		end
 	elseif creditsButton.released then
 		currentScreen = "credits"
 	elseif helpButton.released then
