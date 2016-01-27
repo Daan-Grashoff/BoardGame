@@ -11,7 +11,11 @@ Menu.StartButton.draw = function(self)
     if self.down then love.graphics.setColor(32, 32, 32) end
     love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
     love.graphics.setColor(255, 255, 255)
-    love.graphics.print('Start Game', self.x + 230, self.y + 15, 0, scale)
+    if GAME_LAUNCHED == true  then
+        love.graphics.print('Resume Game', self.x + 220, self.y + 15, 0, scale)
+    elseif GAME_LAUNCHED == false then
+        love.graphics.print('Start Game', self.x + 230, self.y + 15, 0, scale)
+    end
     if self.selected then
         love.graphics.setColor(128, 32, 32)
         love.graphics.rectangle('line', self.x, self.y, self.w, self.h)
@@ -67,7 +71,7 @@ end
 Menu.SettingsButton = {}
 Menu.SettingsButton.draw = function(self)
     love.graphics.setColor(64, 64, 64)
-    love.graphics.draw(GEAR)
+    love.graphics.draw(GEAR, 900, 600)
 end
 
 return Menu

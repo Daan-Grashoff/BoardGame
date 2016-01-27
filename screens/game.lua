@@ -1,3 +1,4 @@
+require "objects.settings"
 require "objects.board"
 require "objects.objects"
 require "objects.cards"
@@ -10,8 +11,11 @@ game = {}
 
 function game:load()
 	currentPlayer = 0
+	settings:load()
 
-	--TEsound.playLooping("assets/music/track1.mp3", 'Background', 999)
+	if settings:getConfigByKey("game_sound") then
+		TEsound.playLooping("assets/music/track1.mp3", 'Background', 999)
+	end
 
 	names = {
 		'Rick',
@@ -39,6 +43,9 @@ end
 
 function game:keypressed(key, gameState)
   	if key == 'escape' then
+  		if settings:getConfigByKey("game_sound") then
+  			TEsound.pause(1)
+  		end
   		gameState:set("menu")
   	end
 end
