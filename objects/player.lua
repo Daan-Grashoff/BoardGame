@@ -91,6 +91,10 @@ function players:getPlayerByID(id)
 	return players[id]
 end
 
+function players:getBaseByPlayer(id)
+	return players[id].base
+end
+
 function players:getPlayerByBase(base)
 	for i,player in ipairs(players) do
 		if player.base == base then
