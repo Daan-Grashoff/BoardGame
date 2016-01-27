@@ -91,7 +91,7 @@ function board.load()
 					tile.owner = players:getPlayerByBase('moeras')
 				end
 				tile.type = 'moeras'
-				tile.color = {197, 179, 153}
+				tile.color = {21, 34, 20}
 			elseif i < (board.size / 3) and j > (board.size / 3 * 2) then
 				tile.originalOwner = players:getPlayerByBase('ijs')
 				if tile.base == true then 
@@ -105,7 +105,7 @@ function board.load()
 					tile.owner = players:getPlayerByBase('woestijn')
 				end
 				tile.type = 'woestijn'
-				tile.color = {21, 34, 20}
+				tile.color = {197, 179, 153}
 			else
 				tile.type = 'water'
 				tile.color = {45, 127, 180}
@@ -437,9 +437,9 @@ function board.draw()
 			if t.unit.type then
 				love.graphics.setColor(255, 255, 255)
 				if board.size == 8 then
-					love.graphics.draw(sprites[t.type][t.unit.type], t.x+10, t.y+10, 0, 2)
+					love.graphics.draw(sprites[players:getBaseByPlayer(t.owner)][t.unit.type], t.x+10, t.y+10, 0, 2)
 				else 
-					love.graphics.draw(sprites[t.type][t.unit.type], t.x, t.y, 0)
+					love.graphics.draw(sprites[players:getBaseByPlayer(t.owner)][t.unit.type], t.x, t.y, 0)
 				end
 			else
 				love.graphics.setColor(240,230,140)
