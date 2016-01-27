@@ -105,9 +105,26 @@ end
 
 
 function objects.draw(self)
-	for _,i in pairs(objects.items) do
-		love.graphics.setColor(255, 0, 0)
-		love.graphics.rectangle('fill', i.x, i.y, i.size, i.size)
+	for k,i in pairs(objects.items) do
+		if k == 1 then
+			love.graphics.setColor(255,255,255)
+			love.graphics.draw(sprites['bos']['worker'], i.x, i.y, 0, 2)
+		elseif k == 2 then
+			love.graphics.setColor(255,255,255)
+			love.graphics.draw(sprites['bos']['soldaat'], i.x, i.y, 0, 2)
+		elseif k == 3 then
+			love.graphics.setColor(255,255,255)
+			love.graphics.draw(sprites['bos']['soldaat'], i.x, i.y, 0, 2)
+		elseif k == 4 then
+			love.graphics.setColor(255,255,255)
+			love.graphics.draw(sprites['bos']['soldaat'], i.x, i.y, 0, 2)
+		elseif k == 5 then
+			love.graphics.setColor(255,255,255)
+			love.graphics.draw(sprites['bos']['soldaat'], i.x, i.y, 0, 2)
+		else
+			love.graphics.setColor(255, 0, 0)
+			love.graphics.rectangle('fill', i.x, i.y, i.size, i.size)
+		end
 		love.graphics.setColor(0,0,0)
 		love.graphics.print(i.type, i.x+5, i.y + 20)
 	end

@@ -95,9 +95,21 @@ end
 
 function unitspawn.draw()
 	if unitspawn.active then
-		for _,unit in pairs(unitspawn.units) do 
+		for k,unit in pairs(unitspawn.units) do 
 			love.graphics.setColor(255,255,255)
-			love.graphics.rectangle("fill", unit.x, unit.y, unit.width,unit.height)
+			baseType = ''
+			bases = board.getBases()
+			for _,base in pairs(bases) do 
+				if base.spawning then 
+					baseType = base.type
+				end
+			end
+			if k == 2 then
+				love.graphics.rectangle("fill", unit.x, unit.y, unit.width,unit.height)
+				love.graphics.draw(sprites[baseType]['soldaat'], unit.x, unit.y, 0, 1.5)
+			else
+				love.graphics.rectangle("fill", unit.x, unit.y, unit.width,unit.height)
+			end
 			love.graphics.setColor(0,0,0)
 			love.graphics.rectangle("line", unit.x, unit.y, unit.width,unit.height)
 			love.graphics.print(unit.name, unit.x + 5, unit.y)
