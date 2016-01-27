@@ -28,6 +28,7 @@ function board.load()
 				tile.x = tile.size * i
 				tile.y = tile.size * j + 150
 			end
+
 			tile.unit = {}
 			tile.occupied = false
 			tile.f = false
@@ -92,7 +93,6 @@ function board.load()
 		end
 	end 
 end
-
 
 -- when u spawned a unit, this toggle to walk
 function board.walkFromBaseToggle(t, unit)
@@ -307,16 +307,15 @@ function board.unload(t)
 	t.occupied = true
 end
 
-
-
 function board.attack(x, y, t)
 	for i,tile in pairs(board.tiles) do
 		if tile.attacking then
 			-- do damage to unit 
 			t.unit.health = t.unit.health - tile.unit.damage
 			-- do damage to unit 
-			tile.unit.health = tile.unit.health - t.unit.damage
+			-- tile.unit.health = tile.unit.health - t.unit.damage
 			-- if unit's health is below 1
+			printTable(t)
 			if t.unit.health <= 0 then
 				-- clear tile 
 				board.clear(t)
@@ -327,7 +326,7 @@ function board.attack(x, y, t)
 				board.clear(tile)
 			end
 		end
-		board.reset(tile)		
+		board.reset(tile)
 	end
 end
 
@@ -342,8 +341,6 @@ function board.clear(t)
 	t.loading = false
 	t.loadable = false
 end
-
-
 
 function board.baseWalk(t, unit)
 	if t.walk then
@@ -379,8 +376,17 @@ function board.draw()
 
 		-- color the tiles with unit on it
 		if t.occupied then
-			love.graphics.setColor(240,230,140)
-			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+			if t.unit.type then
+				love.graphics.setColor(255, 255, 255)
+				if board.size == 8 then
+					love.graphics.draw(sprites[t.type][t.unit.type], t.x+10, t.y+10, 0, 2)
+				else 
+					love.graphics.draw(sprites[t.type][t.unit.type], t.x, t.y, 0)
+				end
+			else
+				love.graphics.setColor(240,230,140)
+			    love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+			end
 			love.graphics.setColor(0, 0,0)
 		end
 
@@ -402,21 +408,25 @@ function board.draw()
 
 		-- Owner ID on tile
 		if t.owner then
+			love.graphics.setColor(0,0,0)
 			love.graphics.print(t.owner, t.x + 1, t.y + 30)
 		end
 
 		-- original owner ID on tile
 		if t.originalOwner then
+			love.graphics.setColor(0,0,0)
 			love.graphics.print(t.originalOwner, t.x + 1, t.y + 20)
 		end
 
 		-- Unit damage on tile
 		if t.unit.damage then
+			love.graphics.setColor(0,0,0)
 			love.graphics.print('D ' .. t.unit.damage, t.x + 20, t.y + 30)
 		end
 
 		-- Unit health on tile
 		if t.unit.health then
+			love.graphics.setColor(0,0,0)
 			love.graphics.print('H ' .. t.unit.health, t.x + 20, t.y + 20)
 		end
 
@@ -432,7 +442,6 @@ function board.draw()
 			love.graphics.print(t.income, t.x, t.y+2)
 		end
 
-
 		-- if 
 		if t.unloading then
 			for i,unit in pairs(t.unit.passengers) do 
@@ -443,8 +452,6 @@ function board.draw()
 				love.graphics.print(unit.type, 100 + (80 * i) + 5, unit.y)
 			end
 		end
-
-
 
 		if t.walking then
 			love.graphics.print('walking!!!!', t.x+5, t.y + 20)
@@ -462,7 +469,8 @@ function board.draw()
 			love.graphics.setColor(0,0,0)
 		end
 
-		if t.owner == players:getActivePlayerId() then
+		if t.owner == players:getActivePlayerId() 
+		and t.base then
 			love.graphics.setColor(0, 255, 0, 100)
 			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
 		end
@@ -475,7 +483,6 @@ function board.draw()
 		-- end
 		
 		love.graphics.rectangle('fill', board.endTurn.x, board.endTurn.y, board.endTurn.width, board.endTurn.height)
-
 
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("line", t.x, t.y, t.size, t.size)
