@@ -13,8 +13,8 @@ function board.load()
 	board.endTurn.y = height/2 - board.endTurn.height
 
 	board.size = boardConfig['boardsize'] -- 8 mobile / 16 tablet / 24 computer
-	board.newTileX = love.graphics.getWidth( ) / (board.size + 1)
-  	board.newTileY = love.graphics.getHeight( ) / (board.size + 1)
+	board.newTileX = love.graphics.getWidth() / (board.size + 1)
+  	board.newTileY = love.graphics.getHeight() / (board.size + 1)
 	board.tilePadding = 0
   	board.newTileSize = math.min(board.newTileX - board.tilePadding, board.newTileY - board.tilePadding)
 
@@ -451,10 +451,16 @@ function board.draw()
 		if t.occupied then
 			if t.unit.type then
 				love.graphics.setColor(255, 255, 255)
+				if t.owner == 0 then
+				    image = sprites['bos'][t.unit.type]
+				else
+				    image = sprites[players:getBaseByPlayer(t.owner)][t.unit.type]
+				end
+				
 				if board.size == 8 then
-					love.graphics.draw(sprites[players:getBaseByPlayer(t.owner)][t.unit.type], t.x+10, t.y+10, 0, 2)
+					love.graphics.draw(image, t.x+10, t.y+10, 0, 2, 2)
 				else 
-					love.graphics.draw(sprites[players:getBaseByPlayer(t.owner)][t.unit.type], t.x, t.y, 0)
+					love.graphics.draw(image, t.x, t.y, 0)
 				end
 			else
 				love.graphics.setColor(240,230,140)
@@ -475,20 +481,22 @@ function board.draw()
 
 		-- Base tile other color
 		if t.base then
-			love.graphics.setColor(181, 90,60)
-			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+			love.graphics.setColor(255, 255, 255)
+			love.graphics.draw(sprites[players:getBaseByPlayer(t.owner)]['base'], t.x, t.y, 0)
+			-- love.graphics.setColor(181, 90,60)
+			-- love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 		end
 
 		-- Owner ID on tile
 		if t.owner then
 			love.graphics.setColor(0,0,0)
-			love.graphics.print(t.owner, t.x + 1, t.y + 30)
+			-- love.graphics.print(t.owner, t.x + 1, t.y + 30)
 		end
 
 		-- original owner ID on tile
 		if t.originalOwner then
 			love.graphics.setColor(0,0,0)
-			love.graphics.print(t.originalOwner, t.x + 1, t.y + 20)
+			-- love.graphics.print(t.originalOwner, t.x + 1, t.y + 20)
 		end
 
 		-- Unit damage on tile
@@ -505,8 +513,8 @@ function board.draw()
 
 		-- Unit type on tile
 		if t.unit.type then
-			love.graphics.setColor(0,0,0)
-			love.graphics.print(t.unit.type, t.x, t.y+2)
+			-- love.graphics.setColor(0,0,0)
+			-- love.graphics.print(t.unit.type, t.x, t.y+2)
 		end
 
 		-- Print tile income worth

@@ -120,11 +120,11 @@ function unitspawn.draw()
 					baseType = base.type
 				end
 			end
+			love.graphics.rectangle("fill", unit.x, unit.y, unit.width,unit.height)
 			if k == 2 then
-				love.graphics.rectangle("fill", unit.x, unit.y, unit.width,unit.height)
-				love.graphics.draw(sprites[baseType]['soldaat'], unit.x, unit.y, 0, 1.5)
+				love.graphics.draw(sprites[baseType]['soldier'], unit.x, unit.y, 0, 1.5)
 			else
-				love.graphics.rectangle("fill", unit.x, unit.y, unit.width,unit.height)
+				love.graphics.draw(sprites[baseType][unit.name], unit.x, unit.y, 0, 1.5)
 			end
 			love.graphics.setColor(0,0,0)
 			love.graphics.rectangle("line", unit.x, unit.y, unit.width,unit.height)
