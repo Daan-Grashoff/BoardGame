@@ -9,12 +9,12 @@ screens = {}
 
 function screens:load()
   -- currentScreen = "menu" 
-  currentScreen = "game"
+  currentScreen = "menu"
 
   help:load()
   -- if current screen == game
   -- load game directly 
-  game:load()
+  -- game:load()
   -- 
   menu:load()
   credits:load()

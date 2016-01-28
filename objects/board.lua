@@ -600,10 +600,10 @@ function board.draw()
 		end
 
 
-		if t.coast then
-			love.graphics.setColor(0,0,0, 100)
-			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
-		end
+		-- if t.coast then
+		-- 	love.graphics.setColor(0,0,0, 100)
+		-- 	love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+		-- end
 
 
 		-- if t.walking then
