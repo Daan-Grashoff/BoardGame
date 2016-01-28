@@ -482,7 +482,12 @@ function board.draw()
 		-- Base tile other color
 		if t.base then
 			love.graphics.setColor(255, 255, 255)
-			love.graphics.draw(sprites[players:getBaseByPlayer(t.owner)]['base'], t.x, t.y, 0)
+			if t.owner == 0 then
+			    image = sprites['bos']['base']
+			else
+			    image = sprites[players:getBaseByPlayer(t.owner)]['base']
+			end
+			love.graphics.draw(image, t.x, t.y, 0)
 			-- love.graphics.setColor(181, 90,60)
 			-- love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 		end
@@ -536,7 +541,7 @@ function board.draw()
 
 		if t.walking then
 			-- debug show tile is walking
-			love.graphics.print('walking!!!!', t.x+5, t.y + 20)
+			-- love.graphics.print('walking!!!!', t.x+5, t.y + 20)
 		elseif t.attackable then 
 			-- show tile is attackable (able to attack a other unit)
 			love.graphics.setColor(255, 0, 0, 100)
