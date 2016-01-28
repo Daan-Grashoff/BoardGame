@@ -135,8 +135,6 @@ function players:getPlayerEnergy()
 	print(currentPlayer.currentEnergy)
 end
 
-
-
 function players:buyItem(itemPrice)
 	freq = players:getActivePlayer().freq
 	if not itemPrice then

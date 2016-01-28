@@ -132,17 +132,24 @@ function unitspawn.draw()
 		end
 	end
 
-	for _,t in pairs(board.tiles) do
+	for k,t in pairs(board.tiles) do
 		-- if boat is next to ground, and can load
 		-- draw spawn buttons to let the units out
 		if t.unloadboatspawning then
-			for i,unit in pairs(t.unit.passengers) do 
+			for i,unit in pairs(t.unit.passengers) do 			
+				if t.owner == 0 then
+				    image = sprites['bos'][t.unit.type]
+				else
+				    image = sprites[players:getBaseByPlayer(t.owner)][unit.type]
+				end
 				-- set color white
 				love.graphics.setColor(255,255,255)
 				love.graphics.rectangle("fill", t.x + (80 * (i-1)), t.y + tile.size, 80, 80)
+				-- set sprite to block
+				love.graphics.draw(image, t.x + (80 * (i-1)), t.y + tile.size, 0, 1.5)
 				-- set color black
-				love.graphics.setColor(0,0,0)
 				love.graphics.rectangle("line", t.x + (80 * (i-1)), t.y + tile.size, 80,80)
+				love.graphics.setColor(0,0,0)
 				-- draw unit type name
 				love.graphics.print(unit.type, t.x + (80 * (i-1)) + 5, t.y + tile.size)
 			end

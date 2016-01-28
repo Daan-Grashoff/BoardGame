@@ -29,9 +29,9 @@ function love:keypressed(key)
   end
 
   -- exit game
-  if key == 'escape' then
-    love.event.quit()
-  end  
+  -- if key == 'escape' then
+  --   love.event.quit()
+  -- end  
 end
 
 function love.mousereleased(x, y, button)

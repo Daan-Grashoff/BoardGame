@@ -75,17 +75,15 @@ function board.load()
 				tile.base = false
 			end
 
-
-			--	around land
-			if (i < (board.size / 3) + 1 
-			and j < (board.size / 3) + 1
-			and i > (board.size / 3)) 
-			or (j < (board.size / 3) + 1 
-			and i < (board.size / 3) + 1
-			and j > (board.size / 3)) then
-				tile.coast = true
-			end
-
+			-- --	around land
+			-- if (i < (board.size / 3) + 1 
+			-- and j < (board.size / 3) + 1
+			-- and i > (board.size / 3)) 
+			-- or (j < (board.size / 3) + 1 
+			-- and i < (board.size / 3) + 1
+			-- and j > (board.size / 3)) then
+			-- 	tile.coast = true
+			-- end
 
 			if i < (board.size / 3) and j < (board.size / 3) then
 				tile.originalOwner = players:getPlayerByBase('bos')
@@ -459,7 +457,9 @@ function board.draw()
 				
 				if board.size == 8 then
 					love.graphics.draw(image, t.x+10, t.y+10, 0, 2, 2)
-				else 
+				elseif board.size == 24 then
+					love.graphics.draw(image, t.x, t.y, 0, 0.75, 0.75)
+				else
 					love.graphics.draw(image, t.x, t.y, 0)
 				end
 			else
@@ -506,14 +506,16 @@ function board.draw()
 
 		-- Unit damage on tile
 		if t.unit.damage then
-			love.graphics.setColor(0,0,0)
-			love.graphics.print('D ' .. t.unit.damage, t.x + 20, t.y + 30)
+			-- love.graphics.setColor(0,0,0)
+			love.graphics.setColor(255,255,0)
+			love.graphics.print('A ' .. t.unit.damage, t.x + 20, t.y + 20)
 		end
 
 		-- Unit health on tile
 		if t.unit.health then
-			love.graphics.setColor(0,0,0)
-			love.graphics.print('H ' .. t.unit.health, t.x + 20, t.y + 20)
+			-- love.graphics.setColor(0,0,0)
+			love.graphics.setColor(255,0,0)
+			love.graphics.print('H ' .. t.unit.health, t.x + 20, t.y + 30)
 		end
 
 		-- Unit type on tile
@@ -546,21 +548,21 @@ function board.draw()
 			-- show tile is attackable (able to attack a other unit)
 			love.graphics.setColor(255, 0, 0, 100)
 			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
-		elseif t.loadable then
+		elseif t.loadable and #t.unit.passengers < 3 then
 			-- show tile is loadable (able to load units in boat)
-			love.graphics.setColor(0, 0,255)
+			love.graphics.setColor(0, 0,255, 100)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 			love.graphics.setColor(0,0,0)
 		elseif t.unloadable then
 			-- show tile is unloadable (able to unload units on the ground)
-			love.graphics.setColor(255,255,0)
+			love.graphics.setColor(255,255,0, 100)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 			love.graphics.setColor(0,0,0)
 		end
 
 		if t.owner == players:getActivePlayerId() 
 		and t.base then
-			love.graphics.setColor(0, 255, 0, 100)
+			love.graphics.setColor(0, 255, 0, 55)
 			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
 		end
 
