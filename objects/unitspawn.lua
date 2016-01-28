@@ -49,7 +49,21 @@ function unitspawn.update()
 
 end
 
+
+function clone(t) -- deep-copy a table
+    local target = {}
+    for k, v in pairs(t) do
+        if type(v) == "table" then
+            target[k] = clone(v)
+        else
+            target[k] = v
+        end
+    end
+    return target
+end
+
 function unitspawn.spawn(tile, unit)
+	-- tile.unit = clone(unit)
 	tile.unit = unit
 	tile.occupied = true
 	unitspawn.show(tile)
@@ -61,7 +75,9 @@ function unitspawn.show(tile)
 	board.getBases()
 	for i,tile in pairs(board.tiles) do
 		tile.spawning = false
+		board.reset(tile)
 	end
+
 
 	if not unitspawn.active then
 		unitspawn.active = true

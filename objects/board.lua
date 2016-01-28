@@ -75,6 +75,18 @@ function board.load()
 				tile.base = false
 			end
 
+
+			--	around land
+			if (i < (board.size / 3) + 1 
+			and j < (board.size / 3) + 1
+			and i > (board.size / 3)) 
+			or (j < (board.size / 3) + 1 
+			and i < (board.size / 3) + 1
+			and j > (board.size / 3)) then
+				tile.coast = true
+			end
+
+
 			if i < (board.size / 3) and j < (board.size / 3) then
 				tile.originalOwner = players:getPlayerByBase('bos')
 				if tile.base == true then 
@@ -195,6 +207,7 @@ function board.unloadBoatSpawn(t)
 
 	end
 end
+
 
 function board.spawn(t, unit, count, owner)
 	for i,tile in pairs(board.tiles) do
@@ -365,7 +378,7 @@ function board.attack(x, y, t)
 			-- do damage to unit 
 			t.unit.health = t.unit.health - tile.unit.damage
 			-- do damage to unit 
-			-- tile.unit.health = tile.unit.health - t.unit.damage
+			tile.unit.health = tile.unit.health - t.unit.damage
 			-- if unit's health is below 1
 			printTable(t)
 			if t.unit.health <= 0 then
@@ -385,7 +398,9 @@ end
 function board.clear(t)
 	t.occupied = false
 	t.unit = {}
-	t.owner = 0
+	if not t.base then
+		t.owner = 0
+	end
 	t.attackable = false
 	t.attacking = false
 	t.walkable = false
@@ -501,15 +516,15 @@ function board.draw()
 		end
 
 		-- if 
-		if t.unloading then
-			for i,unit in pairs(t.unit.passengers) do 
-				love.graphics.setColor(255,255,255)
-				love.graphics.rectangle("fill", 100 + (80 * i), 0, 80, 80)
-				love.graphics.setColor(0,0,0)
-				love.graphics.rectangle("line", 100 + (80 * i), 0, 80,80)
-				love.graphics.print(unit.type, 100 + (80 * i) + 5, unit.y)
-			end
-		end
+		-- if t.unloading then
+		-- 	for i,unit in pairs(t.unit.passengers) do 
+		-- 		love.graphics.setColor(255,255,255)
+		-- 		love.graphics.rectangle("fill", 100 + (80 * i), 0, 80, 80)
+		-- 		love.graphics.setColor(0,0,0)
+		-- 		love.graphics.rectangle("line", 100 + (80 * i), 0, 80,80)
+		-- 		love.graphics.print(unit.type, 100 + (80 * i) + 5, unit.y)
+		-- 	end
+		-- end
 
 		if t.walking then
 			-- debug show tile is walking
@@ -574,6 +589,12 @@ function board.draw()
 				love.graphics.print('Freq ' .. playerStats.freq, xpos, t.y + 15)
 				love.graphics.print('Income ' .. playerStats.income, xpos, t.y + 30)
 			end
+		end
+
+
+		if t.coast then
+			love.graphics.setColor(0,0,0, 100)
+			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 		end
 
 
