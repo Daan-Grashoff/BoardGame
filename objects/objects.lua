@@ -19,7 +19,7 @@ function objects.load()
 			item.damage = 0
 			item.health = 2
 		elseif j == 1 then
-			item.type = 'soldaat'
+			item.type = 'soldier'
 			item.walkRange = 100
 			item.attackRange = 1
 			item.damage = 1
@@ -48,7 +48,7 @@ function objects.load()
 			-- table.insert(item.passengers, item)
 		end
 
-		-- item.type = 'soldaat'
+		-- item.type = 'soldier'
 		-- item.type = 'robot'
 		-- item.type = 'tank'
 		-- item.type = 'boot'
@@ -115,16 +115,16 @@ function objects.draw(self)
 			love.graphics.draw(sprites['bos'][i.type], i.x, i.y, 0, 2)
 		elseif k == 2 then
 			love.graphics.setColor(255,255,255)
-			love.graphics.draw(sprites['bos']['soldaat'], i.x, i.y, 0, 2)
+			love.graphics.draw(sprites['bos']['soldier'], i.x, i.y, 0, 2)
 		elseif k == 3 then
 			love.graphics.setColor(255,255,255)
 			love.graphics.draw(sprites['bos']['tank'], i.x, i.y, 0, 2)
 		elseif k == 4 then
 			love.graphics.setColor(255,255,255)
-			love.graphics.draw(sprites['bos']['tank'], i.x, i.y, 0, 2)
+			love.graphics.draw(sprites['bos']['robot'], i.x, i.y, 0, 2)
 		elseif k == 5 then
 			love.graphics.setColor(255,255,255)
-			love.graphics.draw(sprites['bos']['tank'], i.x, i.y, 0, 2)
+			love.graphics.draw(sprites['bos']['boot'], i.x, i.y, 0, 2)
 		else
 			break
 			-- love.graphics.setColor(255, 0, 0)
