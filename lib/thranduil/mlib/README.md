@@ -3,9 +3,9 @@ MLib
 
 __MLib__ is a math and collisions library written in Lua. It's aim is to be __robust__ and __easy to use__. 
 
-##Downloading
-You can download the latest __stable__ version of MLib by downloading the latest [release](https://github.com/davisdude/mlib/releases/).
-You can download the latest __working__ version of MLib by downloading the latest [commit](https://github.com/davisdude/mlib/commits/master/).
+##Downld
+You can download the latest __stable__ version of MLib by downld the latest [release](https://github.com/davisdude/mlib/releases/).
+You can download the latest __working__ version of MLib by downld the latest [commit](https://github.com/davisdude/mlib/commits/master/).
 
 ##Implementing
 To use MLib, simply place [mlib.lua](mlib.lua) inside the desired folder in your project. Then use the `require 'path.to.mlib'` to use any of the functions.

@@ -1,7 +1,6 @@
 require 'screens.screensManager'
 require 'lib.functions'
 
-
 function love.load()
 
 	width = 1080
@@ -62,7 +61,7 @@ function love.mousepressed(x, y, button)
     end
 
     for _,t in pairs(board.tiles) do
-      if t.unloadboatspawning then
+      if t.unbsn then
         for i,unit in pairs(t.unit.passengers) do       
           if x > t.x + (80 * (i-1))
           and x < t.x + (80 * (i-1)) + 80
@@ -80,7 +79,7 @@ function love.mousepressed(x, y, button)
       and y > t.y 
       and y < t.y + t.size then
 
-        if t.originalOwner ~= 0 then 
+        if t.orgown ~= 0 then 
           -- printTable(players:getPlayerByID(t.originalOwner))
           -- printTable(players:getPlayerByID(t.originalOwner).tiles)
         end
@@ -105,12 +104,12 @@ function love.mousepressed(x, y, button)
 
 
         -- check if tile is attackable
-        if t.attackable and players:attack() then
+        if t.attb and players:attack() then
           board.attack(x, y, t)
         end
 
         -- check if tile is attackable
-        if t.unloadable then
+        if t.ulb then
           board.unloadBoatSpawn(t)
         end
 
@@ -140,7 +139,7 @@ function love.mousepressed(x, y, button)
         -- check if tile contains boat
         -- check if boat is not full
         -- check if boat is urs
-        if t.loadable
+        if t.lb
         and t.owner == players:getActivePlayerId() 
         and t.unit.type == 'boot'
         and not t.base
@@ -185,9 +184,22 @@ function love.mousepressed(x, y, button)
             -- check if tile is spawning
             -- check if tile is not occupied
             -- check if enough money and buy's item
+            if t.type == 0 then
+              tiletype = 'moeras'
+            elseif t.type == 1 then
+              tiletype = 'bos'
+            elseif t.type == 2 then
+              tiletype = 'goldmine'
+            elseif t.type == 3 then
+              tiletype = 'ijs'
+            elseif t.type == 4 then
+              tiletype = 'water'
+            else
+              tiletype = 'woestijn'
+            end
             if t.spawning == true 
             and not t.occupied 
-            and players:buyItem(prices[t.type][unit.name]) then
+            and players:buyItem(prices[tiletype][unit.name]) then
               -- spawn unit on tile
               unitspawn.spawn(t, objects.items[unit.n + 1])
               -- toggle all walkables on board

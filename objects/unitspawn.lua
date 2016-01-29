@@ -116,8 +116,20 @@ function unitspawn.draw()
 			baseType = ''
 			bases = board.getBases()
 			for _,base in pairs(bases) do 
-				if base.spawning then 
-					baseType = base.type
+				if base.spawning then
+					if base.type == 0 then
+						baseType = 'moeras'
+					elseif base.type == 1 then
+						baseType = 'bos'
+					elseif base.type == 2 then
+						baseType = 'goldmine'
+					elseif base.type == 3 then
+						baseType = 'ijs'
+					elseif base.type == 4 then
+						baseType = 'water'
+					else
+						baseType = 'woestijn'
+					end
 				end
 			end
 			love.graphics.rectangle("fill", unit.x, unit.y, unit.width,unit.height)
@@ -135,7 +147,7 @@ function unitspawn.draw()
 	for k,t in pairs(board.tiles) do
 		-- if boat is next to ground, and can load
 		-- draw spawn buttons to let the units out
-		if t.unloadboatspawning then
+		if t.unbsn then
 			for i,unit in pairs(t.unit.passengers) do 			
 				if t.owner == 0 then
 				    image = sprites['bos'][t.unit.type]
