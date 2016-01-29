@@ -15,8 +15,8 @@ function SwampTile:new(id, color, boardSize, image, size, type, f)
 
   self.selected = false
 
-  offsetX = (self.m_id % (self.m_boardSize + 1)) * (self.m_size * 2)
-  offsetY = math.floor((self.m_id / (self.m_boardSize + 1))) * (self.m_size * 2)
+  offsetX = (self.m_id % (self.m_boardSize + 1)) * (self.m_size * 2) + 150
+  offsetY = math.floor((self.m_id / (self.m_boardSize + 1))) * (self.m_size * 2) + 1
 
   if f == 'c' then
     self.f = {
