@@ -13,7 +13,7 @@ function game:load()
 	settings:load()
 
 	if settings:getConfigByKey("game_sound") then
-		TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
+		--TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
 	end
 
 	names = {
