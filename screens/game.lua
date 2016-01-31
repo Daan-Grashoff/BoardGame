@@ -1,7 +1,6 @@
 require "objects.settings"
 require "objects.board"
 require "objects.objects"
-require "objects.cards"
 require "objects.player"
 require "objects.unitspawn"
 require "lib.TEsound"
@@ -35,7 +34,7 @@ end
 function game:update(dt)
 	-- if love.window.isVisible() == false then
 	-- 	TEsound.pause(1)
-	-- else 
+	-- else
 	-- 	TEsound.resume(1)
 	-- end
 	objects.update()
