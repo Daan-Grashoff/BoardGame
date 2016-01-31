@@ -11,7 +11,7 @@ function players:generate(names)
 		players[i] = {
 			id = i,
 			name = names[i],
-			base = 'desert',
+			base = 'bos',
 			freq = startAmoundFreq,
 			energy = startAmoundEnergy,
 			currentEnergy = startAmoundEnergy,

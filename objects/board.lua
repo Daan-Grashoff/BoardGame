@@ -746,7 +746,7 @@ function board.unloadToggle(x,y,t)
 		end
 
 		for i,t in pairs(Board.tiles) do
-			t:draw()
+			--t:draw()
 			--love.graphics.setColor(0,0,0)
 			--love.graphics.rectangle("line", ((i % (Board.size + 1)) * tile.size) + 0, math.floor((i / (Board.size + 1))) * tile.size, tile.size, tile.size)
 		end
