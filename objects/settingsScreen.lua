@@ -1,9 +1,9 @@
 settings = require 'objects.settings'
 
-local objScreen = UI.Object:extend('Chatbox')
+local objScreen = UI.Object:extend('objScreen')
 
 function objScreen:new(x, y, w, h)
-	settings:load()
+	--settings:load()
 
 	UI.DefaultTheme = Theme
 	self.main_frame = UI.Frame(x, y, w, h, {draggable = false, drag_margin = 20, disable_directional_selection = true, disable_tab_selection = true})

@@ -7,12 +7,11 @@ startingCard = "bos"
 
 function players:generate(names)
 	playerCount = amountPlayers
-	cards = card.shuffleCards()
 	for i=1,playerCount do
 		players[i] = {
 			id = i,
 			name = names[i],
-			base = cards[i],
+			base = 'desert',
 			freq = startAmoundFreq,
 			energy = startAmoundEnergy,
 			currentEnergy = startAmoundEnergy,
@@ -26,7 +25,7 @@ function players:generate(names)
 			},
 			active = false
 		}
-		players[i]['tiles'][players[i]['base']] = 1
+		--players[i]['tiles'][players[i]['base']] = 1
 		if players[i]['base'] == startingCard then
 			players[i]['active'] = true
   			currentPlayer = players[i]
@@ -132,7 +131,6 @@ function players:getPlayerEnergy()
 	else
 		return false
 	end
-	print(currentPlayer.currentEnergy)
 end
 
 function players:buyItem(itemPrice)

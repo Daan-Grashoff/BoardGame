@@ -9,7 +9,6 @@ scale = 1
 
 function menu:load()
 	UI.registerEvents()
-
 	startButton = UI.Button(25, 25 * scale, 500 * scale, 50 * scale, {extensions = {Menu.StartButton}, draggable = false})
 	settingsButton = UI.Button(900, 600, 128, 128 * scale, {extensions = {Menu.SettingsButton}, draggable = false})
 	creditsButton = UI.Button(25, 100 * scale, 500 * scale, 50 * scale, {extensions = {Menu.CreditsButton}, draggable = false})
@@ -34,16 +33,16 @@ function menu:update(dt)
 	quitButton:update(dt)
 	if startButton.released then
 		if GAME_LAUNCHED == false then
-	    	currentScreen = "selection"
+				screens:set("selection")
 	    else
-	        currentScreen = "game"
+	      screens:set("game")
 		end
 	elseif creditsButton.released then
-		currentScreen = "credits"
+		screens:set("credits")
 	elseif helpButton.released then
-		currentScreen = "help"
+		screens:set("help")
 	elseif settingsButton.released then
-		currentScreen = "settings"
+		screens:set("settings")
 	elseif quitButton.released then
 		love.event.quit()
 	end

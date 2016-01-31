@@ -30,7 +30,7 @@ function love:keypressed(key)
   -- exit game
   -- if key == 'escape' then
   --   love.event.quit()
-  -- end  
+  -- end
 end
 
 function love.mousereleased(x, y, button)
@@ -62,7 +62,7 @@ function love.mousepressed(x, y, button)
 
     for _,t in pairs(board.tiles) do
       if t.unbsn then
-        for i,unit in pairs(t.unit.passengers) do       
+        for i,unit in pairs(t.unit.passengers) do
           if x > t.x + (80 * (i-1))
           and x < t.x + (80 * (i-1)) + 80
           and y > t.y + tile.size
@@ -73,13 +73,13 @@ function love.mousepressed(x, y, button)
         end
       end
 
-      -- select tile 
+      -- select tile
       if x > t.x
       and x < t.x + t.size
-      and y > t.y 
+      and y > t.y
       and y < t.y + t.size then
 
-        if t.orgown ~= 0 then 
+        if t.orgown ~= 0 then
           -- printTable(players:getPlayerByID(t.originalOwner))
           -- printTable(players:getPlayerByID(t.originalOwner).tiles)
         end
@@ -96,8 +96,8 @@ function love.mousepressed(x, y, button)
 
         -- check if tile is occupied
         -- check if owner of tile is active player
-        if t.occupied 
-        and t.owner == players:getActivePlayerId() 
+        if t.occupied
+        and t.owner == players:getActivePlayerId()
         and players:getActivePlayerEnergy() ~= 0 then
           board.attackToggle(x, y, t)
         end
@@ -116,7 +116,7 @@ function love.mousepressed(x, y, button)
 
         -- check if tile is occupied
         -- check if owner of tile is active player
-        if t.occupied 
+        if t.occupied
         and t.owner == players:getActivePlayerId()
         and players:getActivePlayerEnergy() ~= 0 then
           board.walkToggle(x, y, t)
@@ -125,7 +125,7 @@ function love.mousepressed(x, y, button)
 
         -- check if tile is occupied
         -- check if owner of tile is active player
-        if t.occupied 
+        if t.occupied
         and t.owner == players:getActivePlayerId()
         and players:getActivePlayerEnergy() ~= 0
         and t.unit.type == 'boot'
@@ -140,31 +140,31 @@ function love.mousepressed(x, y, button)
         -- check if boat is not full
         -- check if boat is urs
         if t.lb
-        and t.owner == players:getActivePlayerId() 
+        and t.owner == players:getActivePlayerId()
         and t.unit.type == 'boot'
         and not t.base
-        and #t.unit.passengers < 3 then 
+        and #t.unit.passengers < 3 then
           board.loadBoat(x, y, t)
         end
 
         -- check if tile is walkable
         -- check if tile is not occupied
         -- check if its no base tile
-        if t.walkable 
+        if t.walkable
         and not t.occupied
-        and not t.base 
+        and not t.base
         and players:walk() then
           -- walk function
           board.walk(x, y, t, lastTile, players:getActivePlayerId())
         end
 
-        
+
         -- check click on base or barak
         -- check if no units on tile
         -- check if owner of tile is active player
         -- check if owner has energy
-        if (t.base or t.barak) 
-        and not t.occupied 
+        if (t.base or t.barak)
+        and not t.occupied
         and t.owner == players:getActivePlayerId()
         and players:getActivePlayerEnergy() ~= 0 then
           unitspawn.show(t)
@@ -173,11 +173,11 @@ function love.mousepressed(x, y, button)
     end
 
 
-    for i,unit in pairs(unitspawn.units) do       
+    for i,unit in pairs(unitspawn.units) do
       if unitspawn.active then
         if x > unit.x
         and x < unit.x + unit.width
-        and y > unit.y 
+        and y > unit.y
         and y < unit.y + unit.height then
           for _,t in pairs(board.tiles) do
 
@@ -197,8 +197,8 @@ function love.mousepressed(x, y, button)
             else
               tiletype = 'woestijn'
             end
-            if t.spawning == true 
-            and not t.occupied 
+            if t.spawning == true
+            and not t.occupied
             and players:buyItem(prices[tiletype][unit.name]) then
               -- spawn unit on tile
               unitspawn.spawn(t, objects.items[unit.n + 1])
@@ -221,7 +221,7 @@ end
 
 
 function love:update(dt)
-  dt = math.min(1/60, love.timer.getDelta())
+  --dt = math.min(1/60, love.timer.getDelta())
   --print(love.timer.getDelta())
   --screens:update(dt)
   UPDATE_SCREENS(dt)

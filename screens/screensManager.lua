@@ -3,60 +3,59 @@ require 'screens.help'
 require 'screens.game'
 require 'screens.credits'
 require 'screens.selection'
-require 'screens.settings'
+require 'screens.settingsScreen'
 
-screens = {}
+screens = {currentScreen = "menu"}
 
 function screens:load()
-  -- currentScreen = "menu" 
-  currentScreen = "menu"
+  -- currentScreen = "menu"
 
   help:load()
   -- if current screen == game
-  -- load game directly 
+  -- load game directly
   -- game:load()
-  -- 
+  --
   menu:load()
   credits:load()
   settingsScreen:load()
 end
 
 function screens:set(screen)
-  currentScreen = screen
+  screens.currentScreen = screen
 end
 
 function screens:on(screen)
-  return currentScreen == screen
+  return screens.currentScreen == screen
 end
 
 function screens:update(dt)
-  if currentScreen == 'menu' then
+  if screens.currentScreen == 'menu' then
     menu.update(dt)
-  elseif currentScreen == 'game' then
+  elseif screens.currentScreen == 'game' then
     game.update(dt)
-  elseif currentScreen == 'selection' then
+  elseif screens.currentScreen == 'selection' then
     selection.update(dt)
-  elseif currentScreen == 'credits' then
+  elseif screens.currentScreen == 'credits' then
     credits.update(dt)
-  elseif currentScreen == 'help' then
+  elseif screens.currentScreen == 'help' then
     help.update(dt)
-  elseif currentScreen == 'settings'then
+  elseif screens.currentScreen == 'settings'then
     settingsScreen.update(dt)
   end
 end
 
 function screens:draw()
-  if currentScreen == 'menu' then
+  if screens.currentScreen == 'menu' then
 		menu.draw()
-  elseif currentScreen == 'game' then
+  elseif screens.currentScreen == 'game' then
 		game.draw()
-  elseif currentScreen == 'credits' then
+  elseif screens.currentScreen == 'credits' then
 		credits.draw()
-  elseif currentScreen == 'selection' then
+  elseif screens.currentScreen == 'selection' then
     selection.draw()
-  elseif currentScreen == 'help' then
+  elseif screens.currentScreen == 'help' then
 		help.draw()
-  elseif currentScreen == 'settings' then
+  elseif screens.currentScreen == 'settings' then
     settingsScreen.draw()
   end
 end

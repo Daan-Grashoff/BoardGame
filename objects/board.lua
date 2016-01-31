@@ -539,12 +539,12 @@ function board.unloadToggle(x,y,t)
 		return bases
 	end
 
-	printing = true
+	--printing = true
 	function board.draw()
 		if printing == true then
-			print(Tserial.pack(board.tiles))
-			print(string.len(Tserial.pack(board.tiles)))
-			printing = false
+			--print(Tserial.pack(board.tiles))
+			--print(string.len(Tserial.pack(board.tiles)))
+			--printing = false
 		end
 		for _,t in pairs(board.tiles) do
 
@@ -683,14 +683,6 @@ function board.unloadToggle(x,y,t)
 			and t.base then
 				love.graphics.setColor(0, 255, 0, 55)
 				love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
-			end
-
-
-			-- ??
-			if players:getPlayerEnergy() then
-				love.graphics.setColor(0,0,0)
-			else
-				love.graphics.setColor(0,255, 0)
 			end
 
 
