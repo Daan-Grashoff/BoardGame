@@ -63,8 +63,8 @@ function clone(t) -- deep-copy a table
 end
 
 function unitspawn.spawn(tile, unit)
-	-- tile.unit = clone(unit)
-	tile.unit = unit
+	tile.unit = clone(unit)
+	-- tile.unit = unit
 	tile.occupied = true
 	unitspawn.show(tile)
 end

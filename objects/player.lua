@@ -26,7 +26,6 @@ function players:generate(names)
 			},
 			active = false
 		}
-		players[i]['tiles'][players[i]['base']] = 1
 		if players[i]['base'] == startingCard then
 			players[i]['active'] = true
   			currentPlayer = players[i]
