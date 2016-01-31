@@ -1,17 +1,19 @@
 require 'lib.functions'
 
+player = {}
 players = {}
 startAmoundFreq = 10000
 startAmoundEnergy = 100
 startingCard = "bos"
 
-function players:generate(names)
-	playerCount = amountPlayers
-	for i=1,playerCount do
-		players[i] = {
+
+
+
+function player:generate(names, types, playersList, i)
+		playersList[i] = {
 			id = i,
-			name = names[i],
-			base = 'bos',
+			name = names[i + 1],
+			base = types[i + 1],
 			freq = startAmoundFreq,
 			energy = startAmoundEnergy,
 			currentEnergy = startAmoundEnergy,
@@ -25,17 +27,22 @@ function players:generate(names)
 			},
 			active = false
 		}
-		--players[i]['tiles'][players[i]['base']] = 1
-		if players[i]['base'] == startingCard then
-			players[i]['active'] = true
-  			currentPlayer = players[i]
+		if playersList[i]['base'] == startingCard then
+			playersList[i]['active'] = true
+  			currentPlayer = playersList[i]
 		end
+	if #names > (#playersList + 1) then
+		names[i + 1] = nil
+		types[i + 1] = nil
+		player:generate(names, types, playersList, i + 1)
+	else
+		return playersList
 	end
-	return players
+	return playersList
 end
 
 function players:update(activePlayer)
-	for k,player in ipairs(players) do
+	for k,player in ipairs(playerList) do
 		if player['active'] == true then
 			player.income = 0
 		    for _,tile in pairs(board.tiles) do
@@ -65,21 +72,21 @@ function players:update(activePlayer)
 			end
 			player.currentEnergy = player.energy
 			player.active = false
-			if k == #players then
+			if k == #playerList then
 				k = 0
 			end
-			players[k+1].active = true
-			currentPlayer = players[k+1]
+			playerList[k+1].active = true
+			currentPlayer = playerList[k+1]
 			break
 		end
 	end
-	return players
+	return playerList
 end
 
 
 
 function players:getActivePlayerId()
-	for k,player in ipairs(players) do
+	for k,player in ipairs(playerList) do
 		if player['active'] == true then
 			return player.id
 		end
@@ -87,15 +94,15 @@ function players:getActivePlayerId()
 end
 
 function players:getPlayerByID(id)
-	return players[id]
+	return playerList[id]
 end
 
 function players:getBaseByPlayer(id)
-	return players[id].base
+	return playerList[id].base
 end
 
 function players:getPlayerByBase(base)
-	for i,player in ipairs(players) do
+	for i,player in ipairs(playerList) do
 		if player.base == base then
 			return player.id
 		end
@@ -149,7 +156,7 @@ function players:buyItem(itemPrice)
 end
 
 function players:getActivePlayer()
-	for k,player in ipairs(players) do
+	for k,player in ipairs(playerList) do
 		if player['active'] == true then
 			return player
 		end
@@ -158,7 +165,7 @@ end
 
 
 function players:getActivePlayerEnergy()
-	for k,player in ipairs(players) do
+	for k,player in ipairs(playerList) do
 		if player['active'] == true then
 			return player.currentEnergy
 		end
