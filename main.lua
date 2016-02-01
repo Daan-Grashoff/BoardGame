@@ -53,9 +53,17 @@ end
 function love.mousereleased(x, y, button)
 	if (screens:on("game")) then
 		if multiplayer.event then
+			packTable = {}
+			packTable.input = "mousereleased"
+			packTable.x = x
+			packTable.y = y
+
+			packTable.button = button
 			multiplayer.event.type = "receive"
+			multiplayer.event.data = Tserial.pack(packTable)
+			
 			multiplayer.send(multiplayer.host, multiplayer.server, multiplayer.event)
-			multiplayer.service(multiplayer.host, multiplayer.server)
+			--multiplayer.service(multiplayer.host, multiplayer.server)
 		end
 		for i,object in pairs(objects.items) do
 			if object.dragging.active then
@@ -67,9 +75,11 @@ function love.mousereleased(x, y, button)
 			end
 		end
 	end
+	multiplayer.test = true
 end
 
 function love.mousepressed(x, y, button)
+	multiplayer.test = false
 	if (screens:on("game")) then
 		if x > board.endTurn.x
 		and x < board.endTurn.x + board.endTurn.width
@@ -270,14 +280,15 @@ function love.mousepressed(x, y, button)
 	end
 end
 
-
 function love:update(dt)
 	--dt = math.min(1/60, love.timer.getDelta())
 	--print(love.timer.getDelta())
 	--screens:update(dt)
 	UPDATE_SCREENS(dt)
 	if screens:on("game") then
-		--multiplayer.service(multiplayer.host, multiplayer.server)
+		if multiplayer.turn == false then
+			multiplayer.service(multiplayer.host, multiplayer.server)
+		end
 	end
 end
 
