@@ -4,7 +4,6 @@ unitspawn = {}
 function unitspawn.load()
 	unitspawn.active = false
 	unitspawn.units = {}
-	units = {}
 	for i = 0, 4 do 
 		unit = {}
 		unit.n = i
@@ -14,27 +13,36 @@ function unitspawn.load()
 		unit.height = 80
 		if i == 0 then
 			unit.name = 'worker'
-			unit.spawnBase = true
-			unit.spawnHarbor = false
+			unit.spawnpoint = {
+				'base',
+				'barak'
+			}
 		elseif i == 1 then
 			unit.name = 'soldier'
-			unit.spawnBase = true
-			unit.spawnHarbor = false
+			unit.spawnpoint = {
+				'base',
+				'barak'
+			}
 		elseif i == 2 then
 			unit.name = 'tank'
-			unit.spawnBase = true
-			unit.spawnHarbor = false
+			unit.spawnpoint = {
+				'base',
+				'barak'
+			}
 		elseif i == 3 then
 			unit.name = 'robot'
-			unit.spawnBase = true
-			unit.spawnHarbor = false
+			unit.spawnpoint = {
+				'barak'
+			}
 		else
 			unit.name = 'boot'
-			unit.spawnBase = false
-			unit.spawnHarbor = true
+			unit.spawnpoint = {
+				'barak'
+			}
 		end
 		table.insert(unitspawn.units, unit)
 	end
+
 end
 
 function unitspawn.update()
@@ -55,23 +63,26 @@ function clone(t) -- deep-copy a table
 end
 
 function unitspawn.spawn(tile, unit)
-	tile.unit = clone(unit)
+	-- tile.unit = clone(unit)
+	tile.unit = unit
 	tile.occupied = true
 	unitspawn.show(tile)
 end
 
 
 function unitspawn.show(tile)
+
+	board.getBases()
+	for i,tile in pairs(board.tiles) do
+		tile.spawning = false
+		board.reset(tile)
+	end
+
+
 	if not unitspawn.active then
-		for i,tile in pairs(board.tiles) do
-			-- clear board
-			tile.spawning = false
-		end
 		unitspawn.active = true
 		tile.spawning = true
-
-		units = spawnableUnits(tile)
-		for i,unit in pairs(units) do 
+		for i,unit in pairs(unitspawn.units) do 
 			if tile.x > width/2 then 
 				unit.x = tile.x - unit.width * (i-1) - 40
 			else
@@ -89,33 +100,7 @@ function unitspawn.show(tile)
 		unitspawn.active = false
 		tile.spawning = false
 	end
-end
 
-function spawnableUnits(tile)
-	_spawnableUnits = {}	
-	if tile.base then
-		for i, unit in pairs(unitspawn.units) do
-			if unit.spawnBase then
-				table.insert(_spawnableUnits, unit)
-			end
-		end
-	elseif tile.harbor then
-		for i, unit in pairs(unitspawn.units) do
-			if unit.spawnHarbor then
-				table.insert(_spawnableUnits, unit)
-			end
-		end
-	end
-	return _spawnableUnits
-end
-
-function containsValue(table, key)
-    for _,item in pairs(table) do
-    	if item == key then
-    		return table
-    	end
-    end
-    return false
 end
 
 function unitspawn.disable()
@@ -126,7 +111,7 @@ end
 
 function unitspawn.draw()
 	if unitspawn.active then
-		for k,unit in pairs(units) do 
+		for k,unit in pairs(unitspawn.units) do 
 			love.graphics.setColor(255,255,255)
 			baseType = ''
 			bases = board.getBases()
@@ -147,24 +132,6 @@ function unitspawn.draw()
 					end
 				end
 			end
-
-			base = board.getBaseById(currentPlayer.id)
-
-			if base.type == 0 then
-				baseType = 'moeras'
-			elseif base.type == 1 then
-				baseType = 'bos'
-			elseif base.type == 2 then
-				baseType = 'goldmine'
-			elseif base.type == 3 then
-				baseType = 'ijs'
-			elseif base.type == 4 then
-				baseType = 'water'
-			else
-				baseType = 'woestijn'
-			end
-
-
 			love.graphics.rectangle("fill", unit.x, unit.y, unit.width,unit.height)
 			if k == 2 then
 				love.graphics.draw(sprites[baseType]['soldier'], unit.x, unit.y, 0, 1.5)
@@ -180,7 +147,7 @@ function unitspawn.draw()
 	for k,t in pairs(board.tiles) do
 		-- if boat is next to ground, and can load
 		-- draw spawn buttons to let the units out
-		if t.unloadboatspawning then
+		if t.unbsn then
 			for i,unit in pairs(t.unit.passengers) do 			
 				if t.owner == 0 then
 				    image = sprites['bos'][t.unit.type]

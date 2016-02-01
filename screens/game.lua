@@ -1,7 +1,6 @@
 require "objects.settings"
 require "objects.board"
 require "objects.objects"
-require "objects.cards"
 require "objects.player"
 require "objects.unitspawn"
 require "lib.TEsound"
@@ -14,15 +13,10 @@ function game:load()
 	settings:load()
 
 	if settings:getConfigByKey("game_sound") then
-		-- TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
+		--TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
 	end
 
 	-- players:update({freq = 500, energy = 2})
-
-	-- generate player
-	players:generate(names)
-
-
 	board.load()
 	objects.load()
 	unitspawn.load()
