@@ -2,21 +2,47 @@ require 'enet'
 require 'lib.tserial.tserial'
 require 'lib.functions'
 
-host = enet.host_create "*:6789"
-currentPlayer = nil
+server = {}
+
+server.host = enet.host_create "*:6789"
+server.event = nil
+server.currentPlayer = nil
+server.clientList = {}
+
+function setCurrentPlayer()
+	packTable = {}
+	packTable.input = "setCurrentPlayer"
+
+	server.event.data = Tserial.pack(packTable)
+	server.event.type = "receive"
+	server.event.peer:send(server.event.data)
+	server.host:flush()
+end
 
 while true do
-	event = host:service(100)
-	if event and event.type == "connect" then
+	server.event = server.host:service(100)
+	if server.event and server.event.type == "connect" then
 		print("New player is trying to connect!")
-		if currentPlayer == nil then
-		    currentPlayer = event.peer
-		    print("Assigned host: " .. tostring(currentPlayer) ..".")
+		table.insert(server.clientList, server.event.peer)
+		if server.currentPlayer == nil then
+		    server.currentPlayer = server.event.peer
+		    setCurrentPlayer()
+		    print("Assigned host: " .. tostring(server.currentPlayer) ..".")
 		end
-	elseif event and event.type == "receive" and event.peer == currentPlayer then
-		host:broadcast(event.data)
-		host:flush()
-	elseif event and event.type == "disconnect" then
-		print("Player ".. tostring(event.peer) .." has left the game!")
+	elseif server.event and server.event.type == "receive" and server.event.peer == server.currentPlayer then
+		if string.match(server.event.data, 'input="getClientIP"') then
+			packTable = {}
+			packTable.input = "getClientIP"
+			packTable.clientIP = tostring(server.event.peer)
+
+			server.event.data = Tserial.pack(packTable)
+			server.event.peer:send(Tserial.pack(packTable))
+			server.host:flush()
+		else
+			server.host:broadcast(server.event.data)
+			server.host:flush()
+		end
+	elseif server.event and server.event.type == "disconnect" then
+		print("Player ".. tostring(server.event.peer) .." has left the game!")
 	end
 end
