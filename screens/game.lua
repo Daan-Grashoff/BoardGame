@@ -12,8 +12,10 @@ function game:load()
 	currentPlayer = 0
 	settings:load()
 
-	if settings:getConfigByKey("game_sound") then
-		--TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
+	TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
+	
+	if settings:getConfigByKey("game_sound") == false then
+  		TEsound.pause(1)
 	end
 
 	-- players:update({freq = 500, energy = 2})
@@ -28,6 +30,9 @@ function game:update(dt)
 	-- else
 	-- 	TEsound.resume(1)
 	-- end
+	if settings:getConfigByKey("game_sound") == true then
+		TEsound.resume(1)
+	end
 	objects.update()
 end
 

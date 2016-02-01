@@ -6,9 +6,6 @@ startAmoundFreq = 10000
 startAmoundEnergy = 100
 startingCard = "bos"
 
-
-
-
 function player:generate(names, types, playersList, i)
 		playersList[i] = {
 			id = i,

@@ -480,7 +480,7 @@ function board.unloadToggle(x,y,t)
 				-- do damage to unit
 				tile.unit.health = tile.unit.health - t.unit.damage
 				-- if unit's health is below 1
-				printTable(t)
+				-- printTable(t)
 				if t.unit.health <= 0 then
 					-- clear tile
 					board.clear(t)
