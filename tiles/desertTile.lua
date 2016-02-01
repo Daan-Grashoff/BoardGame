@@ -101,7 +101,7 @@ end
 
 function DesertTile:onPress()
   self.selected = true
-  print(self.m_type)
+  -- print(self.m_type)
 end
 
 function DesertTile:draw()

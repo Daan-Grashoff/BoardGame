@@ -25,7 +25,7 @@ function Selection:update(dt)
 		GAME_LAUNCHED = true
 		amountPlayers = 2
 		game:load()
-	  screens:set("game")
+	  	screens:set("game")
 	elseif self.fourPersons.released then
 		GAME_LAUNCHED = true
 		amountPlayers = 4
