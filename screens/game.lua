@@ -13,11 +13,11 @@ function game:load()
 	currentPlayer = 0
 	settings:load()
 
-	if settings:getConfigByKey("game_sound") then
-		-- TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
-	end
+	TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
 
-	-- players:update({freq = 500, energy = 2})
+	if settings:getConfigByKey("game_sound") == false then
+		TEsound.pause(1)
+	end
 
 	-- generate player
 	players:generate(names)
@@ -29,17 +29,12 @@ function game:load()
 end
 
 function game:update(dt)
-	-- if love.window.isVisible() == false then
-	-- 	TEsound.pause(1)
-	-- else
-	-- 	TEsound.resume(1)
-	-- end
 	objects.update()
 end
 
 function game:keypressed(key, gameState)
   	if key == 'escape' then
-  		if settings:getConfigByKey("game_sound") then
+  		if settings:getConfigByKey("game_sound") == true then
   			TEsound.pause(1)
   		end
   		gameState:set("menu")
