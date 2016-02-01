@@ -52,6 +52,11 @@ end
 
 function love.mousereleased(x, y, button)
 	if (screens:on("game")) then
+		if multiplayer.event then
+			multiplayer.event.type = "receive"
+			multiplayer.send(multiplayer.host, multiplayer.server, multiplayer.event)
+			multiplayer.service(multiplayer.host, multiplayer.server)
+		end
 		for i,object in pairs(objects.items) do
 			if object.dragging.active then
 				object.dragging.active = false
@@ -271,6 +276,9 @@ function love:update(dt)
 	--print(love.timer.getDelta())
 	--screens:update(dt)
 	UPDATE_SCREENS(dt)
+	if screens:on("game") then
+		--multiplayer.service(multiplayer.host, multiplayer.server)
+	end
 end
 
 function love.draw()

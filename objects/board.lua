@@ -1,3 +1,4 @@
+require 'objects.multiplayer'
 require 'objects.settings'
 require 'buildings.base'
 require 'tiles.desertTile'
@@ -8,6 +9,7 @@ require 'tiles.swampTile'
 
 board = {}
 function board.load()
+	multiplayer.load()
 
 	GrassTile:load()
 	SnowTile:load()

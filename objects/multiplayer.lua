@@ -15,6 +15,7 @@ function multiplayer.service(host, server)
 	if multiplayer.event and multiplayer.event.type == "connect" then
 		multiplayer.connect(multiplayer.host, multiplayer.server, multiplayer.event)
 	elseif multiplayer.event and multiplayer.event.type == "receive" then
+			print("string.match")
 		if string.match(multiplayer.event.data, "{") then
 		    unpackTable = Tserial.unpack(multiplayer.event.data, true)
 		    love.mousepressed(unpackTable.x, unpackTable.y, unpackTable.button)
