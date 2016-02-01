@@ -1,19 +1,18 @@
 require 'lib.functions'
 
-player = {}
 players = {}
-startAmoundFreq = 10000
-startAmoundEnergy = 100
-startingCard = "bos"
+startAmoundFreq = 100000
+startAmoundEnergy = 1000
+startingCard = 'bos'
 
-
-
-
-function player:generate(names, types, playersList, i)
-		playersList[i] = {
+function players:generate(names)
+	playerCount = amountPlayers
+	cards = card.shuffleCards()
+	for i=1,playerCount do
+		players[i] = {
 			id = i,
-			name = names[i + 1],
-			base = types[i + 1],
+			name = names[i],
+			base = cards[i],
 			freq = startAmoundFreq,
 			energy = startAmoundEnergy,
 			currentEnergy = startAmoundEnergy,
@@ -27,22 +26,18 @@ function player:generate(names, types, playersList, i)
 			},
 			active = false
 		}
-		if playersList[i]['base'] == startingCard then
-			playersList[i]['active'] = true
-  			currentPlayer = playersList[i]
+		-- players[i]['tiles'][players[i]['base']] = 1
+
+		if players[i]['base'] == startingCard then
+			players[i]['active'] = true
+  			currentPlayer = players[i]
 		end
-	if #names > (#playersList + 1) then
-		names[i + 1] = nil
-		types[i + 1] = nil
-		player:generate(names, types, playersList, i + 1)
-	else
-		return playersList
 	end
-	return playersList
+	return players
 end
 
 function players:update(activePlayer)
-	for k,player in ipairs(playerList) do
+	for k,player in ipairs(players) do
 		if player['active'] == true then
 			player.income = 0
 		    for _,tile in pairs(board.tiles) do
@@ -50,13 +45,17 @@ function players:update(activePlayer)
 	    		and tile.unit.type ~= 'worker'
 		    	and not tile.base then
 		    		if tile.originalOwner == player.id then
-						player['freq'] = player['freq'] + 50
+						player['freq'] = player['freq'] + 0
 						player.income = player.income + 50
 						tile.income = 50
 					elseif tile.type == 'goldmine' then
 						player['freq'] = player['freq'] + 150
 						player.income = player.income + 150
 						tile.income = 150
+					elseif tile.type == 'water' then
+						player['freq'] = player['freq'] + 0
+						player.income = player.income + 0
+						tile.income = 0
 					else
 						player['freq'] = player['freq'] + 100
 						player.income = player.income + 100
@@ -72,21 +71,21 @@ function players:update(activePlayer)
 			end
 			player.currentEnergy = player.energy
 			player.active = false
-			if k == #playerList then
+			if k == #players then
 				k = 0
 			end
-			playerList[k+1].active = true
-			currentPlayer = playerList[k+1]
+			players[k+1].active = true
+			currentPlayer = players[k+1]
 			break
 		end
 	end
-	return playerList
+	return players
 end
 
 
 
 function players:getActivePlayerId()
-	for k,player in ipairs(playerList) do
+	for k,player in ipairs(players) do
 		if player['active'] == true then
 			return player.id
 		end
@@ -94,21 +93,22 @@ function players:getActivePlayerId()
 end
 
 function players:getPlayerByID(id)
-	return playerList[id]
+	return players[id]
 end
 
 function players:getBaseByPlayer(id)
-	return playerList[id].base
+	return players[id].base
 end
 
 function players:getPlayerByBase(base)
-	for i,player in ipairs(playerList) do
+	for i,player in ipairs(players) do
 		if player.base == base then
 			return player.id
 		end
 	end
 	return 0
 end
+
 
 function players:walk()
 	energy = players:getActivePlayer().currentEnergy
@@ -140,6 +140,19 @@ function players:getPlayerEnergy()
 	end
 end
 
+function players:getUnits()
+	local _units = {}
+	for _,i in pairs(board.tiles) do
+		if currentPlayer.id == i.owner
+		and not i.base then
+			table.insert(_units, i)
+		end
+	end
+	return _units
+end
+
+
+
 function players:buyItem(itemPrice)
 	freq = players:getActivePlayer().freq
 	if not itemPrice then
@@ -156,7 +169,7 @@ function players:buyItem(itemPrice)
 end
 
 function players:getActivePlayer()
-	for k,player in ipairs(playerList) do
+	for k,player in ipairs(players) do
 		if player['active'] == true then
 			return player
 		end
@@ -165,7 +178,7 @@ end
 
 
 function players:getActivePlayerEnergy()
-	for k,player in ipairs(playerList) do
+	for k,player in ipairs(players) do
 		if player['active'] == true then
 			return player.currentEnergy
 		end

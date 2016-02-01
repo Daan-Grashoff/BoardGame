@@ -6,7 +6,7 @@ function love.load()
 	width = 1080
 	height = 763
 
-	amountPlayers = 4
+	amountPlayers = 2
 
 	names = {
 		'Rick',
@@ -23,7 +23,7 @@ function love.load()
 	}
 
 	-- generate player
-	playerList = player:generate(names, types, {}, 0)
+	-- playerList = player:generate(names, types, {}, 0)
 
 	love.window.setMode(width, height)
 
@@ -75,17 +75,24 @@ function love.mousepressed(x, y, button)
 				board.reset(tiles)
 				unitspawn.disable()
 			end
+			print(currentPlayer)
+			if players:getActivePlayerId() == 2 then
+				_base = board.getBaseById(currentPlayer.id)
+				-- ai(players:getActivePlayer(), _base)
+			end
+			return
 		end
 
 		for _,t in pairs(board.tiles) do
-			if t.unbsn then
+			if t.unloadboatspawning then
 				for i,unit in pairs(t.unit.passengers) do
 					if x > t.x + (80 * (i-1))
 					and x < t.x + (80 * (i-1)) + 80
 					and y > t.y + tile.size
 					and y < t.y + tile.size + 80 then
 						board.spawn(t, unit, i, t.owner)
-						return
+						-- moet dit???
+						-- return
 					end
 				end
 			end
@@ -96,7 +103,7 @@ function love.mousepressed(x, y, button)
 			and y > t.y
 			and y < t.y + t.size then
 
-				if t.orgown ~= 0 then
+				if t.originalowner ~= 0 then
 					-- printTable(players:getPlayerByID(t.originalOwner))
 					-- printTable(players:getPlayerByID(t.originalOwner).tiles)
 				end
@@ -120,13 +127,30 @@ function love.mousepressed(x, y, button)
 				end
 
 
+     			-- check if tile is occupied
+				-- check if owner of tile is active player
+				if t.occupied 
+				and t.unit.type == 'worker'
+				and t.owner == players:getActivePlayerId() 
+				and players:getActivePlayerEnergy() ~= 0 then
+					board.buildToggle(x, y, t)
+				end
+
+				-- check if tile is occupied
+		        -- check if owner of tile is active player
+		        if t.buildable
+		        and not t.harbor then 
+		          board.build(x, y, t)
+		          return
+		        end
+
 				-- check if tile is attackable
-				if t.attb and players:attack() then
+				if t.attackable and players:attack() then
 					board.attack(x, y, t)
 				end
 
 				-- check if tile is attackable
-				if t.ulb then
+				if t.unloadable then
 					board.unloadBoatSpawn(t)
 				end
 
@@ -152,45 +176,46 @@ function love.mousepressed(x, y, button)
 				end
 
 
-				-- check if tile is walkable
-				-- check if tile contains boat
-				-- check if boat is not full
-				-- check if boat is urs
-				if t.lb
-				and t.owner == players:getActivePlayerId()
-				and t.unit.type == 'boot'
-				and not t.base
-				and #t.unit.passengers < 3 then
-					board.loadBoat(x, y, t)
-				end
+		        -- check if tile is walkable
+		        -- check if tile contains boat
+		        -- check if boat is not full
+		        -- check if boat is urs
+		        if t.loadable
+		        and t.owner == players:getActivePlayerId() 
+		        and t.unit.type == 'boot'
+		        and not t.base
+		        and #t.unit.passengers < 3 then 
+		          board.loadBoat(x, y, t)
+		        end
 
-				-- check if tile is walkable
-				-- check if tile is not occupied
-				-- check if its no base tile
-				if t.walkable
-				and not t.occupied
-				and not t.base
-				and players:walk() then
-					-- walk function
-					board.walk(x, y, t, lastTile, players:getActivePlayerId())
-				end
+		        -- check if tile is walkable
+		        -- check if tile is not occupied
+		        -- check if its no base tile
+		        if t.walkable 
+		        and not t.occupied
+		        and not t.base 
+		        and not t.harbor
+		        and players:walk() then
+		          -- walk function
+		          board.walk(x, y, t, lastTile, players:getActivePlayerId())
+		        end
 
 
-				-- check click on base or barak
-				-- check if no units on tile
-				-- check if owner of tile is active player
-				-- check if owner has energy
-				if (t.base or t.barak)
-				and not t.occupied
-				and t.owner == players:getActivePlayerId()
-				and players:getActivePlayerEnergy() ~= 0 then
-					unitspawn.show(t)
-				end
+		        -- check click on base or harbor
+		        -- check if no units on tile
+		        -- check if owner of tile is active player
+		        -- check if owner has energy
+		        if (t.base or t.harbor)
+		        and not t.occupied 
+		        and t.owner == players:getActivePlayerId()
+		        and players:getActivePlayerEnergy() ~= 0 then
+		          unitspawn.show(t)
+		        end
 			end
 		end
 
 
-		for i,unit in pairs(unitspawn.units) do
+		for i,unit in pairs(units) do
 			if unitspawn.active then
 				if x > unit.x
 				and x < unit.x + unit.width
@@ -214,6 +239,7 @@ function love.mousepressed(x, y, button)
 						else
 							tiletype = 'woestijn'
 						end
+
 						if t.spawning == true
 						and not t.occupied
 						and players:buyItem(prices[tiletype][unit.name]) then
@@ -223,6 +249,9 @@ function love.mousepressed(x, y, button)
 							board.walkFromBaseToggle(t, unit)
 							-- set basewalk
 							-- board.baseWalk(t, unit)
+			          	    unitspawn.active = false
+              			else
+              				unitspawn.active = false
 						end
 					end
 				end
