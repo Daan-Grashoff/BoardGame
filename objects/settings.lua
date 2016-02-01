@@ -33,6 +33,7 @@ function settings:defaultConfig()
 		credits_sound = true,
 		amount_players = 4,
 		game_sound = true,
+		fullscreen = true
 	}
 	love.filesystem.write("settings.conf", Tserial.pack(configTable))
 end

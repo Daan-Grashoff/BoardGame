@@ -12,8 +12,8 @@ selection.load()
 
 function selection.keypressed(key, gameState)
 	if key == 'escape' then
-		gameState:set('menu')
-	end
+  		gameState:set("menu")
+  	end
 end
 
 function selection.update(dt)
