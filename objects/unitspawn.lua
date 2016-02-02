@@ -5,7 +5,7 @@ function unitspawn.load()
 	unitspawn.active = false
 	unitspawn.units = {}
 	units = {}
-	for i = 0, 4 do 
+	for i = 0, 4 do
 		unit = {}
 		unit.n = i
 		unit.x = 0
@@ -71,14 +71,14 @@ function unitspawn.show(tile)
 		tile.spawning = true
 
 		units = spawnableUnits(tile)
-		for i,unit in pairs(units) do 
-			if tile.x > width/2 then 
+		for i,unit in pairs(units) do
+			if tile.x > width/2 then
 				unit.x = tile.x - unit.width * (i-1) - 40
 			else
-				unit.x = tile.x + unit.width * (i-1) 
+				unit.x = tile.x + unit.width * (i-1)
 			end
 
-			if tile.y > height/2 then 
+			if tile.y > height/2 then
 				unit.y = tile.y - 80
 			else
 				unit.y = tile.y + 40
@@ -92,7 +92,7 @@ function unitspawn.show(tile)
 end
 
 function spawnableUnits(tile)
-	_spawnableUnits = {}	
+	_spawnableUnits = {}
 	if tile.base then
 		for i, unit in pairs(unitspawn.units) do
 			if unit.spawnBase then
@@ -126,11 +126,11 @@ end
 
 function unitspawn.draw()
 	if unitspawn.active then
-		for k,unit in pairs(units) do 
+		for k,unit in pairs(units) do
 			love.graphics.setColor(255,255,255)
 			baseType = ''
 			bases = board.getBases()
-			for _,base in pairs(bases) do 
+			for _,base in pairs(bases) do
 				if base.spawning then
 					if base.type == 0 then
 						baseType = 'moeras'
@@ -181,7 +181,7 @@ function unitspawn.draw()
 		-- if boat is next to ground, and can load
 		-- draw spawn buttons to let the units out
 		if t.unloadboatspawning then
-			for i,unit in pairs(t.unit.passengers) do 			
+			for i,unit in pairs(t.unit.passengers) do
 				if t.owner == 0 then
 				    image = sprites['bos'][t.unit.type]
 				else

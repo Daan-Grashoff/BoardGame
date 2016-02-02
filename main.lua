@@ -4,7 +4,7 @@ require 'lib.functions'
 function love.load()
 
 	width = 1080
-	height = 763
+	height = 720
 
 	amountPlayers = 2
 
@@ -130,9 +130,9 @@ function love.mousepressed(x, y, button)
 
      			-- check if tile is occupied
 				-- check if owner of tile is active player
-				if t.occupied 
+				if t.occupied
 				and t.unit.type == 'worker'
-				and t.owner == players:getActivePlayerId() 
+				and t.owner == players:getActivePlayerId()
 				and players:getActivePlayerEnergy() ~= 0 then
 					board.buildToggle(x, y, t)
 				end
@@ -140,7 +140,7 @@ function love.mousepressed(x, y, button)
 				-- check if tile is occupied
 		        -- check if owner of tile is active player
 		        if t.buildable
-		        and not t.harbor then 
+		        and not t.harbor then
 		          board.build(x, y, t)
 		          return
 		        end
@@ -182,19 +182,19 @@ function love.mousepressed(x, y, button)
 		        -- check if boat is not full
 		        -- check if boat is urs
 		        if t.loadable
-		        and t.owner == players:getActivePlayerId() 
+		        and t.owner == players:getActivePlayerId()
 		        and t.unit.type == 'boot'
 		        and not t.base
-		        and #t.unit.passengers < 3 then 
+		        and #t.unit.passengers < 3 then
 		          board.loadBoat(x, y, t)
 		        end
 
 		        -- check if tile is walkable
 		        -- check if tile is not occupied
 		        -- check if its no base tile
-		        if t.walkable 
+		        if t.walkable
 		        and not t.occupied
-		        and not t.base 
+		        and not t.base
 		        and not t.harbor
 		        and players:walk() then
 		          -- walk function
@@ -207,7 +207,7 @@ function love.mousepressed(x, y, button)
 		        -- check if owner of tile is active player
 		        -- check if owner has energy
 		        if (t.base or t.harbor)
-		        and not t.occupied 
+		        and not t.occupied
 		        and t.owner == players:getActivePlayerId()
 		        and players:getActivePlayerEnergy() ~= 0 then
 		          unitspawn.show(t)
