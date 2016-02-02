@@ -29,6 +29,7 @@ function love.load()
 
 	love.graphics.setBackgroundColor(45, 127, 180)
 	screens.load()
+	love.window.setFullscreen(settings:getConfigByKey("fullscreen"), "desktop")
 end
 
 function love:keypressed(key)

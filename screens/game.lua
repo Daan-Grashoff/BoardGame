@@ -22,13 +22,15 @@ function game:load()
 	-- generate player
 	players:generate(names)
 
-
 	board.load()
 	objects.load()
 	unitspawn.load()
 end
 
 function game:update(dt)
+	if settings:getConfigByKey("game_sound") == true and TEsound.channels[1]['playing'] == false then
+		TEsound.resume(1)
+	end
 	objects.update()
 end
 
