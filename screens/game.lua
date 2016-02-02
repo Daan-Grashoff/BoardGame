@@ -30,6 +30,8 @@ end
 function game:update(dt)
 	if settings:getConfigByKey("game_sound") == true and TEsound.channels[1]['playing'] == false then
 		TEsound.resume(1)
+	elseif settings:getConfigByKey("game_sound") == false and TEsound.channels[1]['playing'] == true then
+		TEsound.pause(1)
 	end
 	objects.update()
 end

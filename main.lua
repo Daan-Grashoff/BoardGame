@@ -24,12 +24,12 @@ function love.load()
 
 	-- generate player
 	-- playerList = player:generate(names, types, {}, 0)
-
 	love.window.setMode(width, height)
+
+	love.window.setFullscreen(settings:getConfigByKey("fullscreen"), "desktop")
 
 	love.graphics.setBackgroundColor(45, 127, 180)
 	screens.load()
-	love.window.setFullscreen(settings:getConfigByKey("fullscreen"), "desktop")
 end
 
 function love:keypressed(key)
@@ -76,7 +76,7 @@ function love.mousepressed(x, y, button)
 				board.reset(tiles)
 				unitspawn.disable()
 			end
-			print(currentPlayer)
+			-- print(currentPlayer)
 			if players:getActivePlayerId() == 2 then
 				_base = board.getBaseById(currentPlayer.id)
 				-- ai(players:getActivePlayer(), _base)
