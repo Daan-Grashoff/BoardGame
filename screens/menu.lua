@@ -4,19 +4,32 @@ UI = require 'lib.thranduil'
 menu = {}
 
 --scale = love.window.getPixelScale( )
-width, height = love.window.getMode()
+--width, height = love.window.getMode()
 
-scale = 1
+
+-- [] [] [] 								[]
+-- [] [Local] [Multiplayer]	[]
+-- [] [Credits]							[]
+-- [] [Help]								[]
+-- [] [Exit] 								[]
+
+maxCellWidth = love.graphics.getWidth() / 4
+maxCellHeight = love.graphics.getHeight() / 12
+
 
 function menu:load()
 	UI.registerEvents()
-	resumeButton = UI.Button(250, 125 * scale, 500 * scale, 50 * scale, {extensions = {Menu.ResumeButton}, draggable = false})
-	startLocalButton = UI.Button(250, 125 * scale, 240 * scale, 50 * scale, {extensions = {Menu.startLocalButton}, draggable = false})
-	startMultiButton = UI.Button(510, 125 * scale, 240 * scale, 50 * scale, {extensions = {Menu.startMultiButton}, draggable = false})
+	buttonSize = maxCellWidth * 2
+	startLocalButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 0.25, buttonSize, maxCellHeight, {extensions = {Menu.startLocalButton}, draggable = false})
+	startMultiButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 1.50, buttonSize, maxCellHeight, {extensions = {Menu.startMultiButton}, draggable = false})
+
+	resumeButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 1.50, buttonSize, maxCellHeight, {extensions = {Menu.ResumeButton}, draggable = false})
+	creditsButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 2.75, buttonSize, maxCellHeight, {extensions = {Menu.CreditsButton}, draggable = false})
+	helpButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 4, buttonSize, maxCellHeight, {extensions = {Menu.HelpButton}, draggable = false})
+	quitButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 5.25, buttonSize, maxCellHeight, {extensions = {Menu.QuitButton}, draggable = false})
+
 	settingsButton = UI.Button(900, 600, 128, 128 * scale, {extensions = {Menu.SettingsButton}, draggable = false})
-	creditsButton = UI.Button(250, 200 * scale, 500 * scale, 50 * scale, {extensions = {Menu.CreditsButton}, draggable = false})
-	helpButton = UI.Button(250, 275 * scale, 500 * scale, 50 * scale, {extensions = {Menu.HelpButton}, draggable = false})
-	quitButton = UI.Button(250, 350 * scale, 500 * scale, 50 * scale, {extensions = {Menu.QuitButton}, draggable = false})
+
 end
 
 function menu:draw()
