@@ -23,6 +23,7 @@ end
 function selection.draw()
 	love.graphics.setColor(255, 255, 255)
     love.graphics.setFont(love.graphics.newFont(32))
-	love.graphics.print("Player amount", 500, 50, 0, 1, 1)
+
+	love.graphics.printf("Player Amount", (love.graphics.getWidth() / 6.5), 50, (love.graphics.getWidth() / 1.5), "center")
 	selectionFrame:draw()
 end
