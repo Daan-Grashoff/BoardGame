@@ -11,10 +11,10 @@ function Selection:new(x, y, w, h)
     -- self.textinput = UI.Textarea(5, 25 + h - 70 + 5, w - 50, h, {single_line = true, text_margin = 4})
     -- self.main_frame:addElement(self.textinput)
 
-    self.twoPersons = UI.Button(200, 200, 128, 128, {extensions = {Theme.twoPersons}})
+    self.twoPersons = UI.Button(((love.graphics.getWidth() / 4) - (love.graphics.getWidth() / 6)) , 200, (love.graphics.getWidth() / 6), (love.graphics.getWidth() / 6), {extensions = {Theme.twoPersons}})
     self.main_frame:addElement(self.twoPersons)
 
-    self.fourPersons = UI.Button(400, 200, 128, 128, {extensions = {Theme.fourPersons}})
+    self.fourPersons = UI.Button(((love.graphics.getWidth() / 4) - (love.graphics.getWidth() / 6)) + (love.graphics.getWidth() / 5), 200, (love.graphics.getWidth() / 6), (love.graphics.getWidth() / 6), {extensions = {Theme.fourPersons}})
     self.main_frame:addElement(self.fourPersons)
 
 end

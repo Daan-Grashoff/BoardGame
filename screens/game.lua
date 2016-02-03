@@ -60,7 +60,6 @@ function game:keypressed(key, gameState)
 end
 
 function game:draw()
-	love.graphics.print("GAME", 200, 100)
   	board.draw()
 	objects.draw()
 	unitspawn.draw()

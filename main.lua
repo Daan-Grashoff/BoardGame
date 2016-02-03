@@ -79,7 +79,7 @@ function love.mousepressed(x, y, button)
 					tiles.unit.attacked = false
 				end
 			end
-			
+
 			if players:getActivePlayerId() == 2 then
 				_base = board.getBaseById(currentPlayer.id)
 				-- ai(players:getActivePlayer(), _base)
@@ -134,7 +134,7 @@ function love.mousepressed(x, y, button)
 		        -- check if owner of tile is active player
 		        if t.buildable
 		        and not t.harbor
-		        and players:getActivePlayerEnergy() > 1 then 
+		        and players:getActivePlayerEnergy() > 1 then
 		          board.build(x, y, t)
 		          return
 		        end
