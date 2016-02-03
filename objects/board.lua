@@ -232,7 +232,7 @@ function board.attackToggle(x, y, t, unit)
 			and tile.y <= t.y + t.size*t.unit.attackRange
 			and tile.y >= t.y - t.size*t.unit.attackRange
 			and (tile.occupied == true or tile.health > 0)
-			and tile.owner ~= t.owner 
+			and tile.owner ~= t.owner
 			and not t.unit.attacked then
 				tile.attackable = true
 				t.attacking = true
@@ -283,7 +283,7 @@ function board.resetAll()
 		tile.unloadboatspawning = false
 		tile.unloadboatspawn = false
 
-		-- 
+		--
 		tile.building = false
 		tile.buildable = false
 	end
@@ -508,22 +508,22 @@ function board.attack(x, y, t)
 		if tile.attacking then
 			if t.unit.health then
 
-				-- do damage to unit 
+				-- do damage to unit
 				tile.unit.attacked = true
 				t.unit.health = t.unit.health - tile.unit.damage
 
-				-- do damage to unit 
+				-- do damage to unit
 				tile.unit.health = tile.unit.health - t.unit.damage / 2
 
 				-- if unit's health is below 1
 				if t.unit.health <= 0 then
-					-- clear tile 
+					-- clear tile
 					board.clear(t)
 				end
 
 				-- if unit's health is below 1
 				if tile.unit.health <= 0 then
-					-- clear tile 
+					-- clear tile
 					board.clear(tile)
 				end
 			end
@@ -557,7 +557,7 @@ function board.clear(t)
 	t.base = false
 	t.attackable = false
 	t.attacking = false
-	
+
 	t.walkable = false
 	t.walking = false
 	t.loading = false
@@ -658,7 +658,7 @@ function board.draw()
 
 
 
-		if t.owner == players:getActivePlayerId() 
+		if t.owner == players:getActivePlayerId()
 		and t.harbor then
 			love.graphics.setColor(0, 255, 255)
 			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
@@ -677,14 +677,7 @@ function board.draw()
 				else
 					image = sprites[players:getBaseByPlayer(t.owner)][t.unit.type]
 				end
-
-				if board.size == 8 then
-					love.graphics.draw(image, t.x+10, t.y+10, 0, 2, 2)
-				elseif board.size == 24 then
-					love.graphics.draw(image, t.x, t.y, 0, 0.75, 0.75)
-				else
-					love.graphics.draw(image, t.x, t.y, 0)
-				end
+				love.graphics.draw(image, t.x, t.y, 0, t.size / 37, t.size / 37)
 			else
 				love.graphics.setColor(240,230,140)
 				love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
@@ -710,7 +703,7 @@ function board.draw()
 			else
 				image = sprites[players:getBaseByPlayer(t.owner)]['base']
 			end
-			love.graphics.draw(image, t.x, t.y, 0)
+			love.graphics.draw(image, t.x, t.y, 0, board.newTileSize / 44, board.newTileSize / 44)
 			-- love.graphics.setColor(181, 90,60)
 			-- love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 		end
@@ -794,7 +787,7 @@ function board.draw()
 		elseif t.buildable then
 			love.graphics.setColor(0,0,100)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
-			love.graphics.setColor(0,0,0)	
+			love.graphics.setColor(0,0,0)
 		end
 
 		if t.owner == players:getActivePlayerId()
@@ -844,8 +837,13 @@ function board.draw()
 		end
 
 		if t.harbor then
-			love.graphics.setColor(144, 144, 144, 50)
-			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+			love.graphics.setColor(255, 255, 255)
+			if t.owner == 0 then
+				image = sprites['bos']['base']
+			else
+				image = sprites[players:getBaseByPlayer(t.owner)]['harbor']
+			end
+			love.graphics.draw(image, t.x, t.y, 0, board.newTileSize / 44, board.newTileSize / 44)
 		end
 
 	  	-- if coast_tile then
@@ -870,8 +868,8 @@ function board.draw()
 		--love.graphics.setColor(t.m_color)
 
 		if t.m_image then
-			love.graphics.setColor(255,255,255)
-			love.graphics.draw(t.m_image, (i % (Board.size + 1)) * tile.size, math.floor((i / (Board.size + 1))) * tile.size, 0, tile.size / 128)
+			--love.graphics.setColor(255,255,255)
+			--love.graphics.draw(t.m_image, (i % (Board.size + 1)) * tile.size, math.floor((i / (Board.size + 1))) * tile.size, 44 / tile.size, 44 / tile.size)
 		else
 			--love.graphics.setColor(t.m_color)
 			--love.graphics.rectangle("fill", ((i % (Board.size + 1)) * tile.size) + 0, math.floor((i / (Board.size + 1))) * tile.size, tile.size, tile.size)
@@ -887,4 +885,3 @@ function board.draw()
 
 
 end
-
