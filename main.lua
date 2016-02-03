@@ -3,7 +3,7 @@ require 'lib.functions'
 
 function love.load()
 
-	width = 540
+	width = 1080
 	height = 720
 
 	amountPlayers = 4
