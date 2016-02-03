@@ -7,7 +7,7 @@ local oldFont = love.graphics.getFont()
 
 Menu.startLocalButton = {}
 Menu.startLocalButton.draw = function(self)
-    love.graphics.setFont(love.graphics.newFont(32))
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(64, 64, 64)
     if self.hot then love.graphics.setColor(96, 96, 96) end
     if self.down then love.graphics.setColor(32, 32, 32) end
@@ -25,7 +25,7 @@ end
 
 Menu.startMultiButton = {}
 Menu.startMultiButton.draw = function(self)
-    love.graphics.setFont(love.graphics.newFont(32))
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(64, 64, 64)
     if self.hot then love.graphics.setColor(96, 96, 96) end
     if self.down then love.graphics.setColor(32, 32, 32) end
@@ -43,7 +43,7 @@ end
 
 Menu.ResumeButton = {}
 Menu.ResumeButton.draw = function(self)
-    love.graphics.setFont(love.graphics.newFont(32))
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(64, 64, 64)
     if self.hot then love.graphics.setColor(96, 96, 96) end
     if self.down then love.graphics.setColor(32, 32, 32) end
@@ -61,7 +61,7 @@ end
 
 Menu.CreditsButton = {}
 Menu.CreditsButton.draw = function(self)
-    love.graphics.setFont(love.graphics.newFont(32))
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(64, 64, 64)
     if self.hot then love.graphics.setColor(96, 96, 96) end
     if self.down then love.graphics.setColor(32, 32, 32) end
@@ -79,7 +79,7 @@ end
 
 Menu.HelpButton = {}
 Menu.HelpButton.draw = function(self)
-    love.graphics.setFont(love.graphics.newFont(32))
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(64, 64, 64)
     if self.hot then love.graphics.setColor(96, 96, 96) end
     if self.down then love.graphics.setColor(32, 32, 32) end
@@ -97,7 +97,7 @@ end
 
 Menu.QuitButton = {}
 Menu.QuitButton.draw = function(self)
-    love.graphics.setFont(love.graphics.newFont(32))
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(64, 64, 64)
     if self.hot then love.graphics.setColor(96, 96, 96) end
     if self.down then love.graphics.setColor(32, 32, 32) end

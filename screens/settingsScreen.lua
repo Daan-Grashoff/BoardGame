@@ -92,7 +92,7 @@ end
 
 function settingsScreen:drawMusic()
 	-- love.graphics.rectangle("fill", 200, 100 * scale, btnWidth * scale, btnHeight * scale)
-	love.graphics.print("Ingame music", 190, 130, 0, 1, 1)
+	love.graphics.print("Ingame music", 160, 125, 0, 1, 1)
 	-- love.graphics.rectangle("fill", 120, 200 * scale, (btnWidth * 2) * scale, btnHeight * scale)
 	-- love.graphics.setColor(love.graphics.getBackgroundColor())
 	musicOff:draw()
@@ -100,13 +100,13 @@ function settingsScreen:drawMusic()
 end
 
 function settingsScreen:drawFullscreen()
-	love.graphics.print("Fullscreen mode", 190, 330, 0, 1, 1)
+	love.graphics.print("Fullscreen mode", 145, 325, 0, 1, 1)
 	fullscreenOff:draw()
 	fullscreenOn:draw()
 end
 
 function settingsScreen:drawBoardsize()
-	love.graphics.print("Boardsize", 255, 530, 0, 1, 1)
+	love.graphics.print("Boardsize", 240, 525, 0, 1, 1)
 	boardsizeSmall:draw()
 	boardsizeMedium:draw()
 	boardsizeLarge:draw()
@@ -116,7 +116,9 @@ function settingsScreen:drawBoardsize()
 end
 
 function settingsScreen:draw()
-	love.graphics.print("Settings", 500, 50, 0, 2, 2)
+    love.graphics.setFont(love.graphics.newFont(32))
+	love.graphics.print("Settings", 500, 50, 0, 1, 1)
+    love.graphics.setFont(love.graphics.newFont(20))
 	settingsScreen:drawMusic()
 	settingsScreen:drawFullscreen()
 	settingsScreen:drawBoardsize()

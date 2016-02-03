@@ -20,9 +20,8 @@ maxCellHeight = love.graphics.getHeight() / 12
 function menu:load()
 	UI.registerEvents()
 	buttonSize = maxCellWidth * 2
-	startLocalButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 0.25, buttonSize, maxCellHeight, {extensions = {Menu.startLocalButton}, draggable = false})
-	startMultiButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 1.50, buttonSize, maxCellHeight, {extensions = {Menu.startMultiButton}, draggable = false})
-
+	startLocalButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 1.50, (buttonSize / 2) - 10, maxCellHeight, {extensions = {Menu.startLocalButton}, draggable = false})
+	startMultiButton = UI.Button((love.graphics.getWidth() / 2), maxCellHeight * 1.50, (buttonSize / 2), maxCellHeight, {extensions = {Menu.startMultiButton}, draggable = false})
 	resumeButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 1.50, buttonSize, maxCellHeight, {extensions = {Menu.ResumeButton}, draggable = false})
 	creditsButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 2.75, buttonSize, maxCellHeight, {extensions = {Menu.CreditsButton}, draggable = false})
 	helpButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 4, buttonSize, maxCellHeight, {extensions = {Menu.HelpButton}, draggable = false})

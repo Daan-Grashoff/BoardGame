@@ -15,6 +15,7 @@ LARGEACTIVE = love.graphics.newImage('assets/images/large_active.PNG')
 
 Settings.btnmusicOn = {}
 Settings.btnmusicOn.draw = function(self)
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(255, 255, 255)
 	if settings:getConfigByKey('game_sound') then
 		love.graphics.draw(ONACTIVE, self.x, self.y)
@@ -25,6 +26,7 @@ end
 
 Settings.btnmusicOff = {}
 Settings.btnmusicOff.draw = function(self)
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(255, 255, 255)
 	if settings:getConfigByKey('game_sound') then
 		love.graphics.draw(OFF, self.x, self.y)
@@ -35,6 +37,7 @@ end
 
 Settings.btnScreenOn = {}
 Settings.btnScreenOn.draw = function(self)
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(255, 255, 255)
     if settings:getConfigByKey('fullscreen') then
 		love.graphics.draw(ONACTIVE, self.x, self.y)
@@ -45,6 +48,7 @@ end
 
 Settings.btnScreenOff = {}
 Settings.btnScreenOff.draw = function(self)
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(255, 255, 255)    
     if settings:getConfigByKey('fullscreen') then
 		love.graphics.draw(OFF, self.x, self.y)
@@ -55,6 +59,7 @@ end
 
 Settings.btnSmall = {}
 Settings.btnSmall.draw = function(self)
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(255, 255, 255)
 	love.graphics.draw(SMALL, self.x, self.y)
 	if settings:getConfigByKey('boardsize') == 8 then
@@ -66,6 +71,7 @@ end
 
 Settings.btnMedium = {}
 Settings.btnMedium.draw = function(self)
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(255, 255, 255)
 	if settings:getConfigByKey('boardsize') == 16 then
 		love.graphics.draw(MEDIUMACTIVE, self.x, self.y)
@@ -76,6 +82,7 @@ end
 
 Settings.btnLarge = {}
 Settings.btnLarge.draw = function(self)
+    love.graphics.setFont(love.graphics.newFont(20))
     love.graphics.setColor(255, 255, 255)
     if settings:getConfigByKey('boardsize') == 24 then
 		love.graphics.draw(LARGEACTIVE, self.x, self.y)
