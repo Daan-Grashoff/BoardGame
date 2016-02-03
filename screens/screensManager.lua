@@ -4,6 +4,7 @@ require 'screens.game'
 require 'screens.credits'
 require 'screens.selection'
 require 'screens.settingsScreen'
+require 'screens.endScreen'
 
 screens = {currentScreen = "menu"}
 
@@ -41,6 +42,8 @@ function screens:update(dt)
     help.update(dt)
   elseif screens.currentScreen == 'settings'then
     settingsScreen.update(dt)
+  elseif screens.currentScreen == 'endScreen'then
+    endScreen.update()
   end
 end
 
@@ -57,8 +60,8 @@ function screens:draw()
 		help.draw()
   elseif screens.currentScreen == 'settings' then
     settingsScreen.draw()
-  elseif screens.currentScreen == 'end' then
-    print(winner)  
+  elseif screens.currentScreen == 'endScreen' then
+    endScreen.draw()
   end
 end
 

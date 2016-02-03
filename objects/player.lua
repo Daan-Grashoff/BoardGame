@@ -79,13 +79,13 @@ function players:update(activePlayer)
 		end
 		if player.freq > winningMoney then
 			winner = player.id
-			screens.currentScreen = 'end'
+			screens.currentScreen = 'endScreen'
 		end
 		_aBases = board.getActiveBases()
 
 		if #_aBases == 1 then
 			winner = _aBases[1].owner
-			screens.currentScreen = 'end'
+			screens.currentScreen = 'endScreen'
 		end
 	end
 	return players

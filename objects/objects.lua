@@ -28,9 +28,9 @@ function objects.load()
 		elseif j == 2 then
 			item.type = 'tank'
 			item.walkRange = 1
-			item.attackRange = 20
-			item.damage = 30
-			item.health = 10
+			item.attackRange = 2
+			item.damage = 3
+			item.health = 6
 		elseif j == 3 then
 			item.type = 'robot'
 			item.walkRange = 1
