@@ -20,6 +20,8 @@ function game:load()
 		TEsound.pause(1)
 	end
 
+	timer = 0
+
 	-- generate player
 	players:generate(names)
 
@@ -29,7 +31,10 @@ function game:load()
 end
 
 function game:update(dt)
-	 
+
+
+    -- timer = timer + dt
+
  	if timer >= 0.1 then
      	_base = board.getBaseById(currentPlayer.id)
       	ai(players:getActivePlayer(), _base)

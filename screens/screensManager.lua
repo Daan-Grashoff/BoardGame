@@ -5,15 +5,15 @@ require 'screens.credits'
 require 'screens.selection'
 require 'screens.settingsScreen'
 
-screens = {currentScreen = "game"}
+screens = {currentScreen = "menu"}
 
 function screens:load()
-  currentScreen = "game"
+  currentScreen = "menu"
 
   help:load()
   -- if current screen == game
   -- load game directly
-  game:load()
+  -- game:load()
   --
   menu:load()
   credits:load()
