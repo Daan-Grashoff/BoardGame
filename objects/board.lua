@@ -664,14 +664,7 @@ function board.draw()
 				else
 					image = sprites[players:getBaseByPlayer(t.owner)][t.unit.type]
 				end
-
-				if board.size == 8 then
-					love.graphics.draw(image, t.x+10, t.y+10, 0, 2, 2)
-				elseif board.size == 24 then
-					love.graphics.draw(image, t.x, t.y, 0, 0.75, 0.75)
-				else
-					love.graphics.draw(image, t.x, t.y, 0)
-				end
+				love.graphics.draw(image, t.x, t.y, 0, t.size / 37, t.size / 37)
 			else
 				love.graphics.setColor(240,230,140)
 				love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
@@ -858,8 +851,8 @@ function board.draw()
 		--love.graphics.setColor(t.m_color)
 
 		if t.m_image then
-			love.graphics.setColor(255,255,255)
-			love.graphics.draw(t.m_image, (i % (Board.size + 1)) * tile.size, math.floor((i / (Board.size + 1))) * tile.size, 44 / tile.size, 44 / tile.size)
+			--love.graphics.setColor(255,255,255)
+			--love.graphics.draw(t.m_image, (i % (Board.size + 1)) * tile.size, math.floor((i / (Board.size + 1))) * tile.size, 44 / tile.size, 44 / tile.size)
 		else
 			--love.graphics.setColor(t.m_color)
 			--love.graphics.rectangle("fill", ((i % (Board.size + 1)) * tile.size) + 0, math.floor((i / (Board.size + 1))) * tile.size, tile.size, tile.size)

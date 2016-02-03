@@ -49,7 +49,7 @@ end
 Settings.btnScreenOff = {}
 Settings.btnScreenOff.draw = function(self)
     love.graphics.setFont(love.graphics.newFont(20))
-    love.graphics.setColor(255, 255, 255)    
+    love.graphics.setColor(255, 255, 255)
     if settings:getConfigByKey('fullscreen') then
 		love.graphics.draw(OFF, self.x, self.y)
 	else
