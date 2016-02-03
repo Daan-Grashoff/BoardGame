@@ -6,7 +6,7 @@ selection = {}
 
 function selection.load()
 	UI.registerEvents()
-	selectionFrame = Chatbox(100, 50, 1080, 763)
+	selectionFrame = Chatbox((love.graphics.getWidth() / 2) + 75, 50, 1080, 763)
 end
 selection.load()
 
@@ -22,8 +22,8 @@ end
 
 function selection.draw()
 	love.graphics.setColor(255, 255, 255)
-    love.graphics.setFont(love.graphics.newFont(32))
-
-	love.graphics.printf("Player Amount", (love.graphics.getWidth() / 6.5), 50, (love.graphics.getWidth() / 1.5), "center")
-	selectionFrame:draw()
+	love.graphics.setFont(love.graphics.newFont(32))
+    local text = 'Player selection'
+    love.graphics.print(text, (love.graphics.getWidth() / 2) - (love.graphics.getFont():getWidth(text) / 2), maxCellHeight * 2.20)
+    selectionFrame:draw()
 end

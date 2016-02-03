@@ -624,7 +624,6 @@ function board.getBaseById(id)
 		if base.owner == id then
 			return base
 		end
-
 	end
 end
 
