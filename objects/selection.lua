@@ -17,6 +17,8 @@ function Selection:new(x, y, w, h)
     self.fourPersons = UI.Button(((love.graphics.getWidth() / 4) - (love.graphics.getWidth() / 6)) + (love.graphics.getWidth() / 5), 200, (love.graphics.getWidth() / 6), (love.graphics.getWidth() / 6), {extensions = {Theme.fourPersons}})
     self.main_frame:addElement(self.fourPersons)
 
+	-- self.backButton = UI.Button(500 + (btnWidth * 2), 550 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnBack}, draggable = false})
+	-- self.main_frame:addElement(self.backButton)
 end
 
 function Selection:update(dt)

@@ -14,7 +14,6 @@ cards = {
 	}
 }
 
-
 function card.shuffleCards()
 	cards = cards[amountPlayers]
 
