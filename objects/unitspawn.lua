@@ -86,7 +86,6 @@ function unitspawn.show(tile)
 			else
 				unit.y = tile.y + 44
 			end
-
 		end
 	else
 		unitspawn.active = false

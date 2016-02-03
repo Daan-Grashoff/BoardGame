@@ -13,13 +13,14 @@ text = ""
 function settingsScreen:load()
 	settings:load()
 	UI.registerEvents()
-	musicOn = UI.Button(120, 150 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnmusicOn}, draggable = false})
-	musicOff = UI.Button(120 + btnWidth, 150 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnmusicOff}, draggable = false})
-	fullscreenOn = UI.Button(120, 350 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnScreenOn}, draggable = false})
-	fullscreenOff = UI.Button(120 + btnWidth, 350 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnScreenOff}, draggable = false})
-	boardsizeSmall = UI.Button(120, 550 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnSmall}, draggable = false})
-	boardsizeMedium = UI.Button(120 + btnWidth, 550 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnMedium}, draggable = false})
-	boardsizeLarge = UI.Button(120 + (btnWidth * 2), 550 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnLarge}, draggable = false})
+	musicOn = UI.Button(450, 150 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnmusicOn}, draggable = false})
+	musicOff = UI.Button(450 + btnWidth, 150 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnmusicOff}, draggable = false})
+	fullscreenOn = UI.Button(450, 350 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnScreenOn}, draggable = false})
+	fullscreenOff = UI.Button(450 + btnWidth, 350 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnScreenOff}, draggable = false})
+	boardsizeSmall = UI.Button(400, 550 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnSmall}, draggable = false})
+	boardsizeMedium = UI.Button(400 + btnWidth, 550 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnMedium}, draggable = false})
+	boardsizeLarge = UI.Button(400 + (btnWidth * 2), 550 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnLarge}, draggable = false})
+	backButton = UI.Button(120, 70 * scale, btnWidth * scale, btnHeight * scale, {extensions = {settingsTheme.btnBack}, draggable = false})
 end
 
 function settingsScreen:keypressed(key, gameState)
@@ -84,15 +85,23 @@ function settingsScreen:updateBoardsize()
 	end
 end
 
+function settingsScreen:updateBack()
+	backButton:update(dt)
+	if backButton.released then
+		screens:set("menu")
+	end
+end
+
 function settingsScreen:update(dt)
 	settingsScreen:updateMusic()
 	settingsScreen:updateFullscreen(dt)
 	settingsScreen:updateBoardsize()
+	settingsScreen:updateBack()
 end
 
 function settingsScreen:drawMusic()
 	-- love.graphics.rectangle("fill", 200, 100 * scale, btnWidth * scale, btnHeight * scale)
-	love.graphics.print("Ingame music", 160, 125, 0, 1, 1)
+	love.graphics.print("Ingame music", 490, 125, 0, 1, 1)
 	-- love.graphics.rectangle("fill", 120, 200 * scale, (btnWidth * 2) * scale, btnHeight * scale)
 	-- love.graphics.setColor(love.graphics.getBackgroundColor())
 	musicOff:draw()
@@ -100,18 +109,18 @@ function settingsScreen:drawMusic()
 end
 
 function settingsScreen:drawFullscreen()
-	love.graphics.print("Fullscreen mode", 145, 325, 0, 1, 1)
+	love.graphics.print("Fullscreen mode", 475, 325, 0, 1, 1)
 	fullscreenOff:draw()
 	fullscreenOn:draw()
 end
 
 function settingsScreen:drawBoardsize()
-	love.graphics.print("Boardsize", 240, 525, 0, 1, 1)
+	love.graphics.print("Boardsize", 520, 525, 0, 1, 1)
 	boardsizeSmall:draw()
 	boardsizeMedium:draw()
 	boardsizeLarge:draw()
 	if text ~= "" then
-		love.graphics.print(text, 125, 635, 0, 1, 1)
+		love.graphics.print(text, 445, 635, 0, 1, 1)
 	end
 end
 
@@ -122,4 +131,5 @@ function settingsScreen:draw()
 	settingsScreen:drawMusic()
 	settingsScreen:drawFullscreen()
 	settingsScreen:drawBoardsize()
+	backButton:draw()
 end
