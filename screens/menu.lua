@@ -49,6 +49,8 @@ function menu:update(dt)
 		end
 	elseif resumeButton.released then
 	    screens:set("game")
+	elseif startMultiButton.released then
+		print("Have to implement multiplayer here!")
 	elseif creditsButton.released then
 		screens:set("credits")
 	elseif helpButton.released then
@@ -56,6 +58,12 @@ function menu:update(dt)
 	elseif settingsButton.released then
 		screens:set("settings")
 	elseif quitButton.released then
-		love.event.quit()
+		if GAME_LAUNCHED == false then
+			love.event.quit()
+		else
+			-- game.restart()
+			-- game = {}
+			print('Have to remove old game data after press!')
+		end
 	end
 end
