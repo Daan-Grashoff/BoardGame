@@ -104,6 +104,10 @@ function love.mousepressed(x, y, button)
 			and x < board.endTurn.x + board.endTurn.width
 			and y > board.endTurn.y
 			and y < board.endTurn.y + board.endTurn.height then
+
+			--multiplayer.setNextTurn()
+
+
 				players:update(players:getActivePlayer())
 				for _,tiles in pairs(board.tiles) do
 					board.reset(tiles)
@@ -118,7 +122,6 @@ function love.mousepressed(x, y, button)
 				_base = board.getBaseById(currentPlayer.id)
 				-- ai(players:getActivePlayer(), _base)
 			end
-			return
 		end
 
 		for _,t in pairs(board.tiles) do
@@ -287,12 +290,8 @@ function love.mousepressed(x, y, button)
 				end
 			end
 		end
-
-		-- Moving objects (soldiers)
-		for _,object in pairs(objects.items) do
-			objects.move(x, y, object)
-		end
 	end
+	return
 end
 
 
@@ -304,6 +303,14 @@ function love:update(dt)
 	if screens:on("game") then
 		if multiplayer.turn == false and IS_MULTIPLAYER then
 			multiplayer.service(multiplayer.host, multiplayer.server)
+		end
+
+		if IS_MULTIPLAYER then
+			if multiplayer.keepAliveTimer <= 0 then
+				multiplayer.keepAliveTimer = 40
+				multiplayer.sendKeepAlive()
+			end
+			multiplayer.keepAliveTimer = multiplayer.keepAliveTimer - 1
 		end
 	end
 end

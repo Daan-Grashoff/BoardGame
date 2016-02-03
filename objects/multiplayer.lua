@@ -8,6 +8,7 @@ multiplayer.clientIP = nil
 multiplayer.turn = false
 multiplayer.turnIP = nil
 multiplayer.lastPacket = nil
+multiplayer.keepAliveTimer = 40
 
 function multiplayer.load()
 	multiplayer.host = enet.host_create()
@@ -20,6 +21,23 @@ function multiplayer.triggermousereleased(x, y, button, currentPlayer)
 		love.mousepressed(x, y, button)
 		love.mousereleased(x, y, button)
 	end
+end
+
+function multiplayer.setNextTurn()
+end
+
+function multiplayer.sendKeepAlive()
+	
+	packTable = {}
+	packTable.input = "keepAlive"
+
+	event = {}
+	event.data = Tserial.pack(packTable)
+	event.channel = 0
+	event.type = "receive"
+	event.peer = multiplayer.server
+
+	multiplayer.send(multiplayer.host, multiplayer.server, event)
 end
 
 function multiplayer.service(host, server)
@@ -43,7 +61,8 @@ function multiplayer.service(host, server)
 		elseif string.match(multiplayer.event.data, 'input="setTurnIP"') then
 			unpackTable = Tserial.unpack(multiplayer.event.data, true)
 			multiplayer.turnIP = unpackTable.TurnIP
-			print("###client setTurnIP")
+		elseif string.match(multiplayer.event.data, 'input="keepAlive"') then
+			print("keepalive client")
 		end
 	end
 end
@@ -67,6 +86,11 @@ end
 function multiplayer.send(host, server, event)
 	if multiplayer.turnIP == multiplayer.clientIP then
 		multiplayer.lastPacket = multiplayer.clientIP
+	end
+	if string.match(event.data, 'input="keepAlive"') then
+		event.peer:send(event.data)
+		host:flush()
+	    return
 	end
 	multiplayer.event.peer:send(event.data)
 	multiplayer.host:flush()
