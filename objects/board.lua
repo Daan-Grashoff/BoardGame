@@ -59,7 +59,7 @@ function board.load()
 			-- tile is spawning if base is spawning a unit
 			tile.spawning = false--spawning
 			-- tile original owner, each player gets a continent and this belongs to him
-			tile.originalowner = 0--originalowner
+			tile.originalOwner = 0--originalOwner
 			-- tile owner is set if there is a unit on it
 			tile.owner = 0
 			-- tile is attackable if there is a unit in range of your unit
@@ -142,7 +142,7 @@ function board.load()
 
 
 			if i < (board.size / 3) and j < (board.size / 3) then
-				tile.originalowner = players:getPlayerByBase('bos')
+				tile.originalOwner = players:getPlayerByBase('bos')
 				if tile.base == true then
 					tile.owner = players:getPlayerByBase('bos')
 				end
@@ -150,19 +150,19 @@ function board.load()
 			elseif i > (math.ceil(board.size / 3) + math.floor(board.size / 18)) and j > (math.ceil(board.size / 3) + math.floor(board.size / 18)) and i < (math.floor(board.size / 3 * 2) - math.floor(board.size / 18)) and j < (math.floor(board.size / 3 * 2) - math.floor(board.size / 18)) then
 				tile.type = 2
 			elseif  i > (board.size / 3 * 2) and j < (board.size / 3) then
-				tile.originalowner = players:getPlayerByBase('moeras')
+				tile.originalOwner = players:getPlayerByBase('moeras')
 				if tile.base == true then
 					tile.owner = players:getPlayerByBase('moeras')
 				end
 				tile.type = 0
 			elseif i < (board.size / 3) and j > (board.size / 3 * 2) then
-				tile.originalowner = players:getPlayerByBase('ijs')
+				tile.originalOwner = players:getPlayerByBase('ijs')
 				if tile.base == true then
 					tile.owner = players:getPlayerByBase('ijs')
 				end
 				tile.type = 3
 			elseif i > (board.size / 3 * 2) and j > (board.size / 3 * 2) then
-				tile.originalowner = players:getPlayerByBase('woestijn')
+				tile.originalOwner = players:getPlayerByBase('woestijn')
 				if tile.base == true then
 					tile.owner = players:getPlayerByBase('woestijn')
 				end
@@ -257,6 +257,7 @@ function board.buildToggle(x, y, t, unit)
 			and tile.y >= t.y - t.size*1
 			and not tile.occupied
 			and currentPlayer.currentEnergy > 1
+			and currentPlayer.freq >= prices['bos']['harbor']
 			and tile.coast then
 				tile.buildable = true
 				t.building = true
@@ -496,7 +497,6 @@ function board.unload(t)
 			if tile.occupied and tile.tileing then
 				tile.occupied = false
 				t.unit = tile.unit
-
 				-- currentPlayer.currentEnergy = currentPlayer.currentEnergy - 1
 				tile.unit = {}
 			end
@@ -543,6 +543,7 @@ function board.attack(x, y, t)
 			end
 			board.reset(tile)
 		end
+		board.reset(tile)
 	end
 end
 
@@ -609,12 +610,22 @@ function board.getBases()
 	return bases
 end
 
+function board.getActiveBases()
+	_bases = board.getBases()
+	bases = {}
+	for _,base in pairs(_bases) do
+		if base.base then
+			table.insert(bases, base)
+		end
+	end
+	return bases
+end
+
 function board.getBaseById(id)
 	for a,base in pairs(board.getBases()) do
 		if base.owner == id then
 			return base
 		end
-
 	end
 end
 
@@ -667,14 +678,7 @@ function board.draw()
 				else
 					image = sprites[players:getBaseByPlayer(t.owner)][t.unit.type]
 				end
-
-				if board.size == 8 then
-					love.graphics.draw(image, t.x+10, t.y+10, 0, 2, 2)
-				elseif board.size == 24 then
-					love.graphics.draw(image, t.x, t.y, 0, 0.75, 0.75)
-				else
-					love.graphics.draw(image, t.x, t.y, 0)
-				end
+				love.graphics.draw(image, t.x, t.y, 0, t.size / 37, t.size / 37)
 			else
 				love.graphics.setColor(240,230,140)
 				love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
@@ -712,7 +716,7 @@ function board.draw()
 		end
 
 		-- original owner ID on tile
-		if t.originalowner then
+		if t.originalOwner then
 			love.graphics.setColor(0,0,0)
 			-- love.graphics.print(t.originalOwner, t.x + 1, t.y + 20)
 		end
@@ -836,14 +840,19 @@ function board.draw()
 		end
 
 		if t.harbor then
-			love.graphics.setColor(144, 144, 144, 50)
-			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+			love.graphics.setColor(255, 255, 255)
+			if t.owner == 0 then
+				image = sprites['bos']['base']
+			else
+				image = sprites[players:getBaseByPlayer(t.owner)]['harbor']
+			end
+			love.graphics.draw(image, t.x, t.y, 0, board.newTileSize / 44, board.newTileSize / 44)
 		end
 
-	  	if coast_tile then
-    		love.graphics.setColor(144, 144, 144, 100)
-			love.graphics.rectangle("fill", coast_tile.x, coast_tile.y, coast_tile.size, coast_tile.size)
-		end
+	  	-- if coast_tile then
+    		-- love.graphics.setColor(144, 144, 144, 100)
+			-- love.graphics.rectangle("fill", coast_tile.x, coast_tile.y, coast_tile.size, coast_tile.size)
+		-- end
 
 		-- if t.coast then
 		-- 	love.graphics.setColor(0,0,0, 100)
@@ -856,15 +865,14 @@ function board.draw()
 		-- 	love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 		-- 	love.graphics.setColor(0, 0,0)
 		-- end
-
 	end
 
 	for i,t in pairs(Board.tiles) do
 		--love.graphics.setColor(t.m_color)
 
 		if t.m_image then
-			love.graphics.setColor(255,255,255)
-			love.graphics.draw(t.m_image, (i % (Board.size + 1)) * tile.size, math.floor((i / (Board.size + 1))) * tile.size, 44 / tile.size, 44 / tile.size)
+			--love.graphics.setColor(255,255,255)
+			--love.graphics.draw(t.m_image, (i % (Board.size + 1)) * tile.size, math.floor((i / (Board.size + 1))) * tile.size, 44 / tile.size, 44 / tile.size)
 		else
 			--love.graphics.setColor(t.m_color)
 			--love.graphics.rectangle("fill", ((i % (Board.size + 1)) * tile.size) + 0, math.floor((i / (Board.size + 1))) * tile.size, tile.size, tile.size)
