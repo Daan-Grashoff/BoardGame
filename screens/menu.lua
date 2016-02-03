@@ -4,39 +4,65 @@ UI = require 'lib.thranduil'
 menu = {}
 
 --scale = love.window.getPixelScale( )
+--width, height = love.window.getMode()
 
-scale = 1
+
+-- [] [] [] 								[]
+-- [] [Local] [Multiplayer]	[]
+-- [] [Credits]							[]
+-- [] [Help]								[]
+-- [] [Exit] 								[]
+
+maxCellWidth = love.graphics.getWidth() / 4
+maxCellHeight = love.graphics.getHeight() / 12
+
 
 function menu:load()
 	UI.registerEvents()
-	startButton = UI.Button(25, 25 * scale, 500 * scale, 50 * scale, {extensions = {Menu.StartButton}, draggable = false})
+	buttonSize = maxCellWidth * 2
+	startLocalButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 1.50, (buttonSize / 2) - 10, maxCellHeight, {extensions = {Menu.startLocalButton}, draggable = false})
+	startMultiButton = UI.Button((love.graphics.getWidth() / 2), maxCellHeight * 1.50, (buttonSize / 2), maxCellHeight, {extensions = {Menu.startMultiButton}, draggable = false})
+	resumeButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 1.50, buttonSize, maxCellHeight, {extensions = {Menu.ResumeButton}, draggable = false})
+	creditsButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 2.75, buttonSize, maxCellHeight, {extensions = {Menu.CreditsButton}, draggable = false})
+	helpButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 4, buttonSize, maxCellHeight, {extensions = {Menu.HelpButton}, draggable = false})
+	quitButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 5.25, buttonSize, maxCellHeight, {extensions = {Menu.QuitButton}, draggable = false})
+
 	settingsButton = UI.Button(900, 600, 128, 128 * scale, {extensions = {Menu.SettingsButton}, draggable = false})
-	creditsButton = UI.Button(25, 100 * scale, 500 * scale, 50 * scale, {extensions = {Menu.CreditsButton}, draggable = false})
-	helpButton = UI.Button(25, 175 * scale, 500 * scale, 50 * scale, {extensions = {Menu.HelpButton}, draggable = false})
-	quitButton = UI.Button(25, 250 * scale, 500 * scale, 50 * scale, {extensions = {Menu.QuitButton}, draggable = false})
+
 end
 
 function menu:draw()
-	startButton:draw()
+	if GAME_LAUNCHED == false then
+		startLocalButton:draw()
+		startMultiButton:draw()
+	else
+		resumeButton:draw()
+	end
 	settingsButton:draw()
 	creditsButton:draw()
 	helpButton:draw()
 	quitButton:draw()
-	love.graphics.setColor(255, 255, 255)
+	-- love.graphics.setColor(255, 255, 255)
 end
 
 function menu:update(dt)
-	startButton:update(dt)
+	startLocalButton:update(dt)
+	startMultiButton:update(dt)
+	resumeButton:update(dt)
 	settingsButton:update(dt)
 	creditsButton:update(dt)
 	helpButton:update(dt)
 	quitButton:update(dt)
-	if startButton.released then
+	if startLocalButton.released then
 		if GAME_LAUNCHED == false then
-				screens:set("selection")
+			screens:set("selection")
 	    else
-	      screens:set("game")
+	      	screens:set("game")
 		end
+	elseif resumeButton.released then
+	    screens:set("game")
+	elseif startMultiButton.released then
+		print("Have to implement multiplayer here!")
 	elseif creditsButton.released then
 		screens:set("credits")
 	elseif helpButton.released then
@@ -44,6 +70,12 @@ function menu:update(dt)
 	elseif settingsButton.released then
 		screens:set("settings")
 	elseif quitButton.released then
-		love.event.quit()
+		if GAME_LAUNCHED == false then
+			love.event.quit()
+		else
+			-- game.restart()
+			-- game = {}
+			print('Have to remove old game data after press!')
+		end
 	end
 end

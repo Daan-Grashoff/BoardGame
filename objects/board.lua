@@ -94,10 +94,10 @@ function board.load()
 			end
 
 			--	around land
-			if (i < (board.size / 3) + 1 
+			if (i < (board.size / 3) + 1
 			and j < (board.size / 3) + 1
-			and i > (board.size / 3)) 
-			or (j < (board.size / 3) + 1 
+			and i > (board.size / 3))
+			or (j < (board.size / 3) + 1
 			and i < (board.size / 3) + 1
 			and j > (board.size / 3)) then
 				tile.coast = true
@@ -105,21 +105,21 @@ function board.load()
 			end
 
 			--	around land
-			if (i > (board.size / 3*2-1)  
+			if (i > (board.size / 3*2-1)
 			and i < (board.size / 3*2)
-			and j < (board.size / 3+1) 
+			and j < (board.size / 3+1)
 			or (j > (board.size / 3))
 			and i > (board.size / 3*2)
 			and j < (board.size / 3 + 1)) then
 				tile.originalOwner = players:getPlayerByBase('ijs')
 				tile.coast = true
 			end
-			
+
 			--	around land
-			if (i < (board.size / 3+1)  
+			if (i < (board.size / 3+1)
 			and i > (board.size / 3)
 			and j > (board.size / 3*2-1))
-			or (i < (board.size / 3) 
+			or (i < (board.size / 3)
 			and (j < (board.size / 3 * 2))
 			and (j > board.size / 3 * 2 -1)) then
 				tile.coast = true
@@ -127,10 +127,10 @@ function board.load()
 			end
 
 			--	around land
-			if (i > (board.size / 3*2) - 1 
+			if (i > (board.size / 3*2) - 1
 			and j > (board.size / 3*2) - 1
-			and i < (board.size / 3*2)) 
-			or (j > (board.size / 3*2) - 1 
+			and i < (board.size / 3*2))
+			or (j > (board.size / 3*2) - 1
 			and i > (board.size / 3*2) - 1
 			and j < (board.size / 3*2)) then
 				tile.coast = true
@@ -196,7 +196,7 @@ end
 
 
 -- when u spawned a unit, this toggle to walk
-function board.walkFromBaseToggle(t, unit)	
+function board.walkFromBaseToggle(t, unit)
 	for i,walking in pairs(board.tiles) do
 		if not walking.base then
 			walking.walkable = false
@@ -209,14 +209,14 @@ function board.walkFromBaseToggle(t, unit)
 		and walk.x >= t.x - t.size*t.unit.walkRange
 		and walk.y <= t.y + t.size*t.unit.walkRange
 		and walk.y >= t.y - t.size*t.unit.walkRange then
-			if (walk.type ~= 4 and t.unit.type ~= 'boot') or 
-				-- base must be walkable!
-			   (t.unit.type == 'boot' and walk.type == 4 or walk.harbor) then
-					walk.walkable = true
+			if (walk.type ~= 4 and t.unit.type ~= 'boot') or
+			-- base must be walkable!
+			(t.unit.type == 'boot' and walk.type == 4 or walk.harbor) then
+				walk.walkable = true
 			end
 		end
-		if  walk.x <= t.x 
-		and walk.x >= t.x  
+		if  walk.x <= t.x
+		and walk.x >= t.x
 		and walk.y <= t.y
 		and walk.y >= t.y then
 			walk.walking = true
@@ -303,7 +303,6 @@ function board.reset(tile)
 
 	unitspawn.active = false
 
-	-- 
 	tile.building = false
 	tile.buildable = false
 end
@@ -357,27 +356,27 @@ function board.walkToggle(x, y, t, unit)
 
 				-- make sure type is not water if ground unit
 				-- make sure type is water if water unit
-				if (walk.type ~= 4 
-				and t.unit.type ~= 'boot' and not walk.harbor) 
-				or  (t.unit.type == 'boot' 
-				and (walk.type == 4 or walk.harbor)) 
+				if (walk.type ~= 4
+				and t.unit.type ~= 'boot' and not walk.harbor)
+				or  (t.unit.type == 'boot'
+				and (walk.type == 4 or walk.harbor))
 				then
-						walk.walkable = true
+					walk.walkable = true
 				end
 
 				-- make sure ground soldiers can access boat
 				-- check if unit type isnt of boat
 				-- check if boat is of urs
-				if t.unit.type ~= 'boot' 
+				if t.unit.type ~= 'boot'
 				and walk.unit.type == 'boot'
-        		and walk.owner == players:getActivePlayerId() then
+				and walk.owner == players:getActivePlayerId() then
 					walk.loadable = true
 					t.loading = true
 				end
 			end
 
-			if  walk.x <= t.x 
-			and walk.x >= t.x  
+			if  walk.x <= t.x
+			and walk.x >= t.x
 			and walk.y <= t.y
 			and walk.y >= t.y then
 				-- make current tile walking
@@ -389,7 +388,7 @@ function board.walkToggle(x, y, t, unit)
 		-- set all walking false
 		-- set all walkables false
 		if t.unit then
-			for _,walk in pairs(board.tiles) do 
+			for _,walk in pairs(board.tiles) do
 				if walk.walking then
 					walk.walking = false
 				end
@@ -402,7 +401,7 @@ end
 
 function board.walk(x, y, t, lastTile, playerid)
 	if t.walkable then
-		for _,tile in pairs(board.tiles) do 
+		for _,tile in pairs(board.tiles) do
 			if tile.walkable then
 				-- check if tile is occupied
 				-- check if tile is walking
@@ -418,7 +417,7 @@ function board.walk(x, y, t, lastTile, playerid)
 					t.unit = tile.unit
 					-- remove prev tile unit
 					tile.unit = {}
-				end 
+				end
 			end
 			board.reset(tile)
 		end
@@ -428,7 +427,7 @@ function board.walk(x, y, t, lastTile, playerid)
 end
 
 function board.loadBoat(x,y,t)
-	for _,tile in pairs(board.tiles) do 
+	for _,tile in pairs(board.tiles) do
 		if tile.occupied and tile.loading then
 			tile.occupied = false
 			if not tile.base then
@@ -438,7 +437,7 @@ function board.loadBoat(x,y,t)
 			table.insert(t.unit.passengers, tile.unit)
 			tile.unit = {}
 		end
-		board.reset(tile)		
+		board.reset(tile)
 	end
 	t.occupied = true
 end
@@ -458,7 +457,7 @@ function board.unloadToggle(x,y,t)
 			if  walk.x <= t.x + t.size*1
 			and walk.x >= t.x - t.size*1
 			and walk.y <= t.y
-			and walk.y >= t.y 
+			and walk.y >= t.y
 			then
 				if t.unit.type == 'boot'
 				and walk.type ~= 4
@@ -467,27 +466,27 @@ function board.unloadToggle(x,y,t)
 					walk.unloadable = true
 					t.unloading = true
 				end
-			-- check if tile is top or bottom=
+				-- check if tile is top or bottom=
 			elseif walk.x <= t.x
-			and walk.x >= t.x
-			and walk.y <= t.y + t.size*1
-			and walk.y >= t.y - t.size*1
-			then
-				if t.unit.type == 'boot'
-				and walk.type ~= 4
-				and not walk.harbor
-				and not walk.occupied then
-					walk.unloadable = true
-					t.unloading = true
+				and walk.x >= t.x
+				and walk.y <= t.y + t.size*1
+				and walk.y >= t.y - t.size*1
+				then
+					if t.unit.type == 'boot'
+					and walk.type ~= 4
+					and not walk.harbor
+					and not walk.occupied then
+						walk.unloadable = true
+						t.unloading = true
+					end
 				end
 			end
-		end
-	else
-		for i,tile in pairs(board.tiles) do
-			board.reset(tile)
+		else
+			for i,tile in pairs(board.tiles) do
+				board.reset(tile)
+			end
 		end
 	end
-end
 
 function board.unload(t)
 	for _,tile in pairs(board.tiles) do
@@ -499,10 +498,9 @@ function board.unload(t)
 				-- currentPlayer.currentEnergy = currentPlayer.currentEnergy - 1
 				tile.unit = {}
 			end
-			tile.walkable = false
 		end
+		t.occupied = true
 	end
-	t.occupied = true
 end
 
 function board.attack(x, y, t)
@@ -541,8 +539,8 @@ function board.attack(x, y, t)
 					board.clear(t)
 				end
 			end
+			board.reset(tile)
 		end
-		board.reset(tile)
 	end
 end
 
@@ -579,7 +577,6 @@ function board.build(x, y, t)
 			t.owner = tile.owner
 			t.type = tile.type
 		end
-		board.reset(tile)
 	end
 end
 
@@ -878,3 +875,4 @@ function board.draw()
 
 
 end
+

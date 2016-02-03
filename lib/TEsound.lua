@@ -23,7 +23,7 @@ function TEsound.play(sound, tags, volume, pitch, func)
 		error("You must specify a sound - a filepath as a string, a SoundData, or a table of them. Not a Source!")
 	end
 	
-	table.insert(TEsound.channels, { love.audio.newSource(sound), func, {volume or 1, pitch or 1}, tags=(type(tags) == "table" and tags or {tags}) })
+	table.insert(TEsound.channels, { love.audio.newSource(sound), func, {volume or 1, pitch or 1}, tags=(type(tags) == "table" and tags or {tags}), playing = true})
 	local s = TEsound.channels[#TEsound.channels]
 	s[1]:play()
 	s[1]:setVolume( (volume or 1) * TEsound.findVolume(tags) * (TEsound.volumeLevels.all or 1) )
@@ -73,7 +73,9 @@ end
 --- Pauses a channel or tag. Use TEsound.resume to unpause.
 -- @param channel See TEsound.volume
 function TEsound.pause(channel)
-	if type(channel) == "number" then TEsound.channels[channel][1]:pause()
+	if type(channel) == "number" then 
+		TEsound.channels[channel][1]:pause()
+		TEsound.channels[channel]['playing'] = false
 	elseif type(channel) == "string" then for k,v in pairs(TEsound.findTag(channel)) do TEsound.pause(v) end
 	end
 end
@@ -81,7 +83,9 @@ end
 --- Resumes a channel or tag from a pause.
 -- @param channel See TEsound.volume
 function TEsound.resume(channel)
-	if type(channel) == "number" then TEsound.channels[channel][1]:resume()
+	if type(channel) == "number" then 
+		TEsound.channels[channel][1]:resume()
+		TEsound.channels[channel]['playing'] = true
 	elseif type(channel) == "string" then for k,v in pairs(TEsound.findTag(channel)) do TEsound.resume(v) end
 	end
 end

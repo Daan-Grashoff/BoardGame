@@ -2,9 +2,9 @@ objects = {}
 
 function objects.load()
 	objects.items = {}
-	for j = 0, 10 do 
+	for j = 0, 10 do
 		item = {}
-		item.x = 10 
+		item.x = 10
 		item.size = 50
 		item.y = item.size * j * 2
 		item.prefx = item.x
@@ -84,7 +84,7 @@ function objects.update(dt)
 end
 
 function objects.collision(x, y, i)
-	for _,b in pairs(board.tiles) do 
+	for _,b in pairs(board.tiles) do
 		if x >= b.x and x <= b.x + b.size
 		and y >= b.y and y <= b.y + b.size then
 			if  b.type ~= 'water' or (objects.items[i].type == 'boot' and b.type == 'water') then
@@ -106,6 +106,7 @@ function objects.move(x, y, object)
 		object.dragging.diffY = y - object.y
 	end
 end
+
 
 
 function objects.draw(self)

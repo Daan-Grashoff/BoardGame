@@ -14,17 +14,14 @@ function game:load()
 	currentPlayer = 0
 	settings:load()
 
-	timer = 0
+	TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
 
-	if settings:getConfigByKey("game_sound") then
-		-- TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
+	if settings:getConfigByKey("game_sound") == false then
+		TEsound.pause(1)
 	end
-
-	-- players:update({freq = 500, energy = 2})
 
 	-- generate player
 	players:generate(names)
-
 
 	board.load()
 	objects.load()
@@ -32,26 +29,25 @@ function game:load()
 end
 
 function game:update(dt)
-	-- if love.window.isVisible() == false then
-	-- 	TEsound.pause(1)
-	-- else
-	-- 	TEsound.resume(1)
-	-- end
-
-    -- timer = timer + dt
-
+	 
  	if timer >= 0.1 then
      	_base = board.getBaseById(currentPlayer.id)
       	ai(players:getActivePlayer(), _base)
         timer = 0
     end
 
+	if settings:getConfigByKey("game_sound") == true and TEsound.channels[1]['playing'] == false then
+		TEsound.resume(1)
+	elseif settings:getConfigByKey("game_sound") == false and TEsound.channels[1]['playing'] == true then
+		TEsound.pause(1)
+	end
+
 	objects.update()
 end
 
 function game:keypressed(key, gameState)
   	if key == 'escape' then
-  		if settings:getConfigByKey("game_sound") then
+  		if settings:getConfigByKey("game_sound") == true then
   			TEsound.pause(1)
   		end
   		gameState:set("menu")
