@@ -53,23 +53,37 @@ end
 
 function love.mousereleased(x, y, button)
 	if (screens:on("game")) then
-		packTable = {}
-		packTable.input = "mousereleased"
-		packTable.x = x
-		packTable.y = y
-		packTable.turnIP = multiplayer.clientIP
-		packTable.button = button
+		if IS_MULTIPLAYER then
+			packTable = {}
+			packTable.input = "mousereleased"
+			packTable.x = x
+			packTable.y = y
+			packTable.turnIP = multiplayer.clientIP
+			packTable.button = button
 
-		multiplayer.event = {}
-		multiplayer.event.peer = multiplayer.server
-		multiplayer.event.type = "receive"
-		multiplayer.event.data = Tserial.pack(packTable)
-		
-		multiplayer.lastPacket = nil
-		
-		multiplayer.send(multiplayer.host, multiplayer.server, multiplayer.event)
+			multiplayer.event = {}
+			multiplayer.event.peer = multiplayer.server
+			multiplayer.event.type = "receive"
+			multiplayer.event.data = Tserial.pack(packTable)
+			
+			multiplayer.lastPacket = nil
+			
+			multiplayer.send(multiplayer.host, multiplayer.server, multiplayer.event)
+		end
 
 		if multiplayer.turnIP == multiplayer.lastPacket then
+			for i,object in pairs(objects.items) do
+				if object.dragging.active then
+					object.dragging.active = false
+					if not objects.collision(object.x + object.size/2, object.y + object.size/2, i) then
+						object.x = object.prefx
+						object.y = object.prefy
+					end
+				end
+			end
+		end
+
+		if IS_MULTIPLAYER == false then
 			for i,object in pairs(objects.items) do
 				if object.dragging.active then
 					object.dragging.active = false
@@ -85,7 +99,7 @@ end
 
 function love.mousepressed(x, y, button)
 	if (screens:on("game")) then
-		if multiplayer.turnIP == multiplayer.lastPacket then
+		if multiplayer.turnIP == multiplayer.lastPacket or IS_MULTIPLAYER == false then
 			if x > board.endTurn.x
 			and x < board.endTurn.x + board.endTurn.width
 			and y > board.endTurn.y
@@ -286,7 +300,7 @@ function love:update(dt)
 	--screens:update(dt)
 	UPDATE_SCREENS(dt)
 	if screens:on("game") then
-		if multiplayer.turn == false then
+		if multiplayer.turn == false and IS_MULTIPLAYER then
 			multiplayer.service(multiplayer.host, multiplayer.server)
 		end
 	end

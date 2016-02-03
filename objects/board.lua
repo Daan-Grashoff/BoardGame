@@ -1,4 +1,3 @@
-require 'objects.multiplayer'
 require 'objects.settings'
 require 'buildings.base'
 require 'tiles.desertTile'
@@ -6,6 +5,7 @@ require 'tiles.grassTile'
 require 'tiles.mountainTile'
 require 'tiles.snowTile'
 require 'tiles.swampTile'
+require 'objects.multiplayer'
 
 board = {}
 function board.load()
@@ -764,7 +764,7 @@ function board.draw()
 		-- 	end
 		-- end
 
-		if multiplayer.turn then
+		if multiplayer.turn or IS_MULTIPLAYER == false then
 			if t.walking then
 				-- debug show tile is walking
 				-- love.graphics.print('walking!!!!', t.x+5, t.y + 20)

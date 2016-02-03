@@ -2,6 +2,7 @@ TWO_PERSON = love.graphics.newImage('assets/images/people-1-128.png')
 FOUR_PERSON = love.graphics.newImage('assets/images/four-people.png')
 GEAR = love.graphics.newImage('assets/images/gear.png')
 GAME_LAUNCHED = false
+IS_MULTIPLAYER = false
 
 prices = {
 	ijs = {
