@@ -29,9 +29,6 @@ function screens:on(screen)
 end
 
 function screens:update(dt)
-  if love.keyboard.isDown('escape') then
-    love.event.quit()
-  end
   if screens.currentScreen == 'menu' then
     menu.update(dt)
   elseif screens.currentScreen == 'game' then
@@ -60,6 +57,8 @@ function screens:draw()
 		help.draw()
   elseif screens.currentScreen == 'settings' then
     settingsScreen.draw()
+  elseif screens.currentScreen == 'end' then
+    print(winner)  
   end
 end
 

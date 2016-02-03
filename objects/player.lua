@@ -1,8 +1,8 @@
 require 'lib.functions'
 
 players = {}
-startAmoundFreq = 10000
-startAmoundEnergy = 3
+startAmoundFreq = 1000
+startAmoundEnergy = 1
 startingCard = 'bos'
 
 function players:generate(names)
@@ -45,21 +45,17 @@ function players:update(activePlayer)
 	    		and tile.unit.type ~= 'worker'
 		    	and not tile.base then
 		    		if tile.originalOwner == player.id then
-						player['freq'] = player['freq'] + 0
+						player['freq'] = player['freq'] + 50
 						player.income = player.income + 50
-						tile.income = 50
 					elseif tile.type == 'goldmine' then
 						player['freq'] = player['freq'] + 150
 						player.income = player.income + 150
-						tile.income = 150
-					elseif tile.type == 'water' then
+					elseif tile.type == 4 then
 						player['freq'] = player['freq'] + 0
 						player.income = player.income + 0
-						tile.income = 0
 					else
 						player['freq'] = player['freq'] + 100
 						player.income = player.income + 100
-						tile.income = 100
 					end
 				else
 					tile.income = 0
@@ -69,14 +65,27 @@ function players:update(activePlayer)
 		    if player.energy < 10 then
 				player.energy = player.energy + 1
 			end
+
 			player.currentEnergy = player.energy
 			player.active = false
+
 			if k == #players then
 				k = 0
 			end
+
 			players[k+1].active = true
 			currentPlayer = players[k+1]
 			break
+		end
+		if player.freq > winningMoney then
+			winner = player.id
+			screens.currentScreen = 'end'
+		end
+		_aBases = board.getActiveBases()
+
+		if #_aBases == 1 then
+			winner = _aBases[1].owner
+			screens.currentScreen = 'end'
 		end
 	end
 	return players
