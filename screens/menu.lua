@@ -46,9 +46,13 @@ function menu:draw()
 end
 
 function menu:update(dt)
-	startLocalButton:update(dt)
-	startMultiButton:update(dt)
-	resumeButton:update(dt)
+	if GAME_LAUNCHED == false then
+		startLocalButton:update(dt)
+		startMultiButton:update(dt)
+    else
+		resumeButton:update(dt)
+	end
+
 	settingsButton:update(dt)
 	creditsButton:update(dt)
 	helpButton:update(dt)
