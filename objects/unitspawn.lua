@@ -125,7 +125,7 @@ function unitspawn.disable()
 end
 
 function unitspawn.draw()
-	if unitspawn.active then
+	if unitspawn.active and multiplayer.turn then
 		for k,unit in pairs(units) do 
 			love.graphics.setColor(255,255,255)
 			baseType = ''
