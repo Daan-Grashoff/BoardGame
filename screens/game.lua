@@ -29,6 +29,7 @@ function game:load()
 	board.load()
 	objects.load()
 	unitspawn.load()
+	--multiplayer.load()
 end
 
 function game:update(dt)

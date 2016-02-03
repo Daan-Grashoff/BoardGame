@@ -53,12 +53,44 @@ end
 
 function love.mousereleased(x, y, button)
 	if (screens:on("game")) then
-		for i,object in pairs(objects.items) do
-			if object.dragging.active then
-				object.dragging.active = false
-				if not objects.collision(object.x + object.size/2, object.y + object.size/2, i) then
-					object.x = object.prefx
-					object.y = object.prefy
+		if IS_MULTIPLAYER then
+			packTable = {}
+			packTable.input = "mousereleased"
+			packTable.x = x
+			packTable.y = y
+			packTable.turnIP = multiplayer.clientIP
+			packTable.button = button
+
+			multiplayer.event = {}
+			multiplayer.event.peer = multiplayer.server
+			multiplayer.event.type = "receive"
+			multiplayer.event.data = Tserial.pack(packTable)
+			
+			multiplayer.lastPacket = nil
+			
+			multiplayer.send(multiplayer.host, multiplayer.server, multiplayer.event)
+		end
+
+		if multiplayer.turnIP == multiplayer.lastPacket then
+			for i,object in pairs(objects.items) do
+				if object.dragging.active then
+					object.dragging.active = false
+					if not objects.collision(object.x + object.size/2, object.y + object.size/2, i) then
+						object.x = object.prefx
+						object.y = object.prefy
+					end
+				end
+			end
+		end
+
+		if IS_MULTIPLAYER == false then
+			for i,object in pairs(objects.items) do
+				if object.dragging.active then
+					object.dragging.active = false
+					if not objects.collision(object.x + object.size/2, object.y + object.size/2, i) then
+						object.x = object.prefx
+						object.y = object.prefy
+					end
 				end
 			end
 		end
@@ -67,16 +99,22 @@ end
 
 function love.mousepressed(x, y, button)
 	if (screens:on("game")) then
-		if x > board.endTurn.x
-		and x < board.endTurn.x + board.endTurn.width
-		and y > board.endTurn.y
-		and y < board.endTurn.y + board.endTurn.height then
-			players:update(players:getActivePlayer())
-			for _,tiles in pairs(board.tiles) do
-				board.reset(tiles)
-				unitspawn.disable()
-				if tiles.unit then
-					tiles.unit.attacked = false
+		if multiplayer.turnIP == multiplayer.lastPacket or IS_MULTIPLAYER == false then
+			if x > board.endTurn.x
+			and x < board.endTurn.x + board.endTurn.width
+			and y > board.endTurn.y
+			and y < board.endTurn.y + board.endTurn.height then
+
+			--multiplayer.setNextTurn()
+
+
+				players:update(players:getActivePlayer())
+				for _,tiles in pairs(board.tiles) do
+					board.reset(tiles)
+					unitspawn.disable()
+					if tiles.unit then
+						tiles.unit.attacked = false
+					end
 				end
 			end
 
@@ -84,7 +122,6 @@ function love.mousepressed(x, y, button)
 				_base = board.getBaseById(currentPlayer.id)
 				-- ai(players:getActivePlayer(), _base)
 			end
-			return
 		end
 
 		for _,t in pairs(board.tiles) do
@@ -253,12 +290,8 @@ function love.mousepressed(x, y, button)
 				end
 			end
 		end
-
-		-- Moving objects (soldiers)
-		for _,object in pairs(objects.items) do
-			objects.move(x, y, object)
-		end
 	end
+	return
 end
 
 
@@ -267,6 +300,19 @@ function love:update(dt)
 	--print(love.timer.getDelta())
 	--screens:update(dt)
 	UPDATE_SCREENS(dt)
+	if screens:on("game") then
+		if multiplayer.turn == false and IS_MULTIPLAYER then
+			multiplayer.service(multiplayer.host, multiplayer.server)
+		end
+
+		if IS_MULTIPLAYER then
+			if multiplayer.keepAliveTimer <= 0 then
+				multiplayer.keepAliveTimer = 40
+				multiplayer.sendKeepAlive()
+			end
+			multiplayer.keepAliveTimer = multiplayer.keepAliveTimer - 1
+		end
+	end
 end
 
 function love.draw()

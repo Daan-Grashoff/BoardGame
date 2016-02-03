@@ -74,6 +74,7 @@ function menu:update(dt)
 	elseif resumeButton.released then
 	    screens:set("game")
 	elseif startMultiButton.released then
+		IS_MULTIPLAYER = true
 		screens:set("selection")
 	elseif creditsButton.released then
 		screens:set("credits")

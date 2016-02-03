@@ -128,7 +128,7 @@ function unitspawn.disable()
 end
 
 function unitspawn.draw()
-	if unitspawn.active then
+	if unitspawn.active and multiplayer.turn or unitspawn.active and IS_MULTIPLAYER == false then
 		for k,unit in pairs(units) do 
 			baseType = ''
 			bases = board.getBases()

@@ -5,9 +5,11 @@ require 'tiles.grassTile'
 require 'tiles.mountainTile'
 require 'tiles.snowTile'
 require 'tiles.swampTile'
+require 'objects.multiplayer'
 
 board = {}
 function board.load()
+	multiplayer.load()
 
 	GrassTile:load()
 	SnowTile:load()
@@ -766,33 +768,35 @@ function board.draw()
 		-- 	end
 		-- end
 
-		if t.walking then
-			-- debug show tile is walking
-			-- love.graphics.print('walking!!!!', t.x+5, t.y + 20)
-		elseif t.attackable then
-			-- show tile is attackable (able to attack a other unit)
-			love.graphics.setColor(255, 0, 0, 100)
-			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
-		elseif t.loadable and #t.unit.passengers < 3 then
-			-- show tile is lb (able to load units in boat)
-			love.graphics.setColor(0, 0,255, 100)
-			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
-			love.graphics.setColor(0,0,0)
-		elseif t.unloadable then
-			-- show tile is ulb (able to unload units on the ground)
-			love.graphics.setColor(255,255,0, 100)
-			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
-			love.graphics.setColor(0,0,0)
-		elseif t.buildable then
-			love.graphics.setColor(0,0,100)
-			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
-			love.graphics.setColor(0,0,0)
-		end
+		if multiplayer.turn or IS_MULTIPLAYER == false then
+			if t.walking then
+				-- debug show tile is walking
+				-- love.graphics.print('walking!!!!', t.x+5, t.y + 20)
+			elseif t.attackable then
+				-- show tile is attackable (able to attack a other unit)
+				love.graphics.setColor(255, 0, 0, 100)
+				love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
+			elseif t.loadable and #t.unit.passengers < 3 then
+				-- show tile is lb (able to load units in boat)
+				love.graphics.setColor(0, 0,255, 100)
+				love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+				love.graphics.setColor(0,0,0)
+			elseif t.unloadable then
+				-- show tile is ulb (able to unload units on the ground)
+				love.graphics.setColor(255,255,0, 100)
+				love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+				love.graphics.setColor(0,0,0)
+			elseif t.buildable then
+				love.graphics.setColor(0,0,100)
+				love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+				love.graphics.setColor(0,0,0)
+			end
 
-		if t.owner == players:getActivePlayerId()
-		and t.base then
-			love.graphics.setColor(0, 255, 0, 55)
-			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
+			if t.owner == players:getActivePlayerId()
+			and t.base then
+				love.graphics.setColor(0, 255, 0, 55)
+				love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
+			end
 		end
 
 
