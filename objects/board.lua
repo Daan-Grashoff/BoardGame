@@ -87,8 +87,10 @@ function board.load()
 			(i == 0 and j ==  board.size) or
 			(i == board.size and j == board.size) then
 				tile.base = true
+				tile.health = 25
 			else
 				tile.base = false
+				tile.health = 0
 			end
 
 			--	around land
@@ -229,8 +231,9 @@ function board.attackToggle(x, y, t, unit)
 			and tile.x >= t.x - t.size*t.unit.attackRange
 			and tile.y <= t.y + t.size*t.unit.attackRange
 			and tile.y >= t.y - t.size*t.unit.attackRange
-			and tile.occupied == true
-			and tile.owner ~= t.owner then
+			and (tile.occupied == true or tile.health > 0)
+			and tile.owner ~= t.owner 
+			and not t.unit.attacked then
 				tile.attackable = true
 				t.attacking = true
 			end
@@ -251,6 +254,7 @@ function board.buildToggle(x, y, t, unit)
 			and tile.y <= t.y + t.size*1
 			and tile.y >= t.y - t.size*1
 			and not tile.occupied
+			and currentPlayer.currentEnergy > 1
 			and tile.coast then
 				tile.buildable = true
 				t.building = true
@@ -264,6 +268,27 @@ function board.buildToggle(x, y, t, unit)
 	end
 end
 
+
+function board.resetAll()
+	for _,tile in pairs(board.tiles) do
+		tile.attackable = false
+		tile.attacking = false
+		tile.walkable = false
+		tile.walking = false
+		tile.loading = false
+		tile.loadable = false
+		tile.unloading = false
+		tile.unloadable = false
+		tile.unloadboatspawning = false
+		tile.unloadboatspawn = false
+
+		-- 
+		tile.building = false
+		tile.buildable = false
+	end
+end
+
+
 function board.reset(tile)
 	tile.attackable = false
 	tile.attacking = false
@@ -275,6 +300,9 @@ function board.reset(tile)
 	tile.unloadable = false
 	tile.unloadboatspawning = false
 	tile.unloadboatspawn = false
+
+	unitspawn.active = false
+
 	-- 
 	tile.building = false
 	tile.buildable = false
@@ -315,6 +343,7 @@ function board.walkToggle(x, y, t, unit)
 	if not t.walking then
 		for i,walking in pairs(board.tiles) do
 			-- clear board
+			unitspawn.active = false
 			walking.walkable = false
 			walking.walking = false
 		end
@@ -403,8 +432,9 @@ function board.loadBoat(x,y,t)
 		if tile.occupied and tile.loading then
 			tile.occupied = false
 			if not tile.base then
-				tile.owner = 0 
+				tile.owner = 0
 			end
+			currentPlayer.currentEnergy = currentPlayer.currentEnergy - 1
 			table.insert(t.unit.passengers, tile.unit)
 			tile.unit = {}
 		end
@@ -418,6 +448,7 @@ function board.unloadToggle(x,y,t)
 	if not t.unloading then
 		for i,tile in pairs(board.tiles) do
 			-- clear board
+			unitspawn.active = false
 			tile.unloading = false
 			tile.unloadable = false
 		end
@@ -464,6 +495,8 @@ function board.unload(t)
 			if tile.occupied and tile.tileing then
 				tile.occupied = false
 				t.unit = tile.unit
+
+				-- currentPlayer.currentEnergy = currentPlayer.currentEnergy - 1
 				tile.unit = {}
 			end
 			tile.walkable = false
@@ -475,19 +508,38 @@ end
 function board.attack(x, y, t)
 	for i,tile in pairs(board.tiles) do
 		if tile.attacking then
-			-- do damage to unit 
-			t.unit.health = t.unit.health - tile.unit.damage
-			-- do damage to unit 
-			tile.unit.health = tile.unit.health - t.unit.damage
-			-- if unit's health is below 1
-			if t.unit.health <= 0 then
-				-- clear tile 
-				board.clear(t)
+			if t.unit.health then
+
+				-- do damage to unit 
+				tile.unit.attacked = true
+				t.unit.health = t.unit.health - tile.unit.damage
+
+				-- do damage to unit 
+				tile.unit.health = tile.unit.health - t.unit.damage / 2
+
+				-- if unit's health is below 1
+				if t.unit.health <= 0 then
+					-- clear tile 
+					board.clear(t)
+				end
+
+				-- if unit's health is below 1
+				if tile.unit.health <= 0 then
+					-- clear tile 
+					board.clear(tile)
+				end
 			end
-			-- if unit's health is below 1
-			if tile.unit.health <= 0 then
-				-- clear tile 
-				board.clear(tile)
+			if t.health ~= 0 then
+				t.health = t.health - tile.unit.damage
+				if t.health <= 0 then
+					if t.harbor then
+						t.type = 4
+						t.owner = 0
+						t.originalOwner = 0
+						print('make harbor water again')
+					end
+					board.clear(t)
+				end
 			end
 		end
 		board.reset(tile)
@@ -497,11 +549,16 @@ end
 function board.clear(t)
 	t.occupied = false
 	t.unit = {}
+
 	if not t.base then
 		t.owner = 0
 	end
+
+	t.harbor = false
+	t.base = false
 	t.attackable = false
 	t.attacking = false
+	
 	t.walkable = false
 	t.walking = false
 	t.loading = false
@@ -516,6 +573,9 @@ function board.build(x, y, t)
 	for _,tile in pairs(board.tiles) do
 		if tile.building then
 			t.harbor = true
+			t.health = 6
+			currentPlayer.freq = currentPlayer.freq - prices['bos']['harbor']
+			currentPlayer.currentEnergy = currentPlayer.currentEnergy - 2
 			t.owner = tile.owner
 			t.type = tile.type
 		end
@@ -585,6 +645,19 @@ function board.draw()
 
 		love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 
+
+
+
+		if t.owner == players:getActivePlayerId() 
+		and t.harbor then
+			love.graphics.setColor(0, 255, 255)
+			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
+			love.graphics.setColor(0, 255, 0, 100)
+			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
+		end
+
+
+
 		-- color the tiles with unit on it
 		if t.occupied then
 			if t.unit.type then
@@ -648,14 +721,24 @@ function board.draw()
 		if t.unit.damage then
 			-- love.graphics.setColor(0,0,0)
 			love.graphics.setColor(255,255,0)
-			love.graphics.print('A ' .. t.unit.damage, t.x + 20, t.y + 20)
+			love.graphics.print('A ' .. t.unit.damage, t.x + 10, t.y + 20)
 		end
 
 		-- Unit health on tile
 		if t.unit.health then
 			-- love.graphics.setColor(0,0,0)
 			love.graphics.setColor(255,0,0)
-			love.graphics.print('H ' .. t.unit.health, t.x + 20, t.y + 30)
+			love.graphics.print('H ' .. t.unit.health, t.x + 10, t.y + 30)
+		end
+
+		if t.health > 0 then
+			love.graphics.setColor(255,0,0)
+			love.graphics.print('H ' .. t.health, t.x, t.y + 30)
+		end
+
+		if t.unit.type == 'boot' then
+			love.graphics.setColor(255,0,0)
+			love.graphics.print("P " ..#t.unit.passengers .. '/' .. 3, t.x +5, t.y)
 		end
 
 		-- Unit type on tile
@@ -698,6 +781,10 @@ function board.draw()
 			love.graphics.setColor(255,255,0, 100)
 			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
 			love.graphics.setColor(0,0,0)
+		elseif t.buildable then
+			love.graphics.setColor(0,0,100)
+			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+			love.graphics.setColor(0,0,0)	
 		end
 
 		if t.owner == players:getActivePlayerId()
@@ -705,6 +792,8 @@ function board.draw()
 			love.graphics.setColor(0, 255, 0, 55)
 			love.graphics.rectangle('fill', t.x, t.y, t.size, t.size)
 		end
+
+
 
 
 		-- end turn button
@@ -738,6 +827,21 @@ function board.draw()
 			end
 		end
 
+
+		if t.coast then
+			love.graphics.setColor(0,0,0, 50)
+			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+		end
+
+		if t.harbor then
+			love.graphics.setColor(144, 144, 144, 50)
+			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+		end
+
+	  	if coast_tile then
+    		love.graphics.setColor(144, 144, 144, 100)
+			love.graphics.rectangle("fill", coast_tile.x, coast_tile.y, coast_tile.size, coast_tile.size)
+		end
 
 		-- if t.coast then
 		-- 	love.graphics.setColor(0,0,0, 100)

@@ -5,6 +5,7 @@ require "objects.cards"
 require "objects.player"
 require "objects.unitspawn"
 require "lib.TEsound"
+require "ai"
 
 math.randomseed(os.time())
 game = {}
@@ -12,6 +13,8 @@ game = {}
 function game:load()
 	currentPlayer = 0
 	settings:load()
+
+	timer = 0
 
 	if settings:getConfigByKey("game_sound") then
 		-- TEsound.playLooping("assets/music/track1.mp3", 'Background', 0)
@@ -34,6 +37,15 @@ function game:update(dt)
 	-- else
 	-- 	TEsound.resume(1)
 	-- end
+
+    -- timer = timer + dt
+
+ 	if timer >= 0.1 then
+     	_base = board.getBaseById(currentPlayer.id)
+      	ai(players:getActivePlayer(), _base)
+        timer = 0
+    end
+
 	objects.update()
 end
 

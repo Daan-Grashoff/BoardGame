@@ -2,6 +2,7 @@ require 'constructor'
 
 local Menu = {}
 
+
 scale = love.window.getPixelScale( )
 
 Menu.StartButton = {}

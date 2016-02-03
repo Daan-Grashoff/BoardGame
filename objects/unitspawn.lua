@@ -63,6 +63,7 @@ end
 
 function unitspawn.show(tile)
 	if not unitspawn.active then
+		board.resetAll()
 		for i,tile in pairs(board.tiles) do
 			-- clear board
 			tile.spawning = false
@@ -73,15 +74,15 @@ function unitspawn.show(tile)
 		units = spawnableUnits(tile)
 		for i,unit in pairs(units) do 
 			if tile.x > width/2 then 
-				unit.x = tile.x - unit.width * (i-1) - 40
+				unit.x = tile.x - unit.width * (i-1) - 36
 			else
 				unit.x = tile.x + unit.width * (i-1) 
 			end
 
 			if tile.y > height/2 then 
-				unit.y = tile.y - 80
+				unit.y = tile.y - 82
 			else
-				unit.y = tile.y + 40
+				unit.y = tile.y + 44
 			end
 
 		end
@@ -102,6 +103,7 @@ function spawnableUnits(tile)
 	elseif tile.harbor then
 		for i, unit in pairs(unitspawn.units) do
 			if unit.spawnHarbor then
+
 				table.insert(_spawnableUnits, unit)
 			end
 		end
@@ -127,7 +129,6 @@ end
 function unitspawn.draw()
 	if unitspawn.active then
 		for k,unit in pairs(units) do 
-			love.graphics.setColor(255,255,255)
 			baseType = ''
 			bases = board.getBases()
 			for _,base in pairs(bases) do 
@@ -165,15 +166,31 @@ function unitspawn.draw()
 			end
 
 
-			love.graphics.rectangle("fill", unit.x, unit.y, unit.width,unit.height)
+			love.graphics.setColor(122,122,122, 200)
+			love.graphics.rectangle("fill", unit.x, unit.y, unit.width, unit.height)
+			love.graphics.setColor(255,255,255)
 			if k == 2 then
-				love.graphics.draw(sprites[baseType]['soldier'], unit.x, unit.y, 0, 1.5)
+				_width = sprites[baseType]['soldier']:getWidth()/2
+				_height = sprites[baseType]['soldier']:getHeight()
+				love.graphics.draw(sprites[baseType]['soldier'], unit.x + _width, unit.y + _height, 0, 1.5)
 			else
-				love.graphics.draw(sprites[baseType][unit.name], unit.x, unit.y, 0, 1.5)
+				_width = sprites[baseType][unit.name]:getWidth()/2
+				if unit.name == 'tank' then
+					_height = sprites[baseType][unit.name]:getHeight()-15
+				elseif unit.name == 'robot' then
+					_height = sprites[baseType][unit.name]:getHeight()-10
+				else
+					_height = sprites[baseType][unit.name]:getHeight()
+				end
+				love.graphics.draw(sprites[baseType][unit.name], unit.x + _width, unit.y + _height, 0, 1.5)
 			end
+
 			love.graphics.setColor(0,0,0)
 			love.graphics.rectangle("line", unit.x, unit.y, unit.width,unit.height)
-			love.graphics.print(unit.name, unit.x + 5, unit.y)
+			love.graphics.setColor(255,255,255)
+
+			love.graphics.printf(unit.name, unit.x, unit.y, 80, 'center')
+			love.graphics.printf(prices[baseType][unit.name], unit.x, unit.y+15, 80, 'center')
 		end
 	end
 
@@ -182,20 +199,28 @@ function unitspawn.draw()
 		-- draw spawn buttons to let the units out
 		if t.unloadboatspawning then
 			for i,unit in pairs(t.unit.passengers) do 			
+
 				if t.owner == 0 then
 				    image = sprites['bos'][t.unit.type]
 				else
 				    image = sprites[players:getBaseByPlayer(t.owner)][unit.type]
 				end
 				-- set color white
-				love.graphics.setColor(255,255,255)
+				love.graphics.setColor(122,122,122, 200)
 				love.graphics.rectangle("fill", t.x + (80 * (i-1)), t.y + tile.size, 80, 80)
+
 				-- set sprite to block
-				love.graphics.draw(image, t.x + (80 * (i-1)), t.y + tile.size, 0, 1.5)
+				love.graphics.setColor(255,255,255)
+				_width = image:getWidth()/2
+				_height = image:getHeight()
+				love.graphics.draw(image, t.x + (80 * (i-1)) + _width, t.y + tile.size + _height, 0, 1.5)
+
 				-- set color black
-				love.graphics.rectangle("line", t.x + (80 * (i-1)), t.y + tile.size, 80,80)
 				love.graphics.setColor(0,0,0)
+				love.graphics.rectangle("line", t.x + (80 * (i-1)), t.y + tile.size, 80,80)
+
 				-- draw unit type name
+				love.graphics.setColor(255,255,255)
 				love.graphics.print(unit.type, t.x + (80 * (i-1)) + 5, t.y + tile.size)
 			end
 		end

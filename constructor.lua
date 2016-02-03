@@ -12,7 +12,8 @@ prices = {
 		robot = 500,
 		tank = 1000,
 		boot = 200,
-		attackboot = 500
+		attackboot = 500,
+		harbor = 1000
 	},
 	moeras = {
 		worker = 100,
@@ -20,7 +21,8 @@ prices = {
 		robot = 500,
 		tank = 1000,
 		boot = 200,
-		attackboot = 500
+		attackboot = 500,
+		harbor = 1000
 	},
 	woestijn = {
 		worker = 100,
@@ -28,7 +30,8 @@ prices = {
 		robot = 500,
 		tank = 1000,
 		boot = 200,
-		attackboot = 500
+		attackboot = 500,
+		harbor = 1000
 	},
 	bos = {
 		worker = 100,
@@ -36,7 +39,8 @@ prices = {
 		robot = 500,
 		tank = 1000,
 		boot = 200,
-		attackboot = 500
+		attackboot = 500,
+		harbor = 1000
 	}
 }
 

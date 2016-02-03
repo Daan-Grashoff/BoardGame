@@ -5,15 +5,15 @@ require 'screens.credits'
 require 'screens.selection'
 require 'screens.settingsScreen'
 
-screens = {currentScreen = "menu"}
+screens = {currentScreen = "game"}
 
 function screens:load()
-  -- currentScreen = "menu"
+  currentScreen = "game"
 
   help:load()
   -- if current screen == game
   -- load game directly
-  -- game:load()
+  game:load()
   --
   menu:load()
   credits:load()
@@ -29,10 +29,13 @@ function screens:on(screen)
 end
 
 function screens:update(dt)
+  if love.keyboard.isDown('escape') then
+    love.event.quit()
+  end
   if screens.currentScreen == 'menu' then
     menu.update(dt)
   elseif screens.currentScreen == 'game' then
-    game.update(dt)
+    game:update(dt)
   elseif screens.currentScreen == 'selection' then
     selection.update(dt)
   elseif screens.currentScreen == 'credits' then

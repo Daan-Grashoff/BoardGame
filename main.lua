@@ -6,7 +6,7 @@ function love.load()
 	width = 1080
 	height = 763
 
-	amountPlayers = 2
+	amountPlayers = 4
 
 	names = {
 		'Rick',
@@ -74,8 +74,11 @@ function love.mousepressed(x, y, button)
 			for _,tiles in pairs(board.tiles) do
 				board.reset(tiles)
 				unitspawn.disable()
+				if tiles.unit then
+					tiles.unit.attacked = false
+				end
 			end
-			print(currentPlayer)
+
 			if players:getActivePlayerId() == 2 then
 				_base = board.getBaseById(currentPlayer.id)
 				-- ai(players:getActivePlayer(), _base)
@@ -91,7 +94,7 @@ function love.mousepressed(x, y, button)
 					and y > t.y + tile.size
 					and y < t.y + tile.size + 80 then
 						board.spawn(t, unit, i, t.owner)
-						-- moet dit???
+						currentPlayer.currentEnergy = currentPlayer.currentEnergy - 1
 						-- return
 					end
 				end
@@ -102,16 +105,6 @@ function love.mousepressed(x, y, button)
 			and x < t.x + t.size
 			and y > t.y
 			and y < t.y + t.size then
-
-				if t.originalowner ~= 0 then
-					-- printTable(players:getPlayerByID(t.originalOwner))
-					-- printTable(players:getPlayerByID(t.originalOwner).tiles)
-				end
-
-
-				if t.owner > 0 then
-					-- print(t.owner)
-				end
 
 				if t.unit.type == 'boot'
 				and #t.unit.passengers ~= 0 then
@@ -139,7 +132,8 @@ function love.mousepressed(x, y, button)
 				-- check if tile is occupied
 		        -- check if owner of tile is active player
 		        if t.buildable
-		        and not t.harbor then 
+		        and not t.harbor
+		        and players:getActivePlayerEnergy() > 1 then 
 		          board.build(x, y, t)
 		          return
 		        end
@@ -149,7 +143,7 @@ function love.mousepressed(x, y, button)
 					board.attack(x, y, t)
 				end
 
-				-- check if tile is attackable
+				-- check if tile is unloadable
 				if t.unloadable then
 					board.unloadBoatSpawn(t)
 				end
@@ -267,7 +261,7 @@ end
 
 
 function love:update(dt)
-	--dt = math.min(1/60, love.timer.getDelta())
+	dt = math.min(1/60, love.timer.getDelta())
 	--print(love.timer.getDelta())
 	--screens:update(dt)
 	UPDATE_SCREENS(dt)
