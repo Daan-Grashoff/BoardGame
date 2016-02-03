@@ -27,7 +27,7 @@ function menu:load()
 	helpButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 4, buttonSize, maxCellHeight, {extensions = {Menu.HelpButton}, draggable = false})
 	quitButton = UI.Button((love.graphics.getWidth() / 2) - (buttonSize / 2), maxCellHeight * 5.25, buttonSize, maxCellHeight, {extensions = {Menu.QuitButton}, draggable = false})
 
-	settingsButton = UI.Button(900, 600, 128, 128 * scale, {extensions = {Menu.SettingsButton}, draggable = false})
+	settingsButton = UI.Button((love.graphics.getWidth() / 2), 0, maxCellHeight, maxCellHeight, {extensions = {Menu.SettingsButton}, draggable = false})
 
 end
 

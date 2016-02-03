@@ -116,7 +116,7 @@ end
 Menu.SettingsButton = {}
 Menu.SettingsButton.draw = function(self)
     love.graphics.setColor(64, 64, 64)
-    love.graphics.draw(GEAR, 900, 600)
+    love.graphics.draw(GEAR, self.x, self.y, self.w / 128, self.h / 128)
 end
 
 return Menu
