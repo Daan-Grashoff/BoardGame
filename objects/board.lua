@@ -577,6 +577,7 @@ function board.build(x, y, t)
 			t.owner = tile.owner
 			t.type = tile.type
 		end
+		board.reset(tile)
 	end
 end
 
@@ -824,8 +825,13 @@ function board.draw()
 		end
 
 		if t.harbor then
-			love.graphics.setColor(144, 144, 144, 50)
-			love.graphics.rectangle("fill", t.x, t.y, t.size, t.size)
+			love.graphics.setColor(255, 255, 255)
+			if t.owner == 0 then
+				image = sprites['bos']['base']
+			else
+				image = sprites[players:getBaseByPlayer(t.owner)]['harbor']
+			end
+			love.graphics.draw(image, t.x, t.y, 0, board.newTileSize / 44, board.newTileSize / 44)
 		end
 
 	  	if coast_tile then

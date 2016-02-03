@@ -24,6 +24,7 @@ function game:load()
 
 	-- generate player
 	players:generate(names)
+    love.graphics.setFont(love.graphics.newFont(12))
 
 	board.load()
 	objects.load()
@@ -31,8 +32,6 @@ function game:load()
 end
 
 function game:update(dt)
-
-
     -- timer = timer + dt
 
  	if timer >= 0.1 then
