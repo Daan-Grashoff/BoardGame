@@ -24,6 +24,7 @@ function multiplayer.triggermousereleased(x, y, button, currentPlayer)
 end
 
 function multiplayer.setNextTurn()
+	print('nextplayer')
 end
 
 function multiplayer.sendKeepAlive()
@@ -62,7 +63,8 @@ function multiplayer.service(host, server)
 			unpackTable = Tserial.unpack(multiplayer.event.data, true)
 			multiplayer.turnIP = unpackTable.TurnIP
 		elseif string.match(multiplayer.event.data, 'input="keepAlive"') then
-			print("keepalive client")
+			-- print("keepalive client")
+			return
 		end
 	end
 end

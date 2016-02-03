@@ -24,7 +24,7 @@ function board.load()
 	board.endTurn = {}
 	board.endTurn.width = 100
 	board.endTurn.height = 50
-	board.endTurn.x = width - board.endTurn.width
+	board.endTurn.x = width - (board.endTurn.width * 1.80)
 	board.endTurn.y = height/2 - board.endTurn.height
 
 	board.size = boardConfig['boardsize'] -- 8 mobile / 16 tablet / 24 computer
@@ -803,10 +803,13 @@ function board.draw()
 
 
 		-- end turn button
+		love.graphics.setColor(64, 64, 64)
 		love.graphics.rectangle('fill', board.endTurn.x, board.endTurn.y, board.endTurn.width, board.endTurn.height)
+		local text = "End turn"
+		love.graphics.setColor(255, 255, 255)
+    	love.graphics.print(text, board.endTurn.x + (board.endTurn.width / 2) - (love.graphics.getFont():getWidth(text) / 2), board.endTurn.y + (board.endTurn.height / 2) - (love.graphics.getFont():getHeight(text) / 2))
 
 		-- around tiles black border
-
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("line", t.x, t.y, t.size, t.size)
 
@@ -821,10 +824,15 @@ function board.draw()
 				-- position left or right
 				if t.x < width/2 then
 					-- position left
-					xpos = t.x - 75
+					xpos = t.x - 100
 				else
 					-- position right
 					xpos = t.x + 75
+				end
+				
+				-- on currentplayer stats be green
+				if currentPlayer.id == playerStats.id then
+					love.graphics.setColor(0, 255, 0)
 				end
 
 				love.graphics.print('Energy ' .. playerStats.currentEnergy .. '/' .. playerStats.energy, xpos, t.y)
