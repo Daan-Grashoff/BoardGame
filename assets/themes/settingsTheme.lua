@@ -1,16 +1,16 @@
 local Settings = {}
 
-ON = love.graphics.newImage('assets/images/on.PNG')
-OFF = love.graphics.newImage('assets/images/off.PNG')
-SMALL = love.graphics.newImage('assets/images/small.PNG')
-MEDIUM = love.graphics.newImage('assets/images/medium.PNG')
-LARGE = love.graphics.newImage('assets/images/large.PNG')
+ON = love.graphics.newImage('assets/images/on.png')
+OFF = love.graphics.newImage('assets/images/off.png')
+SMALL = love.graphics.newImage('assets/images/small.png')
+MEDIUM = love.graphics.newImage('assets/images/medium.png')
+LARGE = love.graphics.newImage('assets/images/large.png')
 
-ONACTIVE = love.graphics.newImage('assets/images/on_active.PNG')
-OFFACTIVE = love.graphics.newImage('assets/images/off_active.PNG')
-SMALLACTIVE = love.graphics.newImage('assets/images/small_active.PNG')
-MEDIUMACTIVE = love.graphics.newImage('assets/images/medium_active.PNG')
-LARGEACTIVE = love.graphics.newImage('assets/images/large_active.PNG')
+ONACTIVE = love.graphics.newImage('assets/images/on_active.png')
+OFFACTIVE = love.graphics.newImage('assets/images/off_active.png')
+SMALLACTIVE = love.graphics.newImage('assets/images/small_active.png')
+MEDIUMACTIVE = love.graphics.newImage('assets/images/medium_active.png')
+LARGEACTIVE = love.graphics.newImage('assets/images/large_active.png')
 -- scale = love.window.getPixelScale( )
 
 Settings.btnmusicOn = {}
@@ -89,6 +89,14 @@ Settings.btnLarge.draw = function(self)
 	else
 		love.graphics.draw(LARGE, self.x, self.y)
 	end
+end
+
+Settings.btnBack = {}
+Settings.btnBack.draw = function(self)
+    love.graphics.setFont(love.graphics.newFont(20))
+    love.graphics.setColor(255, 255, 255)
+	love.graphics.print("< Back", self.x, self.y, 0, 1, 1)
+
 end
 
 return Settings

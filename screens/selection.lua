@@ -6,14 +6,14 @@ selection = {}
 
 function selection.load()
 	UI.registerEvents()
-	selectionFrame = Chatbox(0, 0, 1080, 763)
+	selectionFrame = Chatbox(100, 50, 1080, 763)
 end
 selection.load()
 
 function selection.keypressed(key, gameState)
 	if key == 'escape' then
-		gameState:set('menu')
-	end
+    	gameState:set("menu")
+  	end
 end
 
 function selection.update(dt)
@@ -21,5 +21,8 @@ function selection.update(dt)
 end
 
 function selection.draw()
+	love.graphics.setColor(255, 255, 255)
+    love.graphics.setFont(love.graphics.newFont(32))
+	love.graphics.print("Player amount", 500, 50, 0, 1, 1)
 	selectionFrame:draw()
 end
