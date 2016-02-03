@@ -67,9 +67,17 @@ while true do
 			server.event.data = Tserial.pack(packTable)
 			server.event.peer:send(Tserial.pack(packTable))
 			server.host:flush()
+		elseif string.match(server.event.data, 'input="keepAlive"') then
+			server.event.peer:send(server.event.data)
+			server.host:flush()
 		else
 			server.host:broadcast(server.event.data)
 			server.host:flush()
+		end
+	elseif server.event and server.event.type == "receive" then
+		if string.match(server.event.data, 'input="keepAlive"') then
+		   server.host:broadcast(server.event.data)
+		   server.host:flush()
 		end
 	elseif server.event and server.event.type == "disconnect" then
 		print("Player ".. tostring(server.event.peer) .." has left the game!")
