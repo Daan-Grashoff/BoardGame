@@ -2,9 +2,9 @@ objects = {}
 
 function objects.load()
 	objects.items = {}
-	for j = 0, 10 do 
+	for j = 0, 10 do
 		item = {}
-		item.x = 10 
+		item.x = 10
 		item.size = 50
 		item.y = item.size * j * 2
 		item.prefx = item.x
@@ -12,6 +12,7 @@ function objects.load()
 		item.centerx = item.x + item.size/2
 		item.centery = item.y + item.size/2
 		item.dragging = { active = false, diffX = 0, diffY = 0 }
+		item.attacked = false
 		if j == 0 then
 			item.type = 'worker'
 			item.walkRange = 100
@@ -26,10 +27,10 @@ function objects.load()
 			item.health = 1
 		elseif j == 2 then
 			item.type = 'tank'
-			item.walkRange = 1
-			item.attackRange = 2
-			item.damage = 3
-			item.health = 3
+			item.walkRange = 100
+			item.attackRange = 20
+			item.damage = 30
+			item.health = 10
 		elseif j == 3 then
 			item.type = 'robot'
 			item.walkRange = 1
@@ -83,7 +84,7 @@ function objects.update(dt)
 end
 
 function objects.collision(x, y, i)
-	for _,b in pairs(board.tiles) do 
+	for _,b in pairs(board.tiles) do
 		if x >= b.x and x <= b.x + b.size
 		and y >= b.y and y <= b.y + b.size then
 			if  b.type ~= 'water' or (objects.items[i].type == 'boot' and b.type == 'water') then
@@ -107,32 +108,33 @@ function objects.move(x, y, object)
 end
 
 
+
 function objects.draw(self)
-	for k,i in pairs(objects.items) do
-		-- printTable(i)
-		if k == 1 then
-			love.graphics.setColor(255,255,255)
-			love.graphics.draw(sprites['bos'][i.type], i.x, i.y, 0, 2)
-		elseif k == 2 then
-			love.graphics.setColor(255,255,255)
-			love.graphics.draw(sprites['bos']['soldier'], i.x, i.y, 0, 2)
-		elseif k == 3 then
-			love.graphics.setColor(255,255,255)
-			love.graphics.draw(sprites['bos']['tank'], i.x, i.y, 0, 2)
-		elseif k == 4 then
-			love.graphics.setColor(255,255,255)
-			love.graphics.draw(sprites['bos']['robot'], i.x, i.y, 0, 2)
-		elseif k == 5 then
-			love.graphics.setColor(255,255,255)
-			love.graphics.draw(sprites['bos']['boot'], i.x, i.y, 0, 2)
-		else
-			break
-			-- love.graphics.setColor(255, 0, 0)
-			-- love.graphics.rectangle('fill', i.x, i.y, i.size, i.size)
-		end
-		love.graphics.setColor(0,0,0)
-		love.graphics.print(i.type, i.x+5, i.y + 20)
-	end
+	-- for k,i in pairs(objects.items) do
+	-- 	-- printTable(i)
+	-- 	if k == 1 then
+	-- 		love.graphics.setColor(255,255,255)
+	-- 		love.graphics.draw(sprites['bos'][i.type], i.x, i.y, 0, 2)
+	-- 	elseif k == 2 then
+	-- 		love.graphics.setColor(255,255,255)
+	-- 		love.graphics.draw(sprites['bos']['soldier'], i.x, i.y, 0, 2)
+	-- 	elseif k == 3 then
+	-- 		love.graphics.setColor(255,255,255)
+	-- 		love.graphics.draw(sprites['bos']['tank'], i.x, i.y, 0, 2)
+	-- 	elseif k == 4 then
+	-- 		love.graphics.setColor(255,255,255)
+	-- 		love.graphics.draw(sprites['bos']['robot'], i.x, i.y, 0, 2)
+	-- 	elseif k == 5 then
+	-- 		love.graphics.setColor(255,255,255)
+	-- 		love.graphics.draw(sprites['bos']['boot'], i.x, i.y, 0, 2)
+	-- 	else
+	-- 		break
+	-- 		-- love.graphics.setColor(255, 0, 0)
+	-- 		-- love.graphics.rectangle('fill', i.x, i.y, i.size, i.size)
+	-- 	end
+	-- 	love.graphics.setColor(0,0,0)
+	-- 	love.graphics.print(i.type, i.x+5, i.y + 20)
+	-- end
 end
 
 

@@ -1,8 +1,8 @@
 require 'lib.functions'
 
 players = {}
-startAmoundFreq = 100000
-startAmoundEnergy = 1000
+startAmoundFreq = 10000
+startAmoundEnergy = 3
 startingCard = 'bos'
 
 function players:generate(names)

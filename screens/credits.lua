@@ -2,10 +2,10 @@ credits = {}
 
 local about = {
       {"CREATED BY", ""},
-      {"Damien", " \"Programmer\" "},
-      {"Daan", " \"Programmer\" "},
-      {"Steefnerd", " \"Programmer\" "},
-      {"Rickert", " \"Programmer\" "},
+      {"Damien", " \"Programmer\" \n- Scaling\n- Android Support\n- Map Generation\n- Tile Mapping "},
+      {"Daan", " \"Programmer\" \n- AI\n- Game Logic "},
+      {"Steefnerd", " \"Programmer\" \n- Multiplayer Support\n- Screen Design\n- Save Settings"},
+      {"Rickert", " \"Programmer\" \n- Settings\n- Sounds "},
       {"Bob", " \"Brogrammer\" "}
     }
 

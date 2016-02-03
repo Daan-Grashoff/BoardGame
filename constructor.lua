@@ -1,8 +1,6 @@
 TWO_PERSON = love.graphics.newImage('assets/images/people-1-128.png')
 FOUR_PERSON = love.graphics.newImage('assets/images/four-people.png')
 GEAR = love.graphics.newImage('assets/images/gear.png')
-ON = love.graphics.newImage('assets/images/on.PNG')
-OFF = love.graphics.newImage('assets/images/off.PNG')
 GAME_LAUNCHED = false
 
 prices = {
@@ -12,7 +10,8 @@ prices = {
 		robot = 500,
 		tank = 1000,
 		boot = 200,
-		attackboot = 500
+		attackboot = 500,
+		harbor = 1000
 	},
 	moeras = {
 		worker = 100,
@@ -20,7 +19,8 @@ prices = {
 		robot = 500,
 		tank = 1000,
 		boot = 200,
-		attackboot = 500
+		attackboot = 500,
+		harbor = 1000
 	},
 	woestijn = {
 		worker = 100,
@@ -28,7 +28,8 @@ prices = {
 		robot = 500,
 		tank = 1000,
 		boot = 200,
-		attackboot = 500
+		attackboot = 500,
+		harbor = 1000
 	},
 	bos = {
 		worker = 100,
@@ -36,7 +37,8 @@ prices = {
 		robot = 500,
 		tank = 1000,
 		boot = 200,
-		attackboot = 500
+		attackboot = 500,
+		harbor = 1000
 	}
 }
 

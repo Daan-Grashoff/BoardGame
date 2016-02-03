@@ -8,7 +8,7 @@ require 'screens.settingsScreen'
 screens = {currentScreen = "menu"}
 
 function screens:load()
-  -- currentScreen = "menu"
+  currentScreen = "menu"
 
   help:load()
   -- if current screen == game
@@ -29,10 +29,13 @@ function screens:on(screen)
 end
 
 function screens:update(dt)
+  if love.keyboard.isDown('escape') then
+    love.event.quit()
+  end
   if screens.currentScreen == 'menu' then
     menu.update(dt)
   elseif screens.currentScreen == 'game' then
-    game.update(dt)
+    game:update(dt)
   elseif screens.currentScreen == 'selection' then
     selection.update(dt)
   elseif screens.currentScreen == 'credits' then
