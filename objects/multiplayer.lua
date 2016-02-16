@@ -12,7 +12,7 @@ multiplayer.keepAliveTimer = 40
 
 function multiplayer.load()
 	multiplayer.host = enet.host_create()
-	multiplayer.server = multiplayer.host:connect("localhost:6789")
+	multiplayer.server = multiplayer.host:connect("192.168.1.2:6789")
 	multiplayer.service(multiplayer.host, multiplayer.server)
 end
 
